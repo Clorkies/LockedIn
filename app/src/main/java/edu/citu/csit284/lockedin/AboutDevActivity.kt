@@ -1,20 +1,17 @@
 package edu.citu.csit284.lockedin
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import android.widget.ImageButton
 
-class AboutDevActivity : AppCompatActivity() {
+class AboutDevActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_about_dev)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+
+        val btn_back = findViewById<ImageButton>(R.id.button_back)
+        btn_back.setOnClickListener { startActivity(Intent(this, SettingsActivity::class.java)) }
+
     }
 }

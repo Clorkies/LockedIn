@@ -14,16 +14,18 @@ class ProfileActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
+        val btn_back = findViewById<ImageButton>(R.id.button_back)
+        btn_back.setOnClickListener { startActivity(Intent(this, LandingActivity::class.java)) }
+
+        val btn_settings = findViewById<ImageButton>(R.id.button_settings)
+        btn_settings.setOnClickListener { startActivity(Intent(this, SettingsActivity::class.java)) }
 
         val tvName = findViewById<TextView>(R.id.tv_name)
         val btnEditName = findViewById<ImageButton>(R.id.button_edit_name)
-
         val tvUsername = findViewById<TextView>(R.id.tv_username)
         val btnEditUsername = findViewById<ImageButton>(R.id.button_edit_username)
-
         val tvEmail = findViewById<TextView>(R.id.tv_email)
         val btnEditEmail = findViewById<ImageButton>(R.id.button_edit_email)
-
         setUpEditButton(btnEditName, tvName, "Enter your new name", "Full Name")
         setUpEditButton(btnEditUsername, tvUsername, "Enter your new username", "Username")
         setUpEditButton(btnEditEmail, tvEmail, "Enter your new email", "Email Address")

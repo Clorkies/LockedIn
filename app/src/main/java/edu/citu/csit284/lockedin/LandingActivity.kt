@@ -10,7 +10,7 @@ class LandingActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_landing)
 
-        val btn_back = findViewById<ImageButton>(R.id.button_back)
-        btn_back.setOnClickListener {startActivity(Intent(this, ProfileActivity::class.java)) }
+        val btn_profile = findViewById<ImageButton>(R.id.button_profile)
+        btn_profile.setOnClickListener {startActivity(Intent(this, ProfileActivity::class.java)) }
     }
 }

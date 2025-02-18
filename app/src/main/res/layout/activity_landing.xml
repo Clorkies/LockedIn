@@ -1,31 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LandingActivity"
     android:background="@color/blue"
-    android:orientation="vertical">
+    >
 
-    <TextView
-        android:id="@+id/sampleTxt"
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="35dp"/>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Log in Page here"
-        android:layout_marginTop="200dp"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        android:textAlignment="center"/>
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:gravity="center_vertical">
 
-    <ImageButton
-        android:id="@+id/button_back"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@drawable/btn_back"
-        android:scaleType="centerCrop"
-        android:layout_marginTop="50dp"
-        android:layout_gravity="center"/>
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/icon_app_logo"
+            android:scaleType="centerCrop"
+            android:layout_marginEnd="10dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_weight="1"/>
+
+        <ImageButton
+            android:id="@+id/button_profile"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/btn_profile"
+            android:scaleType="centerCrop"
+            android:layout_marginStart="10dp"/>
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="35dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginHorizontal="25dp">
+
+    </LinearLayout>
+
+
 </LinearLayout>
