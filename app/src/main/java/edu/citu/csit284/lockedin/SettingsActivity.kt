@@ -12,5 +12,8 @@ class SettingsActivity : Activity() {
 
         val btn_back = findViewById<ImageButton>(R.id.button_back)
         btn_back.setOnClickListener {startActivity(Intent(this, ProfileActivity::class.java)) }
+
+        val btn_devs = findViewById<ImageButton>(R.id.button_about_dev)
+        btn_back.setOnClickListener {startActivity(Intent(this, ProfileActivity::class.java)) }
     }
 }

@@ -9,12 +9,15 @@
     android:background="@color/blue"
     android:orientation="vertical">
 
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"/>
+
     <TextView
         android:id="@+id/sampleTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Settings Page here"
-        android:layout_marginTop="200dp"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/white"
@@ -25,6 +28,15 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:background="@drawable/btn_back"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"/>
+
+    <ImageButton
+        android:id="@+id/button_about_dev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_developers"
         android:scaleType="centerCrop"
         android:layout_marginTop="50dp"
         android:layout_gravity="center"/>

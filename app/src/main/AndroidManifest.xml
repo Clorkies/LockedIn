@@ -13,6 +13,9 @@
         android:theme="@style/Theme.LockedIn"
         tools:targetApi="31">
         <activity
+            android:name=".AboutDevActivity"
+            android:exported="false" />
+        <activity
             android:name=".SettingsActivity"
             android:exported="false" />
         <activity
