@@ -3,4 +3,6 @@
     <string name="full_name">John Doe</string>
     <string name="email">johndoe@email.com</string>
     <string name="username">johndoe123</string>
+    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</string>
 </resources>
