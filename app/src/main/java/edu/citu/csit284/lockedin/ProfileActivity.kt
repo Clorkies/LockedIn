@@ -20,6 +20,9 @@ class ProfileActivity : Activity() {
         val btn_settings = findViewById<ImageButton>(R.id.button_settings)
         btn_settings.setOnClickListener { startActivity(Intent(this, SettingsActivity::class.java)) }
 
+        val btn_logout = findViewById<ImageButton>(R.id.button_logout)
+        btn_logout.setOnClickListener { startActivity(Intent(this, LogoutActivity::class.java)) }
+
         val tvName = findViewById<TextView>(R.id.tv_name)
         val btnEditName = findViewById<ImageButton>(R.id.button_edit_name)
         val tvUsername = findViewById<TextView>(R.id.tv_username)
