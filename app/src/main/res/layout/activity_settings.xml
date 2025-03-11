@@ -1,54 +1,295 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity"
-    android:background="@color/blue"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/bg"
+    tools:context=".SettingsActivity">
 
-    <Space
-        android:layout_width="wrap_content"
-        android:layout_height="150dp"/>
-
-    <TextView
+    <!-- First RelativeLayout (Header) -->
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Settings Page Here"
-        android:textSize="20sp"
+        android:layout_marginTop="10dp">
+        <ImageView
+            android:id="@+id/backBtn"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/btn_back"
+            android:padding="14dp"
+            android:layout_marginLeft="15dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+            android:fontFamily="@font/poppins"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="-14dp">
+
+            <LinearLayout
+                android:background="@drawable/settings_background"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="40dp"
+                android:orientation="vertical"
+                android:padding="15dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/activeIcon"
+                        android:src = "@drawable/active_icon"
+                        android:background="@drawable/circle_active"
+                        android:padding="5dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/activeIcon"
+                        android:text="Active Status"
+                        android:textColor="@color/white"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/poppins"
+                        android:layout_marginLeft="25dp"/>
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchActive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:switchMinWidth="50dp"
+                        android:theme="@style/activeSwitch" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/notiIcon"
+                        android:src = "@drawable/noti_icon"
+                        android:background="@drawable/circle_noti"
+                        android:padding="8dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/notiIcon"
+                        android:text="Notifications"
+                        android:textColor="@color/white"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/poppins"
+                        android:layout_marginLeft="25dp"/>
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchNoti"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:switchMinWidth="50dp"
+                        android:theme="@style/notiSwitch"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/privateIcon"
+                        android:src = "@drawable/priv_icon"
+                        android:background="@drawable/circle_priv"
+                        android:padding="6dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/privateIcon"
+                        android:text="Private Account"
+                        android:textColor="@color/white"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/poppins"
+                        android:layout_marginLeft="25dp"/>
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchPriv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:switchMinWidth="50dp"
+                        android:theme="@style/privateSwitch"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:background="@drawable/settings_background"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:padding="15dp">
+                <RelativeLayout
+                    android:id="@+id/secpriv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/securityIcon"
+                        android:src = "@drawable/security_icon"
+                        android:background="@drawable/circle_security"
+                        android:padding="8dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/securityIcon"
+                        android:text="Security &amp; Privacy"
+                        android:textColor="@color/white"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/poppins"
+                        android:layout_marginLeft="25dp"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src = "@drawable/right_arrow"
+                        android:layout_alignParentEnd ="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/access"
+                    android:layout_marginTop="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/accessibilityIcon"
+                        android:src = "@drawable/acc_icon"
+                        android:background="@drawable/circle_access"
+                        android:padding="8dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/accessibilityIcon"
+                        android:text="Accessibility"
+                        android:textColor="@color/white"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/poppins"
+                        android:layout_marginLeft="25dp"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src = "@drawable/right_arrow"
+                        android:layout_alignParentEnd ="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/faq"
+                    android:layout_marginTop="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/faqIcon"
+                        android:src = "@drawable/about_icon"
+                        android:background="@drawable/circle_faq"
+                        android:padding="7dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/faqIcon"
+                        android:text="FAQ &amp; About Us"
+                        android:textColor="@color/white"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/poppins"
+                        android:layout_marginLeft="25dp"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src = "@drawable/right_arrow"
+                        android:layout_alignParentEnd ="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"/>
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3" />
+    <Button
+        android:id="@+id/btnDeveloper"
+        android:layout_width="230dp"
+        android:layout_height="40dp"
+        android:text="About Developers"
+        android:fontFamily="@font/poppins"
         android:textStyle="bold"
         android:textColor="@color/white"
-        android:textAlignment="center"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Settings Page was assigned to the other pair"
-        android:textSize="9sp"
+        android:textSize="17sp"
+        android:background="@drawable/devbutton"
+        android:padding="5dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="15dp" />
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="230dp"
+        android:layout_height="40dp"
+        android:text="Logout"
+        android:fontFamily="@font/poppins"
+        android:textStyle="bold"
         android:textColor="@color/white"
-        android:textAlignment="center"/>
-
-    <ImageButton
-        android:id="@+id/button_back"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@drawable/btn_back"
-        android:scaleType="centerCrop"
-        android:layout_marginTop="50dp"
-        android:layout_gravity="center"/>
-
-    <Space
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"/>
-
-    <ImageButton
-        android:id="@+id/button_about_dev"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btn_developers"
-        android:scaleType="centerCrop"
-        android:layout_marginTop="50dp"
-        android:layout_gravity="center"/>
+        android:textSize="17sp"
+        android:background="@drawable/logout_btn"
+        android:padding="5dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="15dp" />
 </LinearLayout>

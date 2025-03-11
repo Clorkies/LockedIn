@@ -1,6 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.LockedIn" parent="android:Theme.Material.Light.NoActionBar" >
-        <item name="android:fontFamily">@font/poppins</item>
+
+    <style name="Theme.LockedIn" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="notiSwitch" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/devYellow</item>
+        <item name="colorSwitchThumbNormal">#FFFFFF</item>
+        <item name="android:colorForeground">#99ffff</item>
+    </style>
+    <style name="activeSwitch" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/devYellow</item>
+        <item name="colorSwitchThumbNormal">#FFFFFF</item>
+        <item name="android:colorForeground">#99ffff</item>
+    </style>
+    <style name="privateSwitch" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/devYellow</item>
+        <item name="colorSwitchThumbNormal">#FFFFFF</item>
+        <item name="android:colorForeground">#99ffff</item>
+    </style>
+    <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+        <item name="android:windowEnterAnimation">@anim/slide_in</item>
+        <item name="android:windowExitAnimation">@anim/slide_out</item>
+    </style>
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
     </style>
 </resources>

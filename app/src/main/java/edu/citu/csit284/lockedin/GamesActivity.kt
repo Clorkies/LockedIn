@@ -10,7 +10,6 @@ class GamesActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_games)
 
-
         val btn_back = findViewById<ImageButton>(R.id.button_back)
         btn_back.setOnClickListener {startActivity(Intent(this, LandingActivity::class.java)) }
 

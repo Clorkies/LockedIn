@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -5,45 +6,44 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.LockedIn"
         tools:targetApi="31">
-
-        <activity
-            android:name=".LogoutActivity"
-            android:exported="false" />
         <activity
             android:name=".ExploreActivity"
-            android:exported="false" />
-        <activity
-            android:name=".LiveActivity"
             android:exported="false" />
         <activity
             android:name=".GamesActivity"
             android:exported="false" />
         <activity
+            android:name=".LiveActivity"
+            android:exported="false" />
+        <activity
             android:name=".AboutDevActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LandingActivity"
             android:exported="false" />
         <activity
             android:name=".SettingsActivity"
             android:exported="false" />
-
         <activity
-            android:name=".LandingActivity"
-            android:exported="true">
+            android:name=".LoginActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.LockedIn">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".ProfileActivity"
-            android:exported="true"/>
-
     </application>
 
 </manifest>

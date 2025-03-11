@@ -7,6 +7,9 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.app.AlertDialog
+import android.view.LayoutInflater
+import android.widget.Button
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ProfileActivity : Activity() {
 
@@ -21,7 +24,24 @@ class ProfileActivity : Activity() {
         btn_settings.setOnClickListener { startActivity(Intent(this, SettingsActivity::class.java)) }
 
         val btn_logout = findViewById<ImageButton>(R.id.button_logout)
-        btn_logout.setOnClickListener { startActivity(Intent(this, LogoutActivity::class.java)) }
+        btn_logout.setOnClickListener {
+            val sheet = LayoutInflater.from(this).inflate(R.layout.logout_bottom_sheet, null)
+            val bottom = BottomSheetDialog(this,R.style.BottomSheetDialogTheme)
+
+            bottom.setContentView(sheet)
+
+            val back = sheet.findViewById<Button>(R.id.back_btn)
+            back.setOnClickListener {
+                bottom.dismiss()
+            }
+            val logout = sheet.findViewById<Button>(R.id.logout)
+            logout.setOnClickListener {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+            }
+
+            bottom.show()
+        }
 
         val tvName = findViewById<TextView>(R.id.tv_name)
         val btnEditName = findViewById<ImageButton>(R.id.button_edit_name)
