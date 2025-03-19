@@ -5,4 +5,5 @@
     <string name="username">johndoe123</string>
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
         eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</string>
+    <string name="terms">By creating an account you agree to our <font color="#EEA023">Terms &amp; Conditions</font> and agree to our <font color="#EEA023">Privacy Policy</font> </string>
 </resources>

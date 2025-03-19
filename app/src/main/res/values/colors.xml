@@ -22,4 +22,6 @@
     <color name="grey">#454545</color>
     <color name="red">#a53c3c</color>
 
+    <color name="fadedWhite">#BFBFBF</color>
+
 </resources>
