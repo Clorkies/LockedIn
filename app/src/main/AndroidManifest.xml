@@ -13,6 +13,10 @@
         android:theme="@style/Theme.LockedIn"
         tools:targetApi="31">
         <activity
+            android:name=".ExploreArticleActivity"
+            android:exported="false"
+            android:theme="@style/Theme.LockedIn" />
+        <activity
             android:name=".ExploreActivity"
             android:exported="false" />
         <activity
