@@ -41,7 +41,16 @@ class GamesActivity : Activity() {
             }
         }
 
-//        val matchView = findViewById<FrameLayout>(R.id.ongoingMatch)
+        val matchView1 = findViewById<FrameLayout>(R.id.ongoingMatch1)
+        val matchView2 = findViewById<FrameLayout>(R.id.ongoingMatch2)
+
+        matchView1.setOnClickListener {startActivity(Intent(this, MatchDetailsActivity::class.java)).apply {
+            intent.putExtra("caller", "game")
+        } }
+
+        matchView2.setOnClickListener {startActivity(Intent(this, MatchDetailsActivity::class.java)).apply {
+            intent.putExtra("caller", "game")
+        } }
 
 
     }
