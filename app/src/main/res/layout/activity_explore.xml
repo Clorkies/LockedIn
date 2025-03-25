@@ -43,7 +43,7 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="10dp"/>
+        android:layout_height="35dp"/>
 
 
     <ListView
@@ -51,14 +51,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="20dp"
+        android:paddingHorizontal="20dp"
         android:divider="@android:color/transparent"
-        android:dividerHeight="25dp"
+        android:dividerHeight="30dp"
         />
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="10dp"/>
+        android:layout_height="35dp"/>
 
     <FrameLayout
         android:layout_width="match_parent"
