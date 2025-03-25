@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:orientation="vertical"
@@ -53,6 +52,8 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:padding="20dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="25dp"
         />
 
     <Space

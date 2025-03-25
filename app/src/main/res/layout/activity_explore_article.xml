@@ -10,7 +10,6 @@
     android:padding="20dp"
     >
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,12 +26,12 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="10dp"/>
-
+        android:layout_height="30dp"/>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,25 +39,28 @@
             >
 
             <TextView
+                android:id="@+id/articleTitleView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Article Title"
                 android:textStyle="bold"
-                android:textSize="20sp"
+                android:textSize="25sp"
                 android:textColor="@color/white"
+                android:gravity="center"
                 />
 
+
             <Space
-                android:layout_height="10dp"
-                android:layout_width="wrap_content"/>
+                android:layout_width="match_parent"
+                android:layout_height="30dp"/>
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="230dp"
-                android:background="@drawable/rounded_image"
-                android:clipToOutline="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/img_sample" />
+            android:id="@+id/articleImageView"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:background="@drawable/rounded_image"
+            android:clipToOutline="true"
+            android:scaleType="centerCrop"
+            />
 
             <Space
                 android:layout_height="20dp"
@@ -71,11 +73,13 @@
                 android:paddingHorizontal="20dp">
 
                 <TextView
+                    android:id="@+id/articleTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/lorem_ipsum_article"
-                    android:textSize="13sp"
-                    android:textColor="@color/white"/>
+                    android:textSize="17sp"
+                    android:textColor="@color/white"
+                    />
+
             </LinearLayout>
 
     </LinearLayout>

@@ -23,7 +23,7 @@ class ProfileActivity : Activity() {
         val btn_settings = findViewById<ImageButton>(R.id.button_settings)
         btn_settings.setOnClickListener { startActivity(Intent(this, SettingsActivity::class.java)) }
 
-        val btn_logout = findViewById<ImageButton>(R.id.button_logout)
+        val btn_logout = findViewById<Button>(R.id.button_logout)
         btn_logout.setOnClickListener {
             val sheet = LayoutInflater.from(this).inflate(R.layout.logout_bottom_sheet, null)
             val bottom = BottomSheetDialog(this,R.style.BottomSheetDialogTheme)

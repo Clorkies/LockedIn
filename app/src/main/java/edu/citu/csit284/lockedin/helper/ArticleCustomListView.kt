@@ -10,8 +10,11 @@ import android.widget.TextView
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.data.Article
 
-class ArticleCustomListView(private val context: Context,
-    private val articleList: List<Article>) : BaseAdapter() {
+class ArticleCustomListView(
+    private val context: Context,
+    private val articleList: List<Article>,
+    private val onClick: (Article) -> Unit
+) : BaseAdapter() {
     override fun getCount(): Int = articleList.size
     override fun getItem(pos: Int): Any = articleList[pos]
     override fun getItemId(pos: Int): Long = pos.toLong()
@@ -32,6 +35,10 @@ class ArticleCustomListView(private val context: Context,
         img.setImageResource(article.imgResId)
         title.setText(article.title)
         text.setText(article.articleText)
+
+        view.setOnClickListener {
+            onClick(article)
+        }
 
         return view
     }

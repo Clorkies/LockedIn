@@ -9,31 +9,32 @@
     <ImageView
         android:id="@+id/articleImage"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/img_placeholder"
-        android:layout_marginBottom="8dp"/>
+        android:layout_height="170dp"
+        android:background="@drawable/rounded_image"
+        android:clipToOutline="true"
+        android:scaleType="fitXY"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/img_placeholder" />
 
     <TextView
         android:id="@+id/articleTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Article Title"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:gravity="center"
-        android:layout_marginBottom="4dp"/>
+        android:layout_marginBottom="5dp"/>
 
     <TextView
         android:id="@+id/articleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Short preview of the article..."
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:textColor="@android:color/darker_gray"
-        android:maxLines="3"
+        android:maxLines="2"
         android:ellipsize="end"
-        android:gravity="center"/>
+        android:gravity="left"/>
 
 </LinearLayout>
