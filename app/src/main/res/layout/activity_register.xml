@@ -102,19 +102,35 @@
         android:textStyle="bold"
         android:textSize="16dp"
         />
-    <EditText
-        android:id="@+id/password"
+    <LinearLayout
+        android:layout_margin="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="25dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/settings_background"
-        android:fontFamily="@font/poppins"
-        android:hint="Enter your password"
-        android:inputType="textPassword"
-        android:padding="16dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white" />
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/settings_background"
+            android:fontFamily="@font/poppins"
+            android:hint="Enter your password"
+            android:inputType="textPassword"
+            android:padding="16dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white" />
+        <ImageView
+            android:id="@+id/imgPriv"
+            android:layout_marginLeft="-85dp"
+            android:layout_marginTop="3dp"
+            android:layout_gravity="center"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/priv_icon"
+            android:alpha="0.5"
+            />
+    </LinearLayout>
     <TextView
         android:layout_gravity="left"
         android:layout_marginLeft="30dp"
@@ -127,19 +143,36 @@
         android:textStyle="bold"
         android:textSize="16dp"
         />
-    <EditText
-        android:id="@+id/confirmpass"
+    <LinearLayout
+        android:layout_margin="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="25dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/settings_background"
-        android:fontFamily="@font/poppins"
-        android:hint="Re-enter your password"
-        android:inputType="textPassword"
-        android:padding="16dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white" />
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/confirmpass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/settings_background"
+            android:fontFamily="@font/poppins"
+            android:hint="Re-enter your password"
+            android:inputType="textPassword"
+            android:padding="16dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white" />
+        <ImageView
+            android:id="@+id/imgPriv2"
+            android:layout_marginLeft="-85dp"
+            android:layout_marginTop="3dp"
+            android:layout_gravity="center"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/priv_icon"
+            android:alpha="0.5"
+            />
+    </LinearLayout>
+
     <Button
         android:layout_marginTop="30dp"
         android:layout_marginHorizontal="25dp"

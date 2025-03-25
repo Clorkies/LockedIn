@@ -17,14 +17,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingHorizontal="25dp"
+        android:paddingHorizontal="20dp"
         android:gravity="top">
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/icon_app_logo"
-            />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/logo"/>
 
         <View
             android:layout_width="0dp"
@@ -33,265 +32,122 @@
 
         <ImageButton
             android:id="@+id/button_profile"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/btn_profile"/>
+            android:background="@drawable/btn_profile"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="7dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/icon_outline_user"/>
 
     </LinearLayout>
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="10dp"/>
+        android:layout_height="25dp"/>
 
-    <ScrollView
+    <FrameLayout
+        android:id="@+id/ongoingMatch"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="105dp"
+            android:src="@drawable/rectangle_rounded_red"
+            android:scaleType="fitXY"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ongoing Match"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_marginTop="3dp"
+            android:layout_gravity="top|center"/>
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="25dp">
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:layout_gravity="right|center"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/rectangle_rounded"
+            android:gravity="center">
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/rectangle_rounded_wide"
-                    android:scaleType="fitXY"
-                    />
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/logo_sentinels"
+                />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="right|center"
-                    android:layout_marginRight="25dp"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/logo_sentinels"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sentinels"/>
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="VS"
-                    android:textStyle="bold"
-                    android:layout_gravity="center">
-                </TextView>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="left|center"
-                    android:layout_marginLeft="25dp"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/logo_fnatic"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Fnatic"/>
-                </LinearLayout>
-
-            </FrameLayout>
-
-            <Space
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="25dp"/>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/rectangle_rounded_content"
-                    android:scaleType="fitXY"
-                    />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="15dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Article Title"
-                        android:textStyle="bold"
-                        android:textSize="20sp"
-                        android:textColor="@color/grey"
-                        />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/lorem"
-                        android:textSize="10sp"
-                        android:textColor="@color/grey"
-                        />
-
-                </LinearLayout>
-
-            </FrameLayout>
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"/>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/rectangle_rounded_content"
-                    android:scaleType="fitXY"
-                    />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="15dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Article Title"
-                        android:textStyle="bold"
-                        android:textSize="20sp"
-                        android:textColor="@color/grey"
-                        />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/lorem"
-                        android:textSize="10sp"
-                        android:textColor="@color/grey"
-                        />
-
-                </LinearLayout>
-
-            </FrameLayout>
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"/>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/rectangle_rounded_content"
-                    android:scaleType="fitXY"
-                    />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="15dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Article Title"
-                        android:textStyle="bold"
-                        android:textSize="20sp"
-                        android:textColor="@color/grey"
-                        />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/lorem"
-                        android:textSize="10sp"
-                        android:textColor="@color/grey"
-                        />
-
-                </LinearLayout>
-
-            </FrameLayout>
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"/>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/rectangle_rounded_content"
-                    android:scaleType="fitXY"
-                    />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="15dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Article Title"
-                        android:textStyle="bold"
-                        android:textSize="20sp"
-                        android:textColor="@color/grey"
-                        />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/lorem"
-                        android:textSize="10sp"
-                        android:textColor="@color/grey"
-                        />
-
-                </LinearLayout>
-
-            </FrameLayout>
-
-
-
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:text="Sentinels"/>
         </LinearLayout>
 
-    </ScrollView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VS"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_gravity="center">
+        </TextView>
 
+        <LinearLayout
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:layout_gravity="left|center"
+            android:layout_marginLeft="8dp"
+            android:gravity="center"
+            android:background="@drawable/rectangle_rounded"
+            >
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/logo_fnatic"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:text="Fnatic"/>
+        </LinearLayout>
+
+    </FrameLayout>
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="10dp"/>
+        android:layout_height="25dp"/>
+
+    <ListView
+        android:id="@+id/articleListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="20dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="25dp"
+        />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="25dp"/>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

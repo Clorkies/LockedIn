@@ -3,14 +3,16 @@ package edu.citu.csit284.lockedin
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.ListView
 import android.widget.TextView
 
-class ExploreArticleActivity : Activity() {
+class TournamentActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_explore_article)
+        setContentView(R.layout.activity_tournament)
 
         val caller = intent.getStringExtra("caller")
 
@@ -29,12 +31,20 @@ class ExploreArticleActivity : Activity() {
         val title = intent.getStringExtra("title") ?: "Untitled"
         val articleText = intent.getStringExtra("articleText") ?: "No content available."
 
-        val imageView = findViewById<ImageView>(R.id.articleImageView)
-        val titleView = findViewById<TextView>(R.id.articleTitleView)
-        val textView = findViewById<TextView>(R.id.articleTextView)
+        val header = findViewById<ImageView>(R.id.imgHeader)
+        val name = findViewById<TextView>(R.id.tvTitle)
+        val desc = findViewById<TextView>(R.id.tvDesc)
 
-        imageView.setImageResource(imageResource)
-        titleView.text = title
-        textView.text = articleText
+        header.setImageResource(imageResource)
+        name.text = title
+        desc.text = articleText
+
+        val lvList = findViewById<ListView>(R.id.lvList)
+        val playerList = listOf("Goat","Goat1","Goat2","Goat3","Goat4","Goat5")
+
+
+        val adapter = ArrayAdapter(this,android.R.layout.simple_list_item_1, playerList)
+        lvList.adapter = adapter
+
     }
 }

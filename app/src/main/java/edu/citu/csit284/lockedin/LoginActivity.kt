@@ -5,8 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import edu.citu.csit284.lockedin.util.toggle
 
 
 class LoginActivity : Activity() {
@@ -16,6 +18,7 @@ class LoginActivity : Activity() {
         val username = findViewById<EditText>(R.id.username)
         val password = findViewById<EditText>(R.id.password)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
+        val imgPriv = findViewById<ImageView>(R.id.imgPriv)
         btnLogin.setOnClickListener {
             val user = username.text.toString().trim()
             val pass = password.text.toString().trim()
@@ -33,5 +36,6 @@ class LoginActivity : Activity() {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
+        password.toggle(imgPriv)
     }
 }

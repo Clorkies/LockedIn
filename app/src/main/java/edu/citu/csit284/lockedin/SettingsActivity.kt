@@ -38,7 +38,9 @@ class SettingsActivity : Activity() {
         }
         val backBtn: ImageView = findViewById(R.id.backBtn)
         backBtn.setOnClickListener {
-            val intent = Intent(this, ProfileActivity::class.java)
+            val intent = Intent(this, ProfileActivity::class.java).apply {
+                putExtra("caller", "landing")
+            }
             startActivity(intent)
         }
 

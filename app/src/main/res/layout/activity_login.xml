@@ -37,21 +37,35 @@
         android:background="@drawable/settings_background"
         android:padding="18dp"
         />
-
-    <EditText
-        android:id="@+id/password"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/settings_background"
-        android:fontFamily="@font/poppins"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:padding="18dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white" />
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/settings_background"
+            android:fontFamily="@font/poppins"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:padding="18dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white" />
+        <ImageView
+            android:id="@+id/imgPriv"
+            android:layout_marginLeft="-85dp"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/priv_icon"
+            android:alpha="0.5"
+            />
+    </LinearLayout>
+
 
     <Button
         android:layout_marginTop="30dp"
