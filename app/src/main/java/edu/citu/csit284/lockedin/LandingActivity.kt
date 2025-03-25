@@ -14,7 +14,9 @@ class LandingActivity : Activity() {
         setContentView(R.layout.activity_landing)
 
         val btn_profile = findViewById<ImageButton>(R.id.button_profile)
-        btn_profile.setOnClickListener {startActivity(Intent(this, ProfileActivity::class.java)) }
+        btn_profile.setOnClickListener {startActivity(Intent(this, ProfileActivity::class.java)).apply {
+            intent.putExtra("caller", "landing")
+        } }
 
         val btn_games = findViewById<ImageButton>(R.id.button_games)
         btn_games.setOnClickListener {startActivity(Intent(this, GamesActivity::class.java)) }
@@ -23,7 +25,9 @@ class LandingActivity : Activity() {
         btn_live.setOnClickListener {startActivity(Intent(this, LiveActivity::class.java)) }
 
         val btn_explore = findViewById<ImageButton>(R.id.button_explore)
-        btn_explore.setOnClickListener {startActivity(Intent(this, ExploreActivity::class.java)) }
+        btn_explore.setOnClickListener {startActivity(Intent(this, ExploreActivity::class.java)).apply{
+            intent.putExtra("caller", "explore")
+        } }
 
         val listView = findViewById<ListView>(R.id.articleListView)
         val articleList = listOf(
