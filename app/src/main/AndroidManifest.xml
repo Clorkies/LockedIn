@@ -13,6 +13,12 @@
         android:theme="@style/Theme.LockedIn"
         tools:targetApi="31">
         <activity
+            android:name=".TournamentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OngoingTournamentsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ExploreArticleActivity"
             android:exported="false"
             android:theme="@style/Theme.LockedIn" />
@@ -39,8 +45,7 @@
             android:exported="false" />
         <activity
             android:name=".RegisterActivity"
-            android:exported="false"
-            />
+            android:exported="false" />
         <activity
             android:name=".LoginActivity"
             android:exported="true"

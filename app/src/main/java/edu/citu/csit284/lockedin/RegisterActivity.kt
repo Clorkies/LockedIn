@@ -11,6 +11,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import edu.citu.csit284.lockedin.util.toggle
 
 class RegisterActivity : Activity() {
     fun isValidEmail(email: String): Boolean {
@@ -26,6 +27,8 @@ class RegisterActivity : Activity() {
         val email = findViewById<EditText>(R.id.email)
         val password = findViewById<EditText>(R.id.password)
         val confirmPassword = findViewById<EditText>(R.id.confirmpass)
+        val imgPriv = findViewById<ImageView>(R.id.imgPriv)
+        val imgPriv2 = findViewById<ImageView>(R.id.imgPriv2)
         btnBack.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
@@ -50,6 +53,8 @@ class RegisterActivity : Activity() {
                 }
             }
         }
+        password.toggle(imgPriv)
+        confirmPassword.toggle(imgPriv2)
 
     }
 }

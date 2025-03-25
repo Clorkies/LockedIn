@@ -14,7 +14,7 @@ class LandingActivity : Activity() {
         btn_profile.setOnClickListener {startActivity(Intent(this, ProfileActivity::class.java)) }
 
         val btn_games = findViewById<ImageButton>(R.id.button_games)
-        btn_games.setOnClickListener {startActivity(Intent(this, GamesActivity::class.java)) }
+        btn_games.setOnClickListener {startActivity(Intent(this, OngoingTournamentsActivity::class.java)) }
 
         val btn_live = findViewById<ImageButton>(R.id.button_live)
         btn_live.setOnClickListener {startActivity(Intent(this, LiveActivity::class.java)) }
