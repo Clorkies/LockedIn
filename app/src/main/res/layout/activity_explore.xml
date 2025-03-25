@@ -17,13 +17,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingHorizontal="25dp"
+        android:paddingHorizontal="20dp"
         android:gravity="top">
 
         <ImageButton
             android:id="@+id/button_back"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@drawable/btn_back"
             android:scaleType="centerCrop"
             android:layout_gravity="center"/>
@@ -35,15 +35,18 @@
 
         <ImageButton
             android:id="@+id/button_profile"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:background="@drawable/btn_profile"/>
+            android:background="@drawable/btn_profile"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="7dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/icon_outline_user"/>
 
     </LinearLayout>
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="35dp"/>
+        android:layout_height="25dp"/>
 
 
     <ListView
@@ -58,7 +61,7 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="35dp"/>
+        android:layout_height="25dp"/>
 
     <FrameLayout
         android:layout_width="match_parent"

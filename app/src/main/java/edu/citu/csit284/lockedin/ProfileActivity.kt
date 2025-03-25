@@ -17,6 +17,8 @@ class ProfileActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
+        val caller = intent.getStringExtra("caller")
+
         val btn_back = findViewById<ImageButton>(R.id.button_back)
         btn_back.setOnClickListener { startActivity(Intent(this, LandingActivity::class.java)) }
 
