@@ -5,9 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
-import edu.citu.csit284.lockedin.LandingActivity
-import edu.citu.csit284.lockedin.R
+
 
 class LoginActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +27,11 @@ class LoginActivity : Activity() {
             } else {
                 Toast.makeText(this, "Wrong username or password", Toast.LENGTH_SHORT).show()
             }
+        }
+        val tvRegister = findViewById<TextView>(R.id.tvRegister)
+        tvRegister.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
         }
     }
 }

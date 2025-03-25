@@ -8,10 +8,11 @@
     tools:context=".LoginActivity"
     android:orientation="vertical"
     android:background="@color/bg"
-    android:gravity="center">
+    android:gravity="center"
+    android:layout_marginTop="-15dp">
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:src="@drawable/logo"/>
     <TextView
         android:layout_marginTop="15dp"
@@ -21,7 +22,7 @@
         android:textStyle="bold"
         android:textColor="@color/white"
         android:fontFamily="@font/poppins"
-        android:textSize="18dp"/>
+        android:textSize="24dp"/>
     <EditText
         android:id="@+id/username"
         android:layout_marginTop="25dp"
@@ -29,7 +30,7 @@
         android:layout_marginRight="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Username"
+        android:hint="Email"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:fontFamily="@font/poppins"
@@ -53,9 +54,11 @@
         android:textColorHint="@color/white" />
 
     <Button
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:id="@+id/btnLogin"
-        android:layout_width="230dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Login"
         android:fontFamily="@font/poppins"
@@ -64,7 +67,29 @@
         android:textSize="20sp"
         android:background="@drawable/devbutton"
         android:padding="10dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="40dp" />
+        android:layout_gravity="center" />
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Don't have an account?"
+            android:textColor="@color/white"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="16dp"/>
+        <TextView
+            android:id="@+id/tvRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Sign Up"
+            android:textStyle="bold"
+            android:textColor="@color/devYellow"
+            android:fontFamily="@font/poppins"
+            android:textSize="16dp"/>
+    </LinearLayout>
 
 </LinearLayout>
