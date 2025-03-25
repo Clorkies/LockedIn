@@ -1,35 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity"
+    tools:context=".GamesActivity"
     android:background="@color/blue"
-    android:orientation="vertical">
+    >
 
     <Space
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="35dp"/>
 
-    <TextView
-        android:id="@+id/sampleTxt"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Games Page here"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        android:textAlignment="center"/>
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:gravity="top">
 
-    <ImageButton
-        android:id="@+id/button_back"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@drawable/btn_back"
-        android:scaleType="centerCrop"
-        android:layout_marginTop="50dp"
-        android:layout_gravity="center"/>
+        <ImageButton
+            android:id="@+id/button_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/btn_back"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_weight="1"/>
+
+        <ImageButton
+            android:id="@+id/button_profile"
+            android:background="@drawable/btn_profile"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="7dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/icon_outline_user"/>
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="25dp"/>
+
+
+    <ListView
+        android:id="@+id/articleListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="20dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="30dp"
+        />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="25dp"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:src="@drawable/rectangle_rounded_navbar"
+            android:scaleType="fitXY"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingHorizontal="20dp">
+
+            <ImageButton
+                android:id="@+id/button_home"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:src="@drawable/btn_home"
+                android:background="@null"/>
+
+            <ImageButton
+                android:id="@+id/button_games"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:src="@drawable/btn_games_highlighted"
+                android:background="@null"/>
+
+            <ImageButton
+                android:id="@+id/button_live"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:src="@drawable/btn_live"
+                android:background="@null"/>
+
+            <ImageButton
+                android:id="@+id/button_explore"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:src="@drawable/btn_explore"
+                android:background="@null"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
 
 </LinearLayout>
