@@ -92,7 +92,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:src="@drawable/btn_games_highlighted"
+                android:src="@drawable/btn_games"
                 android:background="@null"/>
 
             <ImageButton
@@ -100,7 +100,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:src="@drawable/btn_live"
+                android:src="@drawable/btn_live_highlighted"
                 android:background="@null"/>
 
             <ImageButton

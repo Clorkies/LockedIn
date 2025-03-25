@@ -61,8 +61,8 @@ class OngoingTournamentsActivity : Activity() {
         val btn_home = findViewById<ImageButton>(R.id.button_home)
         btn_home.setOnClickListener {startActivity(Intent(this, LandingActivity::class.java)) }
 
-        val btn_live = findViewById<ImageButton>(R.id.button_live)
-        btn_live.setOnClickListener {startActivity(Intent(this, LiveActivity::class.java)) }
+        val btn_games = findViewById<ImageButton>(R.id.button_games)
+        btn_games.setOnClickListener {startActivity(Intent(this, GamesActivity::class.java)) }
 
         val btn_explore = findViewById<ImageButton>(R.id.button_explore)
         btn_explore.setOnClickListener {startActivity(Intent(this, ExploreActivity::class.java)) }
