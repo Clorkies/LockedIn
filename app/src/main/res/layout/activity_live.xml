@@ -46,22 +46,22 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="25dp"/>
+        android:layout_height="10dp"/>
 
 
     <ListView
-        android:id="@+id/articleListView"
+        android:id="@+id/lvTournaments"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:paddingHorizontal="20dp"
+        android:padding="20dp"
         android:divider="@android:color/transparent"
-        android:dividerHeight="30dp"
+        android:dividerHeight="25dp"
         />
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="25dp"/>
+        android:layout_height="10dp"/>
 
     <FrameLayout
         android:layout_width="match_parent"

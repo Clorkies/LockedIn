@@ -20,6 +20,10 @@
             android:exported="false"
             android:theme="@style/Theme.LockedIn" />
         <activity
+            android:name=".TournamentActivity"
+            android:exported="false"
+            android:theme="@style/Theme.LockedIn" />
+        <activity
             android:name=".ExploreActivity"
             android:exported="false" /> <!-- android:label="@string/app_name" -->
         <!-- android:theme="@style/Theme.LockedIn"> -->

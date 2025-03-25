@@ -3,6 +3,7 @@ package edu.citu.csit284.lockedin
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ListView
 import edu.citu.csit284.lockedin.data.Article
@@ -25,7 +26,7 @@ class LandingActivity : Activity() {
         btn_games.setOnClickListener {startActivity(Intent(this, GamesActivity::class.java)) }
 
         val btn_live = findViewById<ImageButton>(R.id.button_live)
-        btn_live.setOnClickListener {startActivity(Intent(this, OngoingTournamentsActivity::class.java)) }
+        btn_live.setOnClickListener {startActivity(Intent(this, LiveActivity::class.java)) }
 
         val btn_explore = findViewById<ImageButton>(R.id.button_explore)
         btn_explore.setOnClickListener {startActivity(Intent(this, ExploreActivity::class.java)) }
@@ -54,6 +55,11 @@ class LandingActivity : Activity() {
                 )
             }
         )
+
+        val matchDetail = findViewById<FrameLayout>(R.id.ongoingMatch)
+        matchDetail.setOnClickListener {startActivity(Intent(this, MatchDetailsActivity::class.java)).apply {
+            intent.putExtra("caller", "landing")
+        } }
 
     }
 }
