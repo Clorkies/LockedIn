@@ -13,6 +13,9 @@ class LandingActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_landing)
 
+        val btn_landing = findViewById<ImageButton>(R.id.button_home)
+        btn_landing.setOnClickListener {startActivity(Intent(this, LandingActivity::class.java)) }
+
         val btn_profile = findViewById<ImageButton>(R.id.button_profile)
         btn_profile.setOnClickListener {startActivity(Intent(this, ProfileActivity::class.java)).apply {
             intent.putExtra("caller", "landing")
@@ -25,9 +28,7 @@ class LandingActivity : Activity() {
         btn_live.setOnClickListener {startActivity(Intent(this, OngoingTournamentsActivity::class.java)) }
 
         val btn_explore = findViewById<ImageButton>(R.id.button_explore)
-        btn_explore.setOnClickListener {startActivity(Intent(this, ExploreActivity::class.java)).apply{
-            intent.putExtra("caller", "explore")
-        } }
+        btn_explore.setOnClickListener {startActivity(Intent(this, ExploreActivity::class.java)) }
 
         val listView = findViewById<ListView>(R.id.articleListView)
         val articleList = listOf(
@@ -48,6 +49,7 @@ class LandingActivity : Activity() {
                         putExtra("imageResource", it.imgResId)
                         putExtra("title", it.title)
                         putExtra("articleText", it.articleText)
+                        putExtra("caller", "landing")
                     }
                 )
             }

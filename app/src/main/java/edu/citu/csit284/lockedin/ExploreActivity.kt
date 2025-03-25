@@ -13,6 +13,9 @@ class ExploreActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_explore)
 
+        val btn_landing = findViewById<ImageButton>(R.id.button_home)
+        btn_landing.setOnClickListener {startActivity(Intent(this, LandingActivity::class.java)) }
+
         val btn_profile = findViewById<ImageButton>(R.id.button_profile)
         btn_profile.setOnClickListener {startActivity(Intent(this, ProfileActivity::class.java)).apply {
             intent.putExtra("caller", "explore")
