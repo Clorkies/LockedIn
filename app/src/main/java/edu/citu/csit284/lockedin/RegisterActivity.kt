@@ -18,6 +18,12 @@ class RegisterActivity : Activity() {
         val regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
         return email.matches(Regex(regex))
     }
+    fun isValidPass(pass : String) : Boolean {
+        if (pass.length < 4) return false
+        val hasUppercase = pass.any { it.isUpperCase() }
+        val hasSymbol = pass.any { !it.isLetterOrDigit() }
+        return hasUppercase && hasSymbol
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
@@ -43,12 +49,16 @@ class RegisterActivity : Activity() {
                 if(!isValidEmail(em)){
                     Toast.makeText(this,"Please enter a valid email!",Toast.LENGTH_SHORT).show()
                 }else{
-                    if(pass != confpass){
-                        Toast.makeText(this,"Passwords do not match!",Toast.LENGTH_SHORT).show()
+                    if(!isValidPass(pass)){
+                        Toast.makeText(this,"Passwords must have length 4+, 1 capital, and 1 symbol!",Toast.LENGTH_SHORT).show()
                     }else{
-                        Toast.makeText(this,"Registered Successfully!",Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this, LoginActivity::class.java)
-                        startActivity(intent)
+                        if(pass != confpass){
+                            Toast.makeText(this,"Passwords do not match!",Toast.LENGTH_SHORT).show()
+                        }else{
+                            Toast.makeText(this,"Registered Successfully!",Toast.LENGTH_SHORT).show()
+                            val intent = Intent(this, LoginActivity::class.java)
+                            startActivity(intent)
+                        }
                     }
                 }
             }

@@ -64,18 +64,34 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
-        android:layout_gravity="left"
-        android:layout_marginLeft="30dp"
+    <LinearLayout
         android:layout_marginTop="25dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_medium"
-        android:text="Your Email"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:textSize="16dp"
-        />
+        android:orientation="horizontal">
+        <TextView
+            android:layout_gravity="left"
+            android:layout_marginLeft="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Your Email"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            />
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="(e.g example@gmail.com)"
+            android:textColor="@color/fadedWhite"
+            android:textStyle="bold"
+            android:textSize="12dp"
+            />
+    </LinearLayout>
     <EditText
         android:id="@+id/email"
         android:layout_marginHorizontal="25dp"
@@ -90,19 +106,35 @@
         android:padding="16dp"
         android:maxLines="1"
         />
-
-    <TextView
-        android:layout_gravity="left"
-        android:layout_marginLeft="30dp"
+    <LinearLayout
         android:layout_marginTop="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_medium"
-        android:text="Password"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:textSize="16dp"
-        />
+        android:orientation="horizontal">
+        <TextView
+            android:layout_gravity="left"
+            android:layout_marginLeft="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Password"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            />
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="(4+ characters, 1 Capital, 1 Symbol)"
+            android:textColor="@color/fadedWhite"
+            android:textStyle="bold"
+            android:textSize="12dp"
+            />
+    </LinearLayout>
+
     <LinearLayout
         android:layout_margin="0dp"
         android:layout_width="match_parent"
