@@ -38,11 +38,6 @@
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp">
 
-            <ImageView
-                android:layout_width="90dp"
-                android:layout_height="90dp"
-                android:src="@drawable/logo"/>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -95,6 +90,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Enter your email"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:fontFamily="@font/poppins"
+                android:background="@drawable/settings_background"
+                android:padding="16dp"
+                android:maxLines="1"
+                android:singleLine="true"
+                />
+            <TextView
+                android:layout_gravity="left"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Your Display Name"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                />
+            <EditText
+                android:id="@+id/displayName"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter your display name"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:fontFamily="@font/poppins"

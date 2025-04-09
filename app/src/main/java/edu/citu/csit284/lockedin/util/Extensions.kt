@@ -1,8 +1,10 @@
 package edu.citu.csit284.lockedin.util
 
+import android.app.Activity
 import android.text.InputType
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 
 fun EditText.toggle(icon: ImageView) {
     icon.setOnClickListener {
@@ -13,4 +15,7 @@ fun EditText.toggle(icon: ImageView) {
         }
         this.setSelection(this.text.length)
     }
+}
+fun Activity.toast(msg : String) {
+    Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
 }
