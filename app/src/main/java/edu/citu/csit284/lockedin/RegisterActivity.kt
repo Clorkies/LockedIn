@@ -3,7 +3,6 @@ package edu.citu.csit284.lockedin
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,20 +10,17 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.util.toast
 import edu.citu.csit284.lockedin.util.toggle
 
 class RegisterActivity : Activity() {
-    fun isValidEmail(email: String): Boolean {
+    private val users = Firebase.firestore.collection("users")
+    private fun isValidEmail(email: String): Boolean {
         val regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
+
         return email.matches(Regex(regex))
     }
 
@@ -107,24 +103,35 @@ class RegisterActivity : Activity() {
                 if(!isValidEmail(em)){
                     toast("Please enter a valid email!")
                 }else{
+
                     if(pass != confpass){
                         toast("Passwords do not match!")
                     }else{
-                        val user = hashMapOf(
-                            "email" to em,
-                            "username" to username,
-                            "password" to pass
-                        )
-                        Firebase.firestore.collection("users")
-                            .add(user)
-                            .addOnSuccessListener {
-                                toast("Registered Successfully!")
+                        users
+                            .whereEqualTo("email",em)
+                            .get()
+                            .addOnSuccessListener { duplicates ->
+                                if(!duplicates.isEmpty){
+                                    toast("Email already exists! Please try another")
+                                }else{
+                                    val user = hashMapOf(
+                                        "email" to em,
+                                        "username" to username,
+                                        "password" to pass
+                                    )
+                                    users
+                                        .add(user)
+                                        .addOnSuccessListener {
+                                            toast("Registered Successfully!")
+                                            val intent = Intent(this, LoginActivity::class.java)
+                                            startActivity(intent)
+                                        }
+                                        .addOnFailureListener{
+                                            toast("Failed to register")
+                                        }
+
+                                }
                             }
-                            .addOnFailureListener{
-                                toast("Failed to register")
-                            }
-                        val intent = Intent(this, LoginActivity::class.java)
-                        startActivity(intent)
                     }
                 }
             }
