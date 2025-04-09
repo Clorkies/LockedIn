@@ -51,12 +51,14 @@ class RegisterActivity : Activity() {
                 var metRules = 0
 
                 val isLengthValid = pass.length >= 8
+                val isGreaterThanMin = pass.length > 8
                 val hasUppercase = pass.any { it.isUpperCase() }
                 val hasNumber = pass.any { it.isDigit() }
 
                 metRules += updateRuleStatus(tvRuleLength, isLengthValid)
                 metRules += updateRuleStatus(tvRuleUppercase, hasUppercase)
                 metRules += updateRuleStatus(tvRuleNumber, hasNumber)
+                metRules += if (isGreaterThanMin) 1 else 0
 
                 when (metRules) {
                     0, 1 -> {
@@ -68,12 +70,20 @@ class RegisterActivity : Activity() {
                     2 -> {
                         tvPasswordStrength.text = "Good"
                         tvPasswordStrength.setTextColor(ContextCompat.getColor(this@RegisterActivity, R.color.devYellow))
-                        btnRegister.isEnabled = true
-                        btnRegister.setBackgroundResource(R.drawable.btn_register)
+                        btnRegister.isEnabled = isLengthValid
+                        if (isLengthValid) btnRegister.setBackgroundResource(R.drawable.btn_register)
                     }
                     3 -> {
                         tvPasswordStrength.text = "Strong"
                         tvPasswordStrength.setTextColor(ContextCompat.getColor(this@RegisterActivity, R.color.teal_700))
+                        btnRegister.isEnabled = isLengthValid
+                        if (isLengthValid) btnRegister.setBackgroundResource(R.drawable.btn_register)
+                    }
+                    4 -> {
+                        tvPasswordStrength.text = "Very Strong"
+                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@RegisterActivity, R.color.purple_500))
+                        btnRegister.isEnabled = isGreaterThanMin
+                        if (isGreaterThanMin) btnRegister.setBackgroundResource(R.drawable.btn_register)
                     }
                 }
             }
