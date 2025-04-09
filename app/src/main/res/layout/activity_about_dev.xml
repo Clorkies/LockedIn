@@ -1,449 +1,282 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AboutDevActivity"
-    android:orientation="vertical"
-    android:background="@color/blue"
-    android:paddingHorizontal="20dp"
     >
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="35dp"/>
+    <ImageView
 
+        android:id="@+id/imgDev"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/imgdev1square"
+        android:adjustViewBounds="true"
+        android:layout_marginBottom="200dp"
+       />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:background="@drawable/vignette_btm"/>
+    <ImageButton
+        android:id="@+id/button_back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/btn_back_black"
+        android:scaleType="centerCrop"
+        android:layout_marginEnd="10dp"
+        android:layout_margin="25dp"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        >
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="450dp" />
 
-        <ImageButton
-            android:id="@+id/button_back"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/btn_back"
-            android:scaleType="centerCrop"
-            android:layout_marginEnd="10dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="About us"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:layout_marginLeft="115dp"
-            />
-
-
-    </LinearLayout>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:paddingTop="25dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center">
+            android:background="@drawable/rectangle_rounded_bg_transparent"
+            >
 
             <LinearLayout
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rectangle_rounded"
-                android:paddingVertical="20dp"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="130dp"
-                    android:layout_height="130dp"
-                    android:src="@drawable/img_dev1"/>
-
-                <LinearLayout
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginBottom="10dp"
-                        android:text="Clark Modequillo"
-                        android:textColor="@color/grey"
-                        android:textSize="25sp"
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-
-                <LinearLayout
+                    android:text="Clark Modequillo"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="32sp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:layout_marginLeft="25dp"
+                    />
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="vertical"
-                    android:layout_gravity="left"
-                    android:paddingHorizontal="25dp">
-
-                    <TextView
-                        android:layout_marginBottom="-5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Program and Year"
-                        android:textSize="12sp"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="BS Computer Science 2"
-                        android:textColor="@color/grey"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="vertical"
-                    android:layout_gravity="left"
-                    android:paddingHorizontal="25dp">
-
-                    <TextView
-                        android:layout_marginBottom="-5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Hobbies"
-                        android:textSize="12sp"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Loves to do graphic designing"
-                        android:textColor="@color/grey"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="vertical"
-                    android:layout_gravity="left"
-                    android:paddingHorizontal="25dp">
-
-                    <TextView
-                        android:layout_marginBottom="-5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Fun fact"
-                        android:textSize="12sp"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Has a beautiful girlfriend"
-                        android:textColor="@color/grey"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="vertical"
-                    android:layout_gravity="left"
-                    android:paddingHorizontal="25dp">
-
-                    <TextView
-                        android:layout_marginBottom="-5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Life motto"
-                        android:textSize="12sp"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Carpe diem"
-                        android:textColor="@color/grey"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-
+                    android:text="20"
+                    android:textColor="#f92d78"
+                    android:textSize="32sp"
+                    android:fontFamily="@font/poppins"
+                    android:layout_marginLeft="15dp"
+                    />
             </LinearLayout>
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="35dp"/>
-
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rectangle_rounded"
-                android:paddingVertical="20dp"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="130dp"
-                    android:layout_height="130dp"
-                    android:src="@drawable/img_dev2"/>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginBottom="10dp"
-                        android:text="Jervin Milleza"
-                        android:textColor="@color/grey"
-                        android:textSize="25sp"
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="vertical"
-                    android:layout_gravity="left"
-                    android:paddingHorizontal="25dp">
-
-                    <TextView
-                        android:layout_marginBottom="-5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Program and Year"
-                        android:textSize="12sp"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="BS Computer Science 2"
-                        android:textColor="@color/grey"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="vertical"
-                    android:layout_gravity="left"
-                    android:paddingHorizontal="25dp">
-
-                    <TextView
-                        android:layout_marginBottom="-5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Hobbies"
-                        android:textSize="12sp"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Loves to play video games"
-                        android:textColor="@color/grey"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="vertical"
-                    android:layout_gravity="left"
-                    android:paddingHorizontal="25dp">
-
-                    <TextView
-                        android:layout_marginBottom="-5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Fun fact"
-                        android:textSize="12sp"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Single. 6'4. Nonchalant"
-                        android:textColor="@color/grey"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="vertical"
-                    android:layout_gravity="left"
-                    android:paddingHorizontal="25dp">
-
-                    <TextView
-                        android:layout_marginBottom="-5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Life motto"
-                        android:textSize="12sp"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Try and try until you die"
-                        android:textColor="@color/grey"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="35dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rectangle_rounded"
-                android:gravity="left"
                 android:orientation="vertical"
-                android:padding="25dp">
-                <LinearLayout
+                android:layout_gravity="left"
+                android:paddingHorizontal="25dp">
+
+                <TextView
+                    android:layout_marginBottom="-5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:text="Program and Year"
+                    android:textSize="14sp"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/poppins"
+                    />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginBottom="10dp"
-                        android:text="Developer's Mission"
-                        android:textColor="@color/grey"
-                        android:textSize="25sp"
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="vertical"
-                    android:layout_gravity="left">
-
-                    <TextView
-                        android:layout_marginBottom="-5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/mission"
-                        android:textStyle="bold"
-                        android:textSize="12sp"
-                        />
-
-                </LinearLayout>
-
-
+                    android:gravity="center"
+                    android:text="BS Computer Science 2"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins"
+                    />
             </LinearLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="35dp"/>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rectangle_rounded"
-                android:gravity="left"
                 android:orientation="vertical"
-                android:padding="25dp">
-                <LinearLayout
+                android:layout_gravity="left"
+                android:paddingHorizontal="25dp">
+
+                <TextView
+                    android:layout_marginBottom="-5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:text="Hobbies"
+                    android:textSize="14sp"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/poppins"
+                    />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginBottom="10dp"
-                        android:text="Developer's Vision"
-                        android:textColor="@color/grey"
-                        android:textSize="25sp"
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/hobby"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="vertical"
-                    android:layout_gravity="left">
-
-                    <TextView
-                        android:layout_marginBottom="-5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/vision"
-                        android:textStyle="bold"
-                        android:textSize="12sp"
-                        />
-
-                </LinearLayout>
-
-
+                    android:gravity="center"
+                    android:text="Loves to do Graphic Designing"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins"
+                    />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="left"
+                android:paddingHorizontal="25dp"
+                android:layout_marginBottom="35dp"
+                >
+
+                <TextView
+                    android:layout_marginBottom="-5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fun Fact"
+                    android:textSize="14sp"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/poppins"
+                    />
+
+                <TextView
+                    android:id="@+id/fact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:gravity="center"
+                    android:text="Has a beautiful girlfriend"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+        <!-- Bottom Sheet -->
+        <LinearLayout
+            android:layout_marginTop="-25dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="-25dp"
+            android:background="@drawable/rectangle_rounded_bg_dark"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="25dp"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:text="Meet the Developers:"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+
+            <LinearLayout
+                android:layout_marginTop="-15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:id="@+id/clarkFrame"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp">
+
+                        <ImageView
+                            android:id="@+id/Clark"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/circle_frame"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/img_dev1" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/clarkName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:gravity="center"
+                        android:text="Clark"
+                        android:textColor="@color/yellow"
+                        android:textSize="16sp" />
+                </LinearLayout>
+                <Space
+                    android:layout_width="50dp"
+                    android:layout_height="0dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:id="@+id/jervFrame"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp">
+
+                        <ImageView
+                            android:id="@+id/Jervin"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/circle_frame"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/img_dev2" />
+                    </FrameLayout>
+
+
+                    <TextView
+                        android:id="@+id/jervName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:gravity="center"
+                        android:text="Jervin"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </ScrollView>
+
+    </LinearLayout>
 
 
-</LinearLayout>
+
+</FrameLayout>
