@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "849488437178",
+    "project_id": "lockedin-f2-clorki-jermochi",
+    "storage_bucket": "lockedin-f2-clorki-jermochi.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:849488437178:android:f2b41156f24d78edc14783",
+        "android_client_info": {
+          "package_name": "edu.citu.csit284.lockedin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCesqAehv-sSnkNhxqaeXLgxcg37Stsftk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
