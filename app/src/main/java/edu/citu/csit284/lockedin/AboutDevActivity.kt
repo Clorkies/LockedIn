@@ -1,15 +1,16 @@
 package edu.citu.csit284.lockedin
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 
 class AboutDevActivity : Activity() {
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about_dev)
@@ -34,9 +35,9 @@ class AboutDevActivity : Activity() {
 
         jervImg.setOnClickListener {
             imgDev.setImageResource(R.drawable.imgdev2square)
-            name.setText("Jervin Milleza")
-            hobby.setText("Trades casually")
-            fact.setText("6'4 and nonchalant")
+            name.text = "Jervin Milleza"
+            hobby.text = "Trades casually"
+            fact.text = "6'4 and nonchalant"
             clarkName.setTextColor(ContextCompat.getColor(this, R.color.white))
             jervName.setTextColor(ContextCompat.getColor(this, R.color.yellow))
             jervImg.animate().scaleX(1.2f).scaleY(1.2f).setDuration(200).start()
@@ -44,18 +45,13 @@ class AboutDevActivity : Activity() {
         }
         clarkImg.setOnClickListener {
             imgDev.setImageResource(R.drawable.imgdev1square)
-            name.setText(origName)
-            hobby.setText(origHobby)
-            fact.setText(origFact)
+            name.text = origName
+            hobby.text = origHobby
+            fact.text = origFact
             clarkName.setTextColor(ContextCompat.getColor(this, R.color.yellow))
             jervName.setTextColor(ContextCompat.getColor(this, R.color.white))
             clarkImg.animate().scaleX(1.2f).scaleY(1.2f).setDuration(200).start()
             jervImg.animate().scaleX(1.0f).scaleY(1.0f).setDuration(200).start()
         }
-
-
-
-
-
     }
 }
