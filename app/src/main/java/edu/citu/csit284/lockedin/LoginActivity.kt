@@ -3,9 +3,11 @@ package edu.citu.csit284.lockedin
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.animation.DecelerateInterpolator
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import edu.citu.csit284.lockedin.util.toggle
@@ -15,6 +17,45 @@ class LoginActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        val loginBottomSheet = findViewById<LinearLayout>(R.id.login_bottom_sheet)
+        val logo = findViewById<ImageView>(R.id.logo)
+        val welcomeText = findViewById<TextView>(R.id.welcome)
+
+        loginBottomSheet.translationY = 600f
+        logo.translationY = -50f
+        logo.alpha = 0f
+        welcomeText.translationY = -30f
+        welcomeText.alpha = 0f
+
+        loginBottomSheet.post {
+            loginBottomSheet.animate()
+                .translationY(120f)
+                .setDuration(850)
+                .setInterpolator(DecelerateInterpolator())
+                .start()
+        }
+
+        logo.post {
+            logo.animate()
+                .translationY(0f)
+                .alpha(1f)
+                .setDuration(800)
+                .setStartDelay(200)
+                .setInterpolator(DecelerateInterpolator())
+                .start()
+        }
+
+        welcomeText.post {
+            welcomeText.animate()
+                .translationY(0f)
+                .alpha(1f)
+                .setDuration(800)
+                .setStartDelay(400)
+                .setInterpolator(DecelerateInterpolator())
+                .start()
+        }
+
         val username = findViewById<EditText>(R.id.username)
         val password = findViewById<EditText>(R.id.password)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
@@ -25,7 +66,7 @@ class LoginActivity : Activity() {
 
             if (user == "admin" && pass == "adminpass" ||
                 user == "1" && pass == "1"
-                ) {
+            ) {
                 Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)

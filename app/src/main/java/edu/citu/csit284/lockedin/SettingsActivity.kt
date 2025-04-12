@@ -32,13 +32,10 @@ class SettingsActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-        val btnDeveloper = findViewById<Button>(R.id.btnDeveloper)
-        btnDeveloper.setOnClickListener {
-            val intent = Intent(this, AboutDevActivity::class.java)
-            startActivity(intent)
-        }
 
-        findViewById<ImageView>(R.id.backBtn).setOnClickListener { findNavController(R.id.bottom_nav).navigate(R.id.gamesFragment)}
+        findViewById<ImageView>(R.id.backBtn).setOnClickListener { startActivity(Intent(this, ProfileActivity::class.java)) ; finish()}
+
+        findViewById<Button>(R.id.btnDeveloper).setOnClickListener { startActivity(Intent(this, AboutDevActivity::class.java)) }
 
         val btnLogout = findViewById<Button>(R.id.btnLogout)
         btnLogout.setOnClickListener {

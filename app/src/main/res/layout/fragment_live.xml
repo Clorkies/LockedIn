@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue"
+    android:paddingBottom="18dp"
     >
 
     <Space
@@ -45,17 +45,16 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="10dp"/>
-
+        android:layout_height="20dp"/>
 
     <ListView
         android:id="@+id/lvTournaments"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="20dp"
+        android:paddingHorizontal="20dp"
         android:divider="@android:color/transparent"
-        android:dividerHeight="25dp"
+        android:dividerHeight="30dp"
         />
 
 </LinearLayout>

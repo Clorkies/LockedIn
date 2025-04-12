@@ -17,10 +17,10 @@ class ProfileActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
-        findViewById<ImageButton>(R.id.button_back).setOnClickListener { finish() }
+        findViewById<ImageButton>(R.id.button_back).setOnClickListener { finish(); }
 
         val btn_settings = findViewById<ImageButton>(R.id.button_settings)
-        btn_settings.setOnClickListener { startActivity(Intent(this, SettingsActivity::class.java)) }
+        btn_settings.setOnClickListener { startActivity(Intent(this, SettingsActivity::class.java)); finish(); }
 
         val btn_logout = findViewById<Button>(R.id.button_logout)
         btn_logout.setOnClickListener {
