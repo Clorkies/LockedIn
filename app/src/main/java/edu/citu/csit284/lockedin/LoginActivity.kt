@@ -10,10 +10,14 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import edu.citu.csit284.lockedin.util.toast
 import edu.citu.csit284.lockedin.util.toggle
 
 
 class LoginActivity : Activity() {
+    private val users = Firebase.firestore.collection("users")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -56,22 +60,37 @@ class LoginActivity : Activity() {
                 .start()
         }
 
-        val username = findViewById<EditText>(R.id.username)
+        val email = findViewById<EditText>(R.id.email)
         val password = findViewById<EditText>(R.id.password)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
         val imgPriv = findViewById<ImageView>(R.id.imgPriv)
         btnLogin.setOnClickListener {
-            val user = username.text.toString().trim()
+            val mail = email.text.toString().trim()
             val pass = password.text.toString().trim()
 
-            if (user == "admin" && pass == "adminpass" ||
-                user == "1" && pass == "1"
-            ) {
-                Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-            } else {
-                Toast.makeText(this, "Wrong username or password", Toast.LENGTH_SHORT).show()
+            if(mail.isEmpty() || pass.isEmpty()){
+                toast("Please fill out all fields!")
+            } else if ( mail == "admin" && pass == "adminpass") {
+                debugLogin()
+            } else{
+
+                users
+                    .whereEqualTo("email",mail)
+                    .whereEqualTo("password",pass)
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        if(!documents.isEmpty){
+                            for (document in documents) {
+                                val username = document.getString("username")
+                                toast("Welcome, ${username ?: "!"}")
+                            }
+                            val intent = Intent(this, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            toast("Wrong email or password!")
+                        }
+                    }
             }
         }
         val tvRegister = findViewById<TextView>(R.id.tvRegister)
@@ -80,5 +99,13 @@ class LoginActivity : Activity() {
             startActivity(intent)
         }
         password.toggle(imgPriv)
+    }
+
+    // For debugging purposes
+    fun debugLogin() {
+        toast("Welcome, admin!")
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

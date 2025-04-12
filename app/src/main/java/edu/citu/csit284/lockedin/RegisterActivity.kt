@@ -10,13 +10,18 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
+
 import androidx.core.content.ContextCompat
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import edu.citu.csit284.lockedin.util.toast
 import edu.citu.csit284.lockedin.util.toggle
 
 class RegisterActivity : Activity() {
-    fun isValidEmail(email: String): Boolean {
+    private val users = Firebase.firestore.collection("users")
+    private fun isValidEmail(email: String): Boolean {
         val regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
+
         return email.matches(Regex(regex))
     }
 
@@ -27,6 +32,7 @@ class RegisterActivity : Activity() {
         val btnBack = findViewById<ImageView>(R.id.backBtn)
         val btnRegister = findViewById<Button>(R.id.btnRegister)
         val email = findViewById<EditText>(R.id.email)
+        val displayName = findViewById<EditText>(R.id.displayName)
         val password = findViewById<EditText>(R.id.password)
         val confirmPassword = findViewById<EditText>(R.id.confirmpass)
         val imgPriv = findViewById<ImageView>(R.id.imgPriv)
@@ -101,18 +107,42 @@ class RegisterActivity : Activity() {
             val em = email.text.toString()
             val pass = password.text.toString()
             val confpass = confirmPassword.text.toString()
-            if(em == "" || pass == "" || confpass == ""){
-                Toast.makeText(this,"Please fill out all fields!",Toast.LENGTH_SHORT).show()
+            val username = displayName.text.toString()
+            if(em == "" || pass == "" || confpass == "" || username == ""){
+                toast("Please fill out all fields!")
             }else{
                 if(!isValidEmail(em)){
-                    Toast.makeText(this,"Please enter a valid email!",Toast.LENGTH_SHORT).show()
+                    toast("Please enter a valid email!")
                 }else{
+
                     if(pass != confpass){
-                        Toast.makeText(this,"Passwords do not match!",Toast.LENGTH_SHORT).show()
+                        toast("Passwords do not match!")
                     }else{
-                        Toast.makeText(this,"Registered Successfully!",Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this, LoginActivity::class.java)
-                        startActivity(intent)
+                        users
+                            .whereEqualTo("email",em)
+                            .get()
+                            .addOnSuccessListener { duplicates ->
+                                if(!duplicates.isEmpty){
+                                    toast("Email already exists! Please try another")
+                                }else{
+                                    val user = hashMapOf(
+                                        "email" to em,
+                                        "username" to username,
+                                        "password" to pass
+                                    )
+                                    users
+                                        .add(user)
+                                        .addOnSuccessListener {
+                                            toast("Registered Successfully!")
+                                            val intent = Intent(this, LoginActivity::class.java)
+                                            startActivity(intent)
+                                        }
+                                        .addOnFailureListener{
+                                            toast("Failed to register")
+                                        }
+
+                                }
+                            }
                     }
                 }
             }
