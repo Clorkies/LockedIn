@@ -1,0 +1,6 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- When checked, use NO tint so your highlighted icons show through -->
+    <item android:state_checked="true" android:color="#00000000" />
+    <!-- When not checked, use a color that works well with your regular icons -->
+    <item android:color="@color/bg" />  <!-- or whatever color fits your design -->
+</selector>

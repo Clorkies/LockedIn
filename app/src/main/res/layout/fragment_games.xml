@@ -5,7 +5,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GamesActivity"
     android:background="@color/blue"
     >
 
@@ -763,66 +762,5 @@
         </ScrollView>
 
     </LinearLayout>
-
-
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="25dp"/>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:src="@drawable/rectangle_rounded_navbar"
-            android:scaleType="fitXY"
-            />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:paddingHorizontal="20dp">
-
-            <ImageButton
-                android:id="@+id/button_home"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:src="@drawable/btn_home"
-                android:background="@null"/>
-
-            <ImageButton
-                android:id="@+id/button_games"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:src="@drawable/btn_games_highlighted"
-                android:background="@null"/>
-
-            <ImageButton
-                android:id="@+id/button_live"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:src="@drawable/btn_live"
-                android:background="@null"/>
-
-            <ImageButton
-                android:id="@+id/button_explore"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:src="@drawable/btn_explore"
-                android:background="@null"/>
-
-        </LinearLayout>
-
-    </FrameLayout>
 
 </LinearLayout>

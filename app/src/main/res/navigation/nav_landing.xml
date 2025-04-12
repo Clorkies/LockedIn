@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_landing"
+    app:startDestination="@id/landingFragment">
+
+    <fragment
+        android:id="@+id/exploreFragment"
+        android:name="edu.citu.csit284.lockedin.fragments.ExploreFragment"
+        android:label="fragment_explore"
+        tools:layout="@layout/fragment_explore" />
+    <fragment
+        android:id="@+id/gamesFragment"
+        android:name="edu.citu.csit284.lockedin.fragments.GamesFragment"
+        android:label="fragment_games"
+        tools:layout="@layout/fragment_games" />
+    <fragment
+        android:id="@+id/liveFragment"
+        android:name="edu.citu.csit284.lockedin.fragments.LiveFragment"
+        android:label="fragment_live"
+        tools:layout="@layout/fragment_live" />
+    <fragment
+        android:id="@+id/landingFragment"
+        android:name="edu.citu.csit284.lockedin.fragments.LandingFragment"
+        android:label="fragment_landing"
+        tools:layout="@layout/fragment_landing" />
+</navigation>

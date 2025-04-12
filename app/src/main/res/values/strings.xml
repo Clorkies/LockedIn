@@ -78,5 +78,6 @@
     <string name="mission">
     To provide esports fans with real-time, reliable, and engaging news coverage, while celebrating the diversity of gaming communities and inspiring the next generation of esports enthusiasts.
     </string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

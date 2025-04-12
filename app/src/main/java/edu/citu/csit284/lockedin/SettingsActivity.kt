@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
+import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class SettingsActivity : Activity() {
@@ -36,13 +37,8 @@ class SettingsActivity : Activity() {
             val intent = Intent(this, AboutDevActivity::class.java)
             startActivity(intent)
         }
-        val backBtn: ImageView = findViewById(R.id.backBtn)
-        backBtn.setOnClickListener {
-            val intent = Intent(this, ProfileActivity::class.java).apply {
-                putExtra("caller", "landing")
-            }
-            startActivity(intent)
-        }
+
+        findViewById<ImageView>(R.id.backBtn).setOnClickListener { findNavController(R.id.bottom_nav).navigate(R.id.gamesFragment)}
 
         val btnLogout = findViewById<Button>(R.id.btnLogout)
         btnLogout.setOnClickListener {
