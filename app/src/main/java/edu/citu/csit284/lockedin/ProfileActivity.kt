@@ -1,5 +1,6 @@
 package edu.citu.csit284.lockedin
 
+import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -13,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.widget.Button
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
@@ -36,6 +38,7 @@ class ProfileActivity : Activity() {
         val editList  = listOf(name,bio,pass)
         val userInfo = sharedPref.getString("username","")
         val imgpfp = findViewById<ImageView>(R.id.pfp)
+
         var pfp : Int
         users
             .whereEqualTo("username",userInfo)
@@ -45,13 +48,28 @@ class ProfileActivity : Activity() {
                     val document = documents.documents[0]
                     pfp = document.getLong("pfpID")?.toInt() ?: 2
                     when (pfp) {
-                        1 -> imgpfp.setImageResource(R.drawable.red_pfp)
-                        2 -> imgpfp.setImageResource(R.drawable.default_pfp)
-                        3 -> imgpfp.setImageResource(R.drawable.green_pfp)
-                        4 -> imgpfp.setImageResource(R.drawable.blue_pfp)
+                        1 -> {
+                            imgpfp.setImageResource(R.drawable.red_pfp)
+                            name.setTextColor(ContextCompat.getColor(this,R.color.red))
+                        }
+                        2 -> {
+                            imgpfp.setImageResource(R.drawable.default_pfp)
+                            name.setTextColor(ContextCompat.getColor(this,R.color.yellow))
+                        }
+                        3 -> {
+                            imgpfp.setImageResource(R.drawable.green_pfp)
+                            name.setTextColor(ContextCompat.getColor(this,R.color.green))
+                        }
+                        4 -> {
+                            imgpfp.setImageResource(R.drawable.blue_pfp)
+                            name.setTextColor(ContextCompat.getColor(this,R.color.pfpblue))
+                        }
                     }
                 }
             }
+        val fadeIn = ObjectAnimator.ofFloat(imgpfp, "alpha", 0f, 1f)
+        fadeIn.duration = 600
+        fadeIn.start()
         imgpfp.setOnClickListener {
             val dialog = BottomSheetDialog(this)
             val view = layoutInflater.inflate(R.layout.profile_picker, null)
@@ -65,24 +83,28 @@ class ProfileActivity : Activity() {
             option1.setOnClickListener {
                 imgpfp.setImageResource(R.drawable.red_pfp)
                 pfp = 1
+                name.setTextColor(ContextCompat.getColor(this,R.color.red))
                 updatePFP(em,pfp)
                 dialog.dismiss()
             }
             option2.setOnClickListener {
                 imgpfp.setImageResource(R.drawable.default_pfp)
                 pfp = 2
+                name.setTextColor(ContextCompat.getColor(this,R.color.yellow))
                 updatePFP(em,pfp)
                 dialog.dismiss()
             }
             option3.setOnClickListener {
                 imgpfp.setImageResource(R.drawable.green_pfp)
                 pfp = 3
+                name.setTextColor(ContextCompat.getColor(this,R.color.green))
                 updatePFP(em,pfp)
                 dialog.dismiss()
             }
             option4.setOnClickListener {
                 imgpfp.setImageResource(R.drawable.blue_pfp)
                 pfp = 4
+                name.setTextColor(ContextCompat.getColor(this,R.color.pfpblue))
                 updatePFP(em,pfp)
                 dialog.dismiss()
             }
