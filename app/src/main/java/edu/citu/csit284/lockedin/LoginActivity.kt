@@ -14,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import edu.citu.csit284.lockedin.splash.LoginSplashScreen
 import edu.citu.csit284.lockedin.util.toast
 import edu.citu.csit284.lockedin.util.toggle
 
@@ -25,7 +26,6 @@ class LoginActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         val sharedPref: SharedPreferences = getSharedPreferences("User", MODE_PRIVATE)
-        val savedUsername = sharedPref.getString("username", "")
         val isRemembered = sharedPref.getBoolean("remember", false)
 
 
@@ -89,17 +89,15 @@ class LoginActivity : Activity() {
                     .get()
                     .addOnSuccessListener { documents ->
                         if(!documents.isEmpty){
-                            for (document in documents) {
-                                val username = document.getString("username")
-                                toast("Welcome, ${username ?: "!"}")
-                            }
+                            val editor = sharedPref.edit()
                             if (checkBox.isChecked) {
-                                val editor = sharedPref.edit()
                                 editor.putString("username", user)
                                 editor.putBoolean("remember", true)
                                 editor.apply()
                             } else {
-                                sharedPref.edit().clear().apply()
+                                editor.putString("username", user)
+                                editor.putBoolean("remember", false)
+                                editor.apply()
                             }
                             goNext()
                         }
@@ -114,7 +112,7 @@ class LoginActivity : Activity() {
         password.toggle(imgPriv)
     }
     private fun goNext(){
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, LoginSplashScreen::class.java)
         startActivity(intent)
         finish()
     }

@@ -12,6 +12,7 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.MotionEvent
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
@@ -36,10 +37,10 @@ class ProfileActivity : Activity() {
         pass.toggle(imgPriv)
         val sharedPref = getSharedPreferences("User", MODE_PRIVATE)
         val editList  = listOf(name,bio,pass)
-        val userInfo = sharedPref.getString("username","")
         val imgpfp = findViewById<ImageView>(R.id.pfp)
-
         var pfp : Int
+
+        val userInfo = sharedPref.getString("username","")
         users
             .whereEqualTo("username",userInfo)
             .get()
@@ -67,9 +68,7 @@ class ProfileActivity : Activity() {
                     }
                 }
             }
-        val fadeIn = ObjectAnimator.ofFloat(imgpfp, "alpha", 0f, 1f)
-        fadeIn.duration = 600
-        fadeIn.start()
+
         imgpfp.setOnClickListener {
             val dialog = BottomSheetDialog(this)
             val view = layoutInflater.inflate(R.layout.profile_picker, null)
