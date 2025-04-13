@@ -13,7 +13,6 @@ import edu.citu.csit284.lockedin.data.Article
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
-import android.net.Uri
 
 class ArticleAdapter(
     private val context: Context,

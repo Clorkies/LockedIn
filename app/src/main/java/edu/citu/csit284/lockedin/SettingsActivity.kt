@@ -10,7 +10,6 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
-import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class SettingsActivity : Activity() {

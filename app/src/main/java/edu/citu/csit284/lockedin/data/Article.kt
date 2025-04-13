@@ -4,6 +4,6 @@ data class Article(
     val urlToImage: String?,
     val title: String?,
     val description: String?,
-    val url: String?, // Article url link
-    val publishedAt: String? // Article published date
+    val url: String?,
+    val publishedAt: String?
 )
