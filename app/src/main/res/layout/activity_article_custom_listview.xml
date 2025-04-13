@@ -16,8 +16,21 @@
         android:background="@drawable/rounded_image"
         android:clipToOutline="true"
         android:scaleType="fitXY"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:src="@drawable/img_placeholder" />
+
+    <TextView
+        android:id="@+id/articleDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@android:color/darker_gray"
+        android:text="Article date"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:gravity="left"
+        android:layout_marginBottom="15dp"
+        />
 
     <TextView
         android:id="@+id/articleTitle"
@@ -37,6 +50,7 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:textColor="@android:color/darker_gray"
+        android:text="Article content"
         android:maxLines="2"
         android:ellipsize="end"
         android:gravity="left"/>
