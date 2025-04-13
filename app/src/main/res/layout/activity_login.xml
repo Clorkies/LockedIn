@@ -102,13 +102,13 @@
                     android:src="@drawable/priv_icon" />
             </LinearLayout>
             <CheckBox
-                android:layout_gravity="right"
-                android:layout_marginRight="25dp"
-                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="20dp"
                 android:id="@+id/remember"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Remember This User"
+                android:text="Remember me"
                 android:textColor="@color/white"
                 android:fontFamily="@font/poppins"
                 android:textSize="18sp"
@@ -119,12 +119,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="25dp"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginRight="25dp"
                 android:background="@drawable/devbutton"
                 android:fontFamily="@font/poppins"
                 android:padding="10dp"
                 android:text="Login"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold" />

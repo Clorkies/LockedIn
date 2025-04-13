@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.animation.DecelerateInterpolator
 import android.widget.Button
 import android.widget.CheckBox
@@ -27,7 +28,6 @@ class LoginActivity : Activity() {
         val sharedPref: SharedPreferences = getSharedPreferences("User", MODE_PRIVATE)
         val isRemembered = sharedPref.getBoolean("remember", false)
 
-
         val loginBottomSheet = findViewById<LinearLayout>(R.id.login_bottom_sheet)
         val logo = findViewById<ImageView>(R.id.logo)
         val welcomeText = findViewById<TextView>(R.id.welcome)
@@ -41,7 +41,7 @@ class LoginActivity : Activity() {
 
         loginBottomSheet.post {
             loginBottomSheet.animate()
-                .translationY(120f)
+                .translationY(100f)
                 .setDuration(850)
                 .setInterpolator(DecelerateInterpolator())
                 .start()
@@ -82,11 +82,17 @@ class LoginActivity : Activity() {
             if(user.isEmpty() || pass.isEmpty()){
                 toast("Please fill out all fields!")
             } else{
+                btnLogin.isEnabled = false
+                btnLogin.text = "Logging in..."
+
+                Log.d("LoginActivity", "Attempting to login with username: $user")
+
                 users
-                    .whereEqualTo("username",user)
-                    .whereEqualTo("password",pass)
+                    .whereEqualTo("username", user)
+                    .whereEqualTo("password", pass)
                     .get()
                     .addOnSuccessListener { documents ->
+                        Log.d("LoginActivity", "Query successful, documents found: ${!documents.isEmpty}")
                         if(!documents.isEmpty){
                             val editor = sharedPref.edit()
                             if (checkBox.isChecked) {
@@ -99,7 +105,17 @@ class LoginActivity : Activity() {
                                 editor.apply()
                             }
                             goNext()
+                        } else {
+                            toast("Invalid username or password")
+                            btnLogin.isEnabled = true
+                            btnLogin.text = "Login"
                         }
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e("LoginActivity", "Error querying users", e)
+                        toast("Login failed: ${e.localizedMessage}")
+                        btnLogin.isEnabled = true
+                        btnLogin.text = "Login"
                     }
             }
         }
