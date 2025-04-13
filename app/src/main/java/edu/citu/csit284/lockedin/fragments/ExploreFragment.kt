@@ -11,11 +11,14 @@ import android.widget.ListView
 import androidx.navigation.fragment.findNavController
 import edu.citu.csit284.lockedin.ProfileActivity
 import edu.citu.csit284.lockedin.R
+import edu.citu.csit284.lockedin.util.LoadingAnimationUtil
 import edu.citu.csit284.lockedin.util.fetchArticles
 
 class ExploreFragment : Fragment() {
 
     private var caller: String? = null
+    private lateinit var loadingView1: View
+    private lateinit var loadingView2: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,8 +51,20 @@ class ExploreFragment : Fragment() {
             }
         }
 
+        loadingView1 = view.findViewById(R.id.loadingView1)
+        loadingView2 = view.findViewById(R.id.loadingView2)
+
+        LoadingAnimationUtil.setupLoadingViews(requireContext(), loadingView1, loadingView2)
+        LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
+
         val listView = view.findViewById<ListView>(R.id.articleListView)
-        fetchArticles(requireContext(), listView, caller = "explore")
+        fetchArticles(requireContext(), listView, caller = "landing") {
+            LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
+        }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        LoadingAnimationUtil.cancelAnimations()
+    }
 }

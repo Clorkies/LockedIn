@@ -47,14 +47,40 @@
         android:layout_width="match_parent"
         android:layout_height="20dp"/>
 
-    <ListView
-        android:id="@+id/articleListView"
+
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingHorizontal="20dp"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="30dp"
-        />
+        android:layout_weight="1">
+
+        <ListView
+            android:id="@+id/articleListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="20dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="25dp"
+            android:clipToPadding="false"/>
+
+        <View
+            android:id="@+id/loadingView1"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_gravity="top"
+            android:background="@drawable/loading_background"
+            android:visibility="gone"/>
+
+        <View
+            android:layout_marginTop="300dp"
+            android:id="@+id/loadingView2"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_gravity="top"
+            android:background="@drawable/loading_background"
+            android:visibility="gone"/>
+    </FrameLayout>
 
 </LinearLayout>
