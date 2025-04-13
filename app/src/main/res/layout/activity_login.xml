@@ -53,7 +53,7 @@
             android:translationY="120dp">
 
             <EditText
-                android:id="@+id/email"
+                android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
@@ -61,7 +61,7 @@
                 android:layout_marginRight="20dp"
                 android:background="@drawable/settings_background"
                 android:fontFamily="@font/poppins"
-                android:hint="Email or Username"
+                android:hint="Username"
                 android:padding="18dp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/fadedWhite"
@@ -101,15 +101,25 @@
                     android:alpha="0.5"
                     android:src="@drawable/priv_icon" />
             </LinearLayout>
-
-
+            <CheckBox
+                android:layout_gravity="right"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="10dp"
+                android:id="@+id/remember"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Remember This User"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins"
+                android:textSize="18sp"
+                android:buttonTint="@color/white"/>
             <Button
                 android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="25dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="25dp"
                 android:layout_marginRight="25dp"
                 android:background="@drawable/devbutton"
                 android:fontFamily="@font/poppins"
