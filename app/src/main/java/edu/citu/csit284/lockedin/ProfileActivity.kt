@@ -26,9 +26,7 @@ class ProfileActivity : Activity() {
         btn_logout.setOnClickListener {
             val sheet = LayoutInflater.from(this).inflate(R.layout.logout_bottom_sheet, null)
             val bottom = BottomSheetDialog(this,R.style.BottomSheetDialogTheme)
-
             bottom.setContentView(sheet)
-
             val back = sheet.findViewById<Button>(R.id.back_btn)
             back.setOnClickListener {
                 bottom.dismiss()
@@ -38,8 +36,8 @@ class ProfileActivity : Activity() {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
             }
-
             bottom.show()
         }
     }
+
 }

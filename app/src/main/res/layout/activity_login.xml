@@ -61,10 +61,10 @@
                 android:layout_marginRight="20dp"
                 android:background="@drawable/settings_background"
                 android:fontFamily="@font/poppins"
-                android:hint="Email"
+                android:hint="Email or Username"
                 android:padding="18dp"
                 android:textColor="@color/white"
-                android:textColorHint="@color/white"
+                android:textColorHint="@color/fadedWhite"
                 android:maxLines="1"
                 android:singleLine="true"
                 />
@@ -86,7 +86,7 @@
                     android:inputType="textPassword"
                     android:padding="18dp"
                     android:textColor="@color/white"
-                    android:textColorHint="@color/white"
+                    android:textColorHint="@color/fadedWhite"
                     android:maxLines="1"
                     android:singleLine="true"
                     />

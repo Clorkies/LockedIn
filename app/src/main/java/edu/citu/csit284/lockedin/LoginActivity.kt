@@ -60,22 +60,19 @@ class LoginActivity : Activity() {
                 .start()
         }
 
-        val email = findViewById<EditText>(R.id.email)
+        val userInfo = findViewById<EditText>(R.id.email)
         val password = findViewById<EditText>(R.id.password)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
         val imgPriv = findViewById<ImageView>(R.id.imgPriv)
         btnLogin.setOnClickListener {
-            val mail = email.text.toString().trim()
+            val user = userInfo.text.toString().trim()
             val pass = password.text.toString().trim()
 
-            if(mail.isEmpty() || pass.isEmpty()){
+            if(user.isEmpty() || pass.isEmpty()){
                 toast("Please fill out all fields!")
-            } else if ( mail == "admin" && pass == "adminpass") {
-                debugLogin()
             } else{
-
                 users
-                    .whereEqualTo("email",mail)
+                    .whereEqualTo("email",user)
                     .whereEqualTo("password",pass)
                     .get()
                     .addOnSuccessListener { documents ->
@@ -88,7 +85,23 @@ class LoginActivity : Activity() {
                             startActivity(intent)
                             finish()
                         } else {
-                            toast("Wrong email or password!")
+                            users
+                                .whereEqualTo("username",user)
+                                .whereEqualTo("password",pass)
+                                .get()
+                                .addOnSuccessListener { documents ->
+                                    if(!documents.isEmpty){
+                                        for (document in documents) {
+                                            val username = document.getString("username")
+                                            toast("Welcome, ${username ?: "!"}")
+                                        }
+                                        val intent = Intent(this, MainActivity::class.java)
+                                        startActivity(intent)
+                                        finish()
+                                    } else {
+                                        toast("Wrong credentials!")
+                                    }
+                                }
                         }
                     }
             }
@@ -101,11 +114,4 @@ class LoginActivity : Activity() {
         password.toggle(imgPriv)
     }
 
-    // For debugging purposes
-    fun debugLogin() {
-        toast("Welcome, admin!")
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
 }
