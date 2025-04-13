@@ -10,6 +10,10 @@ import android.widget.TextView
 import com.squareup.picasso.Picasso
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.data.Article
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.TimeZone
+import android.net.Uri
 
 class ArticleAdapter(
     private val context: Context,
@@ -26,6 +30,7 @@ class ArticleAdapter(
         val imageView = itemView.findViewById<ImageView>(R.id.articleImage)
         val titleView = itemView.findViewById<TextView>(R.id.articleTitle)
         val descView = itemView.findViewById<TextView>(R.id.articleText)
+        val dateView = itemView.findViewById<TextView>(R.id.articleDate)
 
         if (!article.urlToImage.isNullOrEmpty()) {
             Picasso.get()
@@ -39,6 +44,25 @@ class ArticleAdapter(
 
         titleView.text = article.title ?: "No title"
         descView.text = article.description ?: "No description"
+
+        article.publishedAt?.let {
+            try {
+                val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
+                inputFormat.timeZone = TimeZone.getTimeZone("UTC")
+
+                val outputFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+                val date = inputFormat.parse(it)
+                date?.let { parsedDate ->
+                    dateView.text = outputFormat.format(parsedDate)
+                    dateView.visibility = View.VISIBLE
+                }
+            } catch (e: Exception) {
+                dateView.text = it
+                dateView.visibility = View.VISIBLE
+            }
+        } ?: run {
+            dateView.visibility = View.GONE
+        }
 
         return itemView
     }

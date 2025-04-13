@@ -26,8 +26,6 @@ class LandingFragment : Fragment() {
     private var caller: String? = null
     private lateinit var loadingView1: View
     private lateinit var loadingView2: View
-    private var loadingAnimator1: ValueAnimator? = null
-    private var loadingAnimator2: ValueAnimator? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

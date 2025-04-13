@@ -30,6 +30,8 @@ fun fetchArticles(
                         putExtra("imageUrl", article.urlToImage)
                         putExtra("title", article.title)
                         putExtra("articleText", article.description)
+                        putExtra("date", article.publishedAt)
+                        putExtra("articleUrl", article.url)
                         putExtra("caller", caller)
                     }
                     context.startActivity(intent)
