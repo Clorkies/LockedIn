@@ -20,15 +20,19 @@ import edu.citu.csit284.lockedin.util.toggle
 
 class LoginActivity : Activity() {
     private val users = Firebase.firestore.collection("users")
-    private val checkBox = findViewById<CheckBox>(R.id.remember)
-    val sharedPref: SharedPreferences = getSharedPreferences("User", MODE_PRIVATE)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        val sharedPref: SharedPreferences = getSharedPreferences("User", MODE_PRIVATE)
+        val savedUsername = sharedPref.getString("username", "")
+        val isRemembered = sharedPref.getBoolean("remember", false)
+
 
         val loginBottomSheet = findViewById<LinearLayout>(R.id.login_bottom_sheet)
         val logo = findViewById<ImageView>(R.id.logo)
         val welcomeText = findViewById<TextView>(R.id.welcome)
+        val checkBox = findViewById<CheckBox>(R.id.remember)
 
         loginBottomSheet.translationY = 600f
         logo.translationY = -50f
@@ -68,6 +72,10 @@ class LoginActivity : Activity() {
         val password = findViewById<EditText>(R.id.password)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
         val imgPriv = findViewById<ImageView>(R.id.imgPriv)
+
+        if (isRemembered) {
+            goNext()
+        }
         btnLogin.setOnClickListener {
             val user = username.text.toString().trim()
             val pass = password.text.toString().trim()
@@ -85,7 +93,15 @@ class LoginActivity : Activity() {
                                 val username = document.getString("username")
                                 toast("Welcome, ${username ?: "!"}")
                             }
-                            goNext(user)
+                            if (checkBox.isChecked) {
+                                val editor = sharedPref.edit()
+                                editor.putString("username", user)
+                                editor.putBoolean("remember", true)
+                                editor.apply()
+                            } else {
+                                sharedPref.edit().clear().apply()
+                            }
+                            goNext()
                         }
                     }
             }
@@ -97,10 +113,7 @@ class LoginActivity : Activity() {
         }
         password.toggle(imgPriv)
     }
-    private fun goNext(userInfo : String){
-        if(checkBox.isSelected){
-
-        }
+    private fun goNext(){
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()

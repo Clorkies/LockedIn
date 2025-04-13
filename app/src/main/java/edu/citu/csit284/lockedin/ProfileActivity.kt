@@ -29,7 +29,7 @@ class ProfileActivity : Activity() {
         val userInfo = intent.getStringExtra("userInfo")
         toast("User Info: $userInfo")
         users
-            .whereEqualTo("email",userInfo)
+            .whereEqualTo("username",userInfo)
             .get()
             .addOnSuccessListener { documents ->
                 if(!documents.isEmpty){
@@ -38,19 +38,6 @@ class ProfileActivity : Activity() {
                         pass.setText(document.getString("password"))
                         email.setText(document.getString("email"))
                     }
-                } else {
-                    users
-                        .whereEqualTo("username",userInfo)
-                        .get()
-                        .addOnSuccessListener { documents ->
-                            if(!documents.isEmpty){
-                                for (document in documents) {
-                                    name.setText(document.getString("username"))
-                                    pass.setText(document.getString("password"))
-                                    email.setText(document.getString("email"))
-                                }
-                            }
-                        }
                 }
             }
         findViewById<ImageButton>(R.id.button_back).setOnClickListener { finish(); }
