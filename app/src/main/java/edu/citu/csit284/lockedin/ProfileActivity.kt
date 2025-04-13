@@ -36,8 +36,57 @@ class ProfileActivity : Activity() {
         val editList  = listOf(name,bio,pass)
         val userInfo = sharedPref.getString("username","")
         val imgpfp = findViewById<ImageView>(R.id.pfp)
+        var pfp : Int
+        users
+            .whereEqualTo("username",userInfo)
+            .get()
+            .addOnSuccessListener {documents ->
+                if(!documents.isEmpty){
+                    val document = documents.documents[0]
+                    pfp = document.getLong("pfpID")?.toInt() ?: 2
+                    when (pfp) {
+                        1 -> imgpfp.setImageResource(R.drawable.red_pfp)
+                        2 -> imgpfp.setImageResource(R.drawable.default_pfp)
+                        3 -> imgpfp.setImageResource(R.drawable.green_pfp)
+                        4 -> imgpfp.setImageResource(R.drawable.blue_pfp)
+                    }
+                }
+            }
         imgpfp.setOnClickListener {
+            val dialog = BottomSheetDialog(this)
+            val view = layoutInflater.inflate(R.layout.profile_picker, null)
+            val em = email.text.toString()
+            dialog.setContentView(view)
 
+            val option1 = view.findViewById<ImageView>(R.id.option1)
+            val option2 = view.findViewById<ImageView>(R.id.option2)
+            val option3 = view.findViewById<ImageView>(R.id.option3)
+            val option4 = view.findViewById<ImageView>(R.id.option4)
+            option1.setOnClickListener {
+                imgpfp.setImageResource(R.drawable.red_pfp)
+                pfp = 1
+                updatePFP(em,pfp)
+                dialog.dismiss()
+            }
+            option2.setOnClickListener {
+                imgpfp.setImageResource(R.drawable.default_pfp)
+                pfp = 2
+                updatePFP(em,pfp)
+                dialog.dismiss()
+            }
+            option3.setOnClickListener {
+                imgpfp.setImageResource(R.drawable.green_pfp)
+                pfp = 3
+                updatePFP(em,pfp)
+                dialog.dismiss()
+            }
+            option4.setOnClickListener {
+                imgpfp.setImageResource(R.drawable.blue_pfp)
+                pfp = 4
+                updatePFP(em,pfp)
+                dialog.dismiss()
+            }
+            dialog.show()
         }
         users
             .whereEqualTo("username",userInfo)
@@ -161,5 +210,16 @@ class ProfileActivity : Activity() {
                 bottom.show()
             }
         }
+    }
+    private fun updatePFP(email: String, pfpID: Int) {
+        users
+            .whereEqualTo("email", email)
+            .get()
+            .addOnSuccessListener { documents ->
+                val document = documents.documents[0]
+                val documentId = document.id
+                users.document(documentId).update("pfpID", pfpID)
+
+            }
     }
 }
