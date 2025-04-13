@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue"
-    android:paddingBottom="18dp"
-    >
+    android:paddingBottom="18dp">
 
     <Space
         android:layout_width="match_parent"
@@ -48,15 +47,13 @@
         android:id="@+id/ongoingMatch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="20dp"
-        >
+        android:paddingHorizontal="20dp">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="105dp"
             android:src="@drawable/rectangle_rounded_red"
-            android:scaleType="fitXY"
-            />
+            android:scaleType="fitXY"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -81,8 +78,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/logo_sentinels"
-                />
+                android:src="@drawable/logo_sentinels"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -110,14 +106,12 @@
             android:layout_gravity="left|center"
             android:layout_marginLeft="8dp"
             android:gravity="center"
-            android:background="@drawable/rectangle_rounded"
-            >
+            android:background="@drawable/rectangle_rounded">
 
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/logo_fnatic"
-                />
+                android:src="@drawable/logo_fnatic"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -133,15 +127,38 @@
         android:layout_width="match_parent"
         android:layout_height="20dp"/>
 
-    <ListView
-        android:id="@+id/articleListView"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingHorizontal="20dp"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="25dp"
-        />
+        android:layout_weight="1">
 
+        <ListView
+            android:id="@+id/articleListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="20dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="25dp"
+            android:clipToPadding="false"/>
+
+        <View
+            android:id="@+id/loadingView1"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_gravity="top"
+            android:background="@drawable/loading_background"
+            android:visibility="gone"/>
+
+        <View
+            android:layout_marginTop="300dp"
+            android:id="@+id/loadingView2"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_gravity="top"
+            android:background="@drawable/loading_background"
+            android:visibility="gone"/>
+    </FrameLayout>
 
 </LinearLayout>

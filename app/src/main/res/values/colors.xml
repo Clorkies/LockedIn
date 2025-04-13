@@ -15,6 +15,9 @@
     <color name="settingsbg">#192a45</color>
     <color name="devYellow">#EEA023</color>
 
+    <color name="loadingstate_dark">#192a45</color>
+    <color name="loadingstate_bright">#273E63</color>
+
     <color name="silver">#ECF0F3</color>
     <color name="blue">#09111C</color>
     <color name="faded_blue">#ABB1B8</color>
