@@ -7,10 +7,11 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="320dp"
+        android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:src="@drawable/img_background"
-        android:adjustViewBounds="true"/>
+        android:adjustViewBounds="true"
+        android:scaleY="-1"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,7 +37,8 @@
             android:gravity="center"
             android:orientation="vertical"
             android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp">
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -44,7 +46,6 @@
                 android:orientation="vertical"
                 android:gravity="center">
                 <TextView
-                    android:layout_marginTop="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins"
@@ -63,11 +64,11 @@
             </LinearLayout>
         </LinearLayout>
 
-
         <LinearLayout
+            android:id="@+id/register_bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="7800dp"
-            android:translationY="15dp"
+            android:translationY="20dp"
             android:orientation="vertical"
             android:background="@drawable/rectangle_rounded_bg_dark"
             >
@@ -88,20 +89,22 @@
                 android:layout_marginHorizontal="30dp"
                 android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:hint="Enter your email"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:fontFamily="@font/poppins"
                 android:background="@drawable/settings_background"
-                android:padding="16dp"
+                android:layout_height="55dp"
+                android:paddingVertical="10dp"
+                android:paddingHorizontal="20dp"
+                android:textSize="15dp"
                 android:maxLines="1"
                 android:singleLine="true"
                 />
             <TextView
                 android:layout_gravity="left"
                 android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
@@ -110,21 +113,23 @@
                 android:textStyle="bold"
                 android:textSize="16dp"
                 />
+
             <EditText
                 android:id="@+id/displayName"
+                android:layout_width="351dp"
                 android:layout_marginHorizontal="30dp"
                 android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter your display name"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:fontFamily="@font/poppins"
                 android:background="@drawable/settings_background"
-                android:padding="16dp"
+                android:fontFamily="@font/poppins"
+                android:hint="Enter your display name"
                 android:maxLines="1"
+                android:layout_height="55dp"
+                android:paddingVertical="10dp"
+                android:paddingHorizontal="20dp"
                 android:singleLine="true"
-                />
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                android:textColorHint="@color/white" />
 
             <TextView
                 android:layout_gravity="left"
@@ -138,6 +143,7 @@
                 android:textStyle="bold"
                 android:textSize="16dp"
                 />
+
             <LinearLayout
                 android:layout_margin="0dp"
                 android:layout_width="match_parent"
@@ -146,16 +152,18 @@
                 <EditText
                     android:id="@+id/password"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_marginHorizontal="30dp"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/settings_background"
                     android:fontFamily="@font/poppins"
                     android:hint="Enter your password"
                     android:inputType="textPassword"
-                    android:padding="16dp"
+                    android:layout_height="55dp"
+                    android:paddingVertical="10dp"
+                    android:paddingHorizontal="20dp"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
+                    android:textSize="15dp"
                     android:maxLines="1"
                     android:singleLine="true"
                     />
@@ -190,16 +198,18 @@
                 <EditText
                     android:id="@+id/confirmpass"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_marginHorizontal="30dp"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/settings_background"
                     android:fontFamily="@font/poppins"
                     android:hint="Re-enter your password"
                     android:inputType="textPassword"
-                    android:padding="16dp"
+                    android:layout_height="55dp"
+                    android:paddingVertical="10dp"
+                    android:paddingHorizontal="20dp"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
+                    android:textSize="15dp"
                     android:maxLines="1"
                     android:singleLine="true"
                     />
@@ -287,6 +297,7 @@
 
             <Button
                 android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="10dp"
                 android:id="@+id/btnRegister"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

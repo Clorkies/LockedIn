@@ -6,9 +6,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.animation.DecelerateInterpolator
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 
 import androidx.core.content.ContextCompat
@@ -42,6 +44,19 @@ class RegisterActivity : Activity() {
         val tvRuleLength = findViewById<TextView>(R.id.tvRuleLength)
         val tvRuleUppercase = findViewById<TextView>(R.id.tvRuleUppercase)
         val tvRuleNumber = findViewById<TextView>(R.id.tvRuleNumber)
+
+        val registerBottomSheet = findViewById<LinearLayout>(R.id.register_bottom_sheet)
+
+        registerBottomSheet.translationY = 800f
+
+        registerBottomSheet.post {
+            registerBottomSheet.animate()
+                .translationY(25f)
+                .setDuration(850)
+                .setInterpolator(DecelerateInterpolator())
+                .start()
+        }
+
 
         btnRegister.isEnabled = false
         btnRegister.setBackgroundResource(R.drawable.btn_register_disabled)
