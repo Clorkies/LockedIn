@@ -58,7 +58,7 @@ class ExploreFragment : Fragment() {
         LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
 
         val listView = view.findViewById<ListView>(R.id.articleListView)
-        fetchArticles(requireContext(), listView, caller = "landing") {
+        fetchArticles(requireContext(), listView, caller = "explore") {
             LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
         }
     }
