@@ -56,7 +56,7 @@
 
         </LinearLayout>
         <FrameLayout
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="45dp"
             android:layout_width="180dp"
             android:layout_height="180dp">
             <ImageView
@@ -68,7 +68,7 @@
                 android:clipToOutline="true"
                 android:src="@drawable/default_pfp" />
         </FrameLayout>
-        <TextView
+        <EditText
             android:layout_marginTop="15dp"
             android:id="@+id/name"
             android:layout_width="wrap_content"
@@ -78,38 +78,151 @@
             android:textStyle="bold"
             android:textSize="28sp"
             android:fontFamily="@font/poppins_medium"
+            android:background="@android:color/transparent"
+            android:focusable="false"
+            android:cursorVisible="false"
+            android:longClickable="false"
+            android:inputType="none"
+            android:maxLines="1"
+            android:maxLength="20"
             />
-        <TextView
+        <EditText
             android:layout_marginTop="5dp"
             android:id="@+id/bio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-                android:text="Placeholder Name"
+            android:text="Placeholder Bio"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:fontFamily="@font/poppins_medium"
+            android:background="@android:color/transparent"
+            android:focusable="false"
+            android:cursorVisible="false"
+            android:longClickable="false"
+            android:inputType="none"
+            android:maxLines="2"
+            android:maxLength="150"
             />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="450dp"
         android:background="@drawable/rectangle_rounded_bg_dark"
         android:orientation="vertical"
-        android:translationY="420dp">
+        android:translationY="480dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="left"
+            android:paddingHorizontal="25dp"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginTop="35dp">
 
+            <TextView
+                android:layout_marginBottom="-5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins"
+                />
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="john.doe@gmail.com"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:fontFamily="@font/poppins"
+                android:background="@android:color/transparent"
+                android:focusable="false"
+                android:cursorVisible="false"
+                android:longClickable="false"
+                android:inputType="none"
+                android:maxLines="1"
+                android:maxLength="75"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="left"
+            android:paddingHorizontal="25dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginHorizontal="25dp">
+
+            <TextView
+                android:layout_marginBottom="-5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins"
+                />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="sample password"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/poppins"
+                    android:background="@android:color/transparent"
+                    android:focusable="false"
+                    android:cursorVisible="false"
+                    android:clickable="false"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:maxLength="64"
+                    />
+                <ImageView
+                    android:id="@+id/imgPriv"
+                    android:layout_marginLeft="25dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/priv_icon"
+                    android:alpha="0.5"
+                    />
+            </LinearLayout>
+        </LinearLayout>
         <Button
-            android:id="@+id/button_logout"
-            android:layout_width="150dp"
+            android:id="@+id/button_edit"
+            android:layout_width="250dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_marginTop="55dp"
+            android:background="@drawable/devbutton"
+            android:scaleType="centerCrop"
+            android:text="Edit Information"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+        <Button
+            android:id="@+id/button_logout"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
             android:background="@drawable/rectangle_rounded_red"
             android:scaleType="centerCrop"
             android:text="log out"
+            android:textSize="16sp"
             android:textColor="@color/white"
             android:textStyle="bold" />
     </LinearLayout>
-
-
 </FrameLayout>
