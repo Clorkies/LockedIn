@@ -58,9 +58,12 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.4.2")
 
     // News API
-    implementation("com.github.dfloureiro:news-api-kotlin:v2.1")
+//    implementation("com.github.dfloureiro:news-api-kotlin:v2.1")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    // Image Handler
+    implementation("com.squareup.picasso:picasso:2.71828")
 
 
     implementation(libs.androidx.core.ktx)
