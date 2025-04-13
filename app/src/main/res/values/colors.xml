@@ -22,11 +22,15 @@
     <color name="blue">#09111C</color>
     <color name="faded_blue">#ABB1B8</color>
     <color name="yellow">#EEA023</color>
+    <color name="green">#31EE23</color>
+    <color name="pfpblue">#23C5EE</color>
     <color name="disabled_yellow">#CDAC79</color>
     <color name="grey">#454545</color>
     <color name="red">#a53c3c</color>
 
     <color name="fadedWhite">#BFBFBF</color>
     <color name="passwordReqs">#3D5273</color>
+
+
 
 </resources>

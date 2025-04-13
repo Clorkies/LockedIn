@@ -118,12 +118,13 @@ class RegisterActivity : Activity() {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
+        val sharedPref = getSharedPreferences("User", MODE_PRIVATE)
         btnRegister.setOnClickListener {
             val em = email.text.toString()
             val pass = password.text.toString()
             val confpass = confirmPassword.text.toString()
-            val username = displayName.text.toString()
-            if(em == "" || pass == "" || confpass == "" || username == ""){
+            val user = displayName.text.toString()
+            if(em == "" || pass == "" || confpass == "" || user == ""){
                 toast("Please fill out all fields!")
             }else{
                 if(!isValidEmail(em)){
@@ -140,20 +141,29 @@ class RegisterActivity : Activity() {
                                 if(!duplicates.isEmpty){
                                     toast("Email already exists! Please try another")
                                 }else{
-                                    val user = hashMapOf(
-                                        "email" to em,
-                                        "username" to username,
-                                        "password" to pass
-                                    )
                                     users
-                                        .add(user)
-                                        .addOnSuccessListener {
-                                            toast("Registered Successfully!")
-                                            val intent = Intent(this, LoginActivity::class.java)
-                                            startActivity(intent)
-                                        }
-                                        .addOnFailureListener{
-                                            toast("Failed to register")
+                                        .whereEqualTo("username",user)
+                                        .get()
+                                        .addOnSuccessListener{ duplis ->
+                                            if(!duplis.isEmpty){
+                                                toast("Username already exists! Please try another")
+                                            }else{
+                                                val user = hashMapOf(
+                                                    "email" to em,
+                                                    "username" to user,
+                                                    "password" to pass
+                                                )
+                                                users
+                                                    .add(user)
+                                                    .addOnSuccessListener {
+                                                        toast("Registered Successfully!")
+                                                        val intent = Intent(this, LoginActivity::class.java)
+                                                        startActivity(intent)
+                                                    }
+                                                    .addOnFailureListener{
+                                                        toast("Failed to register")
+                                                    }
+                                            }
                                         }
 
                                 }

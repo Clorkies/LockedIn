@@ -34,12 +34,12 @@
 
         <ImageButton
             android:id="@+id/button_profile"
-            android:background="@drawable/btn_profile"
-            android:layout_width="40dp"
+            android:layout_width="32dp"
             android:layout_height="40dp"
+            android:background="@drawable/btn_profile"
             android:padding="7dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon_outline_user"/>
+            android:src="@drawable/icon_outline_user" />
 
     </LinearLayout>
 

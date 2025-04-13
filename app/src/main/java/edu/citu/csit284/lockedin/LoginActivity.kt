@@ -2,28 +2,36 @@ package edu.citu.csit284.lockedin
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.animation.DecelerateInterpolator
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import edu.citu.csit284.lockedin.splash.LoginSplashScreen
 import edu.citu.csit284.lockedin.util.toast
 import edu.citu.csit284.lockedin.util.toggle
 
 
 class LoginActivity : Activity() {
     private val users = Firebase.firestore.collection("users")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        val sharedPref: SharedPreferences = getSharedPreferences("User", MODE_PRIVATE)
+        val isRemembered = sharedPref.getBoolean("remember", false)
+
 
         val loginBottomSheet = findViewById<LinearLayout>(R.id.login_bottom_sheet)
         val logo = findViewById<ImageView>(R.id.logo)
         val welcomeText = findViewById<TextView>(R.id.welcome)
+        val checkBox = findViewById<CheckBox>(R.id.remember)
 
         loginBottomSheet.translationY = 600f
         logo.translationY = -50f
@@ -59,35 +67,38 @@ class LoginActivity : Activity() {
                 .start()
         }
 
-        val email = findViewById<EditText>(R.id.email)
+        val username = findViewById<EditText>(R.id.username)
         val password = findViewById<EditText>(R.id.password)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
         val imgPriv = findViewById<ImageView>(R.id.imgPriv)
+
+        if (isRemembered) {
+            goNext()
+        }
         btnLogin.setOnClickListener {
-            val mail = email.text.toString().trim()
+            val user = username.text.toString().trim()
             val pass = password.text.toString().trim()
 
-            if(mail.isEmpty() || pass.isEmpty()){
+            if(user.isEmpty() || pass.isEmpty()){
                 toast("Please fill out all fields!")
-            } else if ( mail == "admin" && pass == "adminpass") {
-                debugLogin()
             } else{
-
                 users
-                    .whereEqualTo("email",mail)
+                    .whereEqualTo("username",user)
                     .whereEqualTo("password",pass)
                     .get()
                     .addOnSuccessListener { documents ->
                         if(!documents.isEmpty){
-                            for (document in documents) {
-                                val username = document.getString("username")
-                                toast("Welcome, ${username ?: "!"}")
+                            val editor = sharedPref.edit()
+                            if (checkBox.isChecked) {
+                                editor.putString("username", user)
+                                editor.putBoolean("remember", true)
+                                editor.apply()
+                            } else {
+                                editor.putString("username", user)
+                                editor.putBoolean("remember", false)
+                                editor.apply()
                             }
-                            val intent = Intent(this, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            toast("Wrong email or password!")
+                            goNext()
                         }
                     }
             }
@@ -99,12 +110,10 @@ class LoginActivity : Activity() {
         }
         password.toggle(imgPriv)
     }
-
-    // For debugging purposes
-    fun debugLogin() {
-        toast("Welcome, admin!")
-        val intent = Intent(this, MainActivity::class.java)
+    private fun goNext(){
+        val intent = Intent(this, LoginSplashScreen::class.java)
         startActivity(intent)
         finish()
     }
+
 }
