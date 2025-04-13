@@ -5,7 +5,6 @@ import android.widget.ListView
 import android.widget.Toast
 import edu.citu.csit284.lockedin.helper.ArticleAdapter
 import edu.citu.csit284.lockedin.ExploreArticleActivity
-import edu.citu.csit284.lockedin.util.RetrofitClient
 import edu.citu.csit284.lockedin.data.NewsResponse
 import retrofit2.Call
 import retrofit2.Callback
