@@ -62,10 +62,12 @@ class ExploreFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<ImageButton>(R.id.button_profile).setOnClickListener {
+        val btnProfile = view.findViewById<ImageButton>(R.id.button_profile)
+        btnProfile.setOnClickListener {
             startActivity(Intent(requireContext(), ProfileActivity::class.java))
             requireActivity().supportFragmentManager.popBackStack()
         }
+
         val sharedPref = requireActivity().getSharedPreferences("User", Activity.MODE_PRIVATE)
         val userInfo = sharedPref.getString("username","")
         var pfp : Int
