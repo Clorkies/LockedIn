@@ -47,8 +47,7 @@ class ExploreArticleActivity : Activity() {
 
         val bookmark = findViewById<CheckBox>(R.id.bookmarkCheckbox)
 
-
-        setInitialBookmarkState(bookmark, title, articleUrl)
+        setInitialBookmarkState(bookmark, title, articleUrl, imageUrl, articleText, publishedDate)
 
         if (!articleUrl.isNullOrEmpty()) {
             readMore.setOnClickListener {
@@ -105,7 +104,15 @@ class ExploreArticleActivity : Activity() {
         titleView.text = title
         textView.text = articleText
     }
-    private fun setInitialBookmarkState(checkbox: CheckBox, title: String, articleUrl: String?) {
+
+    private fun setInitialBookmarkState(
+        checkbox: CheckBox,
+        title: String,
+        articleUrl: String?,
+        imageUrl: String?,
+        articleText: String,
+        publishedDate: String
+    ) {
         checkbox.setOnCheckedChangeListener(null)
 
         checkbox.isChecked = false
@@ -114,7 +121,7 @@ class ExploreArticleActivity : Activity() {
         val username = sharedPref.getString("username", null)
 
         if (username == null || articleUrl == null) {
-            setCheckboxListener(checkbox, title, articleUrl)
+            setCheckboxListener(checkbox, title, articleUrl, imageUrl, articleText, publishedDate)
             return
         }
 
@@ -135,15 +142,22 @@ class ExploreArticleActivity : Activity() {
                     Log.d("Bookmarks", "Article is bookmarked: $isBookmarked")
                 }
 
-                setCheckboxListener(checkbox, title, articleUrl)
+                setCheckboxListener(checkbox, title, articleUrl, imageUrl, articleText, publishedDate)
             }
             .addOnFailureListener { e ->
                 Log.e("Firestore", "Error checking bookmark status", e)
-                setCheckboxListener(checkbox, title, articleUrl)
+                setCheckboxListener(checkbox, title, articleUrl, imageUrl, articleText, publishedDate)
             }
     }
 
-    private fun setCheckboxListener(checkbox: CheckBox, title: String, articleUrl: String?) {
+    private fun setCheckboxListener(
+        checkbox: CheckBox,
+        title: String,
+        articleUrl: String?,
+        imageUrl: String?,
+        articleText: String,
+        publishedDate: String
+    ) {
         checkbox.setOnCheckedChangeListener { _, isChecked ->
             val sharedPref = getSharedPreferences("User", Context.MODE_PRIVATE)
             val username = sharedPref.getString("username", null)
@@ -154,7 +168,13 @@ class ExploreArticleActivity : Activity() {
                 return@setOnCheckedChangeListener
             }
 
-            val bookmarkData = mapOf("title" to title, "url" to articleUrl)
+            val bookmarkData = mapOf(
+                "title" to title,
+                "url" to articleUrl,
+                "imageUrl" to (imageUrl ?: ""),
+                "description" to articleText,
+                "date" to publishedDate
+            )
 
             users
                 .whereEqualTo("username", username)
@@ -180,15 +200,34 @@ class ExploreArticleActivity : Activity() {
                                 Toast.makeText(this, "Failed to bookmark article", Toast.LENGTH_SHORT).show()
                             }
                     } else {
-                        docRef.update("bookmarks", FieldValue.arrayRemove(bookmarkData))
-                            .addOnSuccessListener {
-                                Toast.makeText(this, "Removed from bookmarks", Toast.LENGTH_SHORT).show()
+                        docRef.get().addOnSuccessListener { docSnapshot ->
+                            val existingBookmarks = docSnapshot.get("bookmarks") as? List<Map<String, Any>> ?: listOf()
+                            val matchingBookmark = existingBookmarks.find {
+                                it["title"] == title && it["url"] == articleUrl
                             }
-                            .addOnFailureListener { e ->
-                                Log.e("Firestore", "Error removing bookmark", e)
-                                checkbox.isChecked = true
-                                Toast.makeText(this, "Failed to remove bookmark", Toast.LENGTH_SHORT).show()
+
+                            if (matchingBookmark != null) {
+                                docRef.update("bookmarks", FieldValue.arrayRemove(matchingBookmark))
+                                    .addOnSuccessListener {
+                                        Toast.makeText(this, "Removed from bookmarks", Toast.LENGTH_SHORT).show()
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Log.e("Firestore", "Error removing bookmark", e)
+                                        checkbox.isChecked = true
+                                        Toast.makeText(this, "Failed to remove bookmark", Toast.LENGTH_SHORT).show()
+                                    }
+                            } else {
+                                docRef.update("bookmarks", FieldValue.arrayRemove(bookmarkData))
+                                    .addOnSuccessListener {
+                                        Toast.makeText(this, "Removed from bookmarks", Toast.LENGTH_SHORT).show()
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Log.e("Firestore", "Error removing bookmark", e)
+                                        checkbox.isChecked = true
+                                        Toast.makeText(this, "Failed to remove bookmark", Toast.LENGTH_SHORT).show()
+                                    }
                             }
+                        }
                     }
                 }
                 .addOnFailureListener { e ->
