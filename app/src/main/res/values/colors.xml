@@ -7,12 +7,14 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="light_bg">#667A9A</color>
 
     <color name="bg">#09111C</color>
     <color name="notibg">#15A5FF</color>
     <color name="privbg">#FFA500</color>
     <color name="activebg">#90FBB5</color>
     <color name="settingsbg">#192a45</color>
+    <color name="articlebg">#0E1825</color>
     <color name="devYellow">#EEA023</color>
 
     <color name="loadingstate_dark">#192a45</color>

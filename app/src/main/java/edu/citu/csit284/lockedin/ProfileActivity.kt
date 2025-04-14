@@ -319,7 +319,6 @@ class ProfileActivity : Activity() {
 
                 profileBottomSheet.translationY = 1050+136f
 
-
                 profileBottomSheet.post {
                     profileBottomSheet.requestLayout()
                     profileBottomSheet.invalidate()

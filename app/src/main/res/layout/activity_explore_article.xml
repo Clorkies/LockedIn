@@ -7,137 +7,153 @@
     android:layout_height="match_parent"
     tools:context=".ProfileActivity"
     android:background="@color/blue"
-    android:paddingHorizontal="20dp"
     android:clipToPadding="false"
     >
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="35dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="20dp"
         android:gravity="center_vertical">
         <ImageButton
             android:id="@+id/button_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@drawable/btn_back"
             android:scaleType="centerCrop"
-            android:layout_marginEnd="10dp" />
-    </LinearLayout>
+            />
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="0dp"/>
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="30dp"/>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="570dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
-
-            <TextView
-                android:id="@+id/articleTitleView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="25sp"
-                android:textColor="@color/white"
-                android:gravity="start"
-                android:textAlignment="viewStart"
-                />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="60dp"/>
-
-            <TextView
-                android:id="@+id/articleDateView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:textColor="@color/fadedWhite"
-                />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="20dp"/>
-
-            <ImageView
-            android:id="@+id/articleImageView"
-            android:layout_width="match_parent"
-            android:layout_height="230dp"
-            android:background="@drawable/rounded_image"
-            android:clipToOutline="true"
-            android:scaleType="centerCrop"
+        <CheckBox
+            android:id="@+id/bookmarkCheckbox"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:button="@drawable/checkbox_bookmark"
+            android:buttonTint="@color/white"
             />
 
-            <Space
-                android:layout_height="30dp"
-                android:layout_width="wrap_content"/>
-
-            <TextView
-                android:id="@+id/articleTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="17sp"
-                android:textColor="@color/white"
-                />
-
-        </LinearLayout>
-
-    </ScrollView>
+    </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/sheetReadMore"
-        android:layout_width="500dp"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:background="@drawable/rectangle_rounded"
-        android:translationX="90dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="20dp"
+        android:paddingHorizontal="20dp"
+        android:background="@color/articlebg"
+        android:clipToPadding="false"
         >
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="570dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:id="@+id/articleTitleView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="25sp"
+                    android:textColor="@color/white"
+                    android:gravity="start"
+                    android:textAlignment="viewStart"
+                    />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"/>
+
+                <TextView
+                    android:id="@+id/articleDateView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="@color/fadedWhite"
+                    />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"/>
+
+                <ImageView
+                    android:id="@+id/articleImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="230dp"
+                    android:background="@drawable/rounded_image"
+                    android:clipToOutline="true"
+                    android:scaleType="centerCrop"
+                    />
+
+                <Space
+                    android:layout_height="30dp"
+                    android:layout_width="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/articleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="17sp"
+                    android:textColor="@color/white"
+                    />
+
+            </LinearLayout>
+
+        </ScrollView>
 
         <LinearLayout
-            android:id="@+id/readMore"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginVertical="5dp"
-            android:paddingVertical="10dp"
-            android:paddingHorizontal="20dp"
-            android:layout_marginLeft="10dp"
+            android:id="@+id/sheetReadMore"
+            android:layout_width="500dp"
+            android:layout_height="60dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:background="@drawable/rectangle_rounded"
+            android:translationX="90dp"
             >
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/readMore"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Read full article"
-                android:fontFamily="@font/poppins"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:textAllCaps="false"
-                />
+                android:layout_height="match_parent"
+                android:layout_marginVertical="5dp"
+                android:paddingVertical="10dp"
+                android:paddingHorizontal="20dp"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                >
 
-            <ImageView
-                android:layout_marginLeft="70dp"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/icon_link"
-                android:layout_gravity="center_vertical"
-                />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Read full article"
+                    android:fontFamily="@font/poppins"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textAllCaps="false"
+                    />
+
+                <ImageView
+                    android:layout_marginLeft="70dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/icon_link"
+                    android:layout_gravity="center_vertical"
+                    />
+
+            </LinearLayout>
 
         </LinearLayout>
-
     </LinearLayout>
 
 </LinearLayout>
