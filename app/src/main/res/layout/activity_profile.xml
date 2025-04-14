@@ -56,19 +56,19 @@
 
         </LinearLayout>
 
-            <FrameLayout
-                android:layout_marginTop="45dp"
+        <FrameLayout
+            android:layout_marginTop="45dp"
+            android:layout_width="180dp"
+            android:layout_height="180dp">
+            <ImageView
+                android:id="@+id/pfp"
                 android:layout_width="180dp"
-                android:layout_height="180dp">
-                <ImageView
-                    android:id="@+id/pfp"
-                    android:layout_width="180dp"
-                    android:layout_height="180dp"
-                    android:background="@drawable/circle_frame"
-                    android:scaleType="fitCenter"
-                    android:clipToOutline="true"
-                    android:src="@drawable/default_pfp" />
-            </FrameLayout>
+                android:layout_height="180dp"
+                android:background="@drawable/circle_frame"
+                android:scaleType="fitCenter"
+                android:clipToOutline="true"
+                android:src="@drawable/default_pfp" />
+        </FrameLayout>
         <EditText
             android:layout_marginTop="15dp"
             android:id="@+id/name"
@@ -271,18 +271,16 @@
                 android:text="• At least one number (0-9)"
                 android:textColor="@color/passwordReqs"
                 android:textSize="13dp"/>
-
         </LinearLayout>
+
     </LinearLayout>
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/rectangle_rounded_bg_dark"
         android:orientation="vertical"
         android:paddingHorizontal="25dp"
-        android:translationY="-50dp"
+        android:translationY="-30dp"
         android:layout_gravity="bottom">
         <Button
             android:id="@+id/btn_edit"
@@ -312,197 +310,4 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-<!--    <LinearLayout-->
-<!--        android:id="@+id/profileBottomSheet"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="750dp"-->
-<!--        android:background="@drawable/rectangle_rounded_bg_dark"-->
-<!--        android:orientation="vertical"-->
-<!--        android:paddingHorizontal="25dp"-->
-<!--        android:translationY="480dp">-->
-<!--        <LinearLayout-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="vertical"-->
-<!--            android:layout_gravity="left"-->
-<!--            android:layout_marginTop="35dp">-->
-
-<!--            <TextView-->
-<!--                android:layout_marginBottom="-5dp"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Email"-->
-<!--                android:textSize="20sp"-->
-<!--                android:textStyle="bold"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:fontFamily="@font/poppins"-->
-<!--                />-->
-
-<!--            <EditText-->
-<!--                android:id="@+id/email"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:gravity="center"-->
-<!--                android:text="john.doe@gmail.com"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="18sp"-->
-<!--                android:fontFamily="@font/poppins"-->
-<!--                android:background="@android:color/transparent"-->
-<!--                android:focusable="false"-->
-<!--                android:cursorVisible="false"-->
-<!--                android:longClickable="false"-->
-<!--                android:inputType="textNoSuggestions"-->
-<!--                android:maxLines="1"-->
-<!--                android:maxLength="75"-->
-<!--                />-->
-<!--        </LinearLayout>-->
-<!--        <LinearLayout-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="vertical"-->
-<!--            android:layout_gravity="left"-->
-<!--            android:layout_marginTop="25dp">-->
-
-<!--            <TextView-->
-<!--                android:layout_marginBottom="-5dp"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Password"-->
-<!--                android:textSize="20sp"-->
-<!--                android:textStyle="bold"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:fontFamily="@font/poppins"-->
-<!--                />-->
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:orientation="horizontal">-->
-<!--                <EditText-->
-<!--                    android:id="@+id/password"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:gravity="center"-->
-<!--                    android:text="sample password"-->
-<!--                    android:textColor="@color/white"-->
-<!--                    android:textSize="18sp"-->
-<!--                    android:fontFamily="@font/poppins"-->
-<!--                    android:background="@android:color/transparent"-->
-<!--                    android:focusable="false"-->
-<!--                    android:cursorVisible="false"-->
-<!--                    android:clickable="false"-->
-<!--                    android:inputType="textPassword"-->
-<!--                    android:maxLines="1"-->
-<!--                    android:maxLength="60"-->
-<!--                    android:translationX="-2dp"-->
-<!--                    />-->
-<!--                <ImageView-->
-<!--                    android:id="@+id/imgPriv"-->
-<!--                    android:layout_marginLeft="25dp"-->
-<!--                    android:layout_width="25dp"-->
-<!--                    android:layout_height="25dp"-->
-<!--                    android:src="@drawable/priv_icon"-->
-<!--                    android:alpha="0.5"-->
-<!--                    />-->
-<!--            </LinearLayout>-->
-<!--        </LinearLayout>-->
-
-<!--        <LinearLayout-->
-<!--            android:id="@+id/passwordRequirements"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="126dp"-->
-<!--            android:orientation="vertical"-->
-<!--            android:visibility="visible"-->
-<!--            >-->
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="10dp"-->
-<!--                android:orientation="horizontal">-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:fontFamily="@font/poppins_medium"-->
-<!--                    android:text="Password strength: "-->
-<!--                    android:textColor="@color/white"-->
-<!--                    android:textStyle="bold"-->
-<!--                    android:textSize="16dp"-->
-<!--                    android:layout_marginBottom="5dp"/>-->
-<!--                <TextView-->
-<!--                    android:id="@+id/tvPasswordStrength"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:fontFamily="@font/poppins_medium"-->
-<!--                    android:textColor="@color/white"-->
-<!--                    android:textStyle="bold"-->
-<!--                    android:textSize="16dp"-->
-<!--                    android:layout_marginBottom="5dp"/>-->
-<!--            </LinearLayout>-->
-
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:fontFamily="@font/poppins_medium"-->
-<!--                android:text="Password must contain"-->
-<!--                android:textColor="@color/faded_blue"-->
-<!--                android:textSize="13dp"/>-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/tvRuleLength"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:fontFamily="@font/poppins_medium"-->
-<!--                android:text="• At least 8 characters"-->
-<!--                android:textColor="@color/passwordReqs"-->
-<!--                android:textSize="13dp"/>-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/tvRuleUppercase"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:fontFamily="@font/poppins_medium"-->
-<!--                android:text="• At least one uppercase letter (A-Z)"-->
-<!--                android:textColor="@color/passwordReqs"-->
-<!--                android:textSize="13dp"/>-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/tvRuleNumber"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:fontFamily="@font/poppins_medium"-->
-<!--                android:text="• At least one number (0-9)"-->
-<!--                android:textColor="@color/passwordReqs"-->
-<!--                android:textSize="13dp"/>-->
-
-<!--        </LinearLayout>-->
-
-<!--        <Button-->
-<!--            android:id="@+id/btn_edit"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_marginTop="55dp"-->
-<!--            android:background="@drawable/devbutton"-->
-<!--            android:scaleType="centerCrop"-->
-<!--            android:text="Edit Information"-->
-<!--            android:textSize="18sp"-->
-<!--            android:textColor="@color/white"-->
-<!--            android:textAllCaps="false"-->
-<!--            android:textStyle="bold" />-->
-<!--        <Button-->
-<!--            android:id="@+id/button_logout"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_marginTop="15dp"-->
-<!--            android:background="@drawable/rectangle_rounded_red"-->
-<!--            android:scaleType="centerCrop"-->
-<!--            android:text="Log out"-->
-<!--            android:textSize="18sp"-->
-<!--            android:textAllCaps="false"-->
-<!--            android:textColor="@color/white"-->
-<!--            android:textStyle="bold" />-->
-<!--    </LinearLayout>-->
 </FrameLayout>
