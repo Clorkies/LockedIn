@@ -70,6 +70,9 @@ class ProfileActivity : Activity() {
         val tvRuleLength = findViewById<TextView>(R.id.tvRuleLength)
         val tvRuleUppercase = findViewById<TextView>(R.id.tvRuleUppercase)
         val tvRuleNumber = findViewById<TextView>(R.id.tvRuleNumber)
+        var origName = name.text.toString()
+        var origBio = bio.text.toString()
+        var origPass = pass.text.toString()
         pass.addTextChangedListener(object : TextWatcher {
             @SuppressLint("ResourceAsColor", "SetTextI18n")
             override fun afterTextChanged(s: Editable?) {
@@ -163,6 +166,10 @@ class ProfileActivity : Activity() {
                         name.setText(document.getString("username"))
                         pass.setText(document.getString("password"))
                         email.setText(document.getString("email"))
+                        origName = name.text.toString()
+                        origBio = bio.text.toString()
+                        origPass = pass.text.toString()
+
                         if(document.contains("bio")){
                             bio.setText(document.getString("bio"))
                         }
@@ -244,15 +251,15 @@ class ProfileActivity : Activity() {
                         bio.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE
                     }
                 }
-                val username = name.text.toString().trim()
-                val password = pass.text.toString().trim()
+                origName = name.text.toString().trim()
+                origPass = pass.text.toString().trim()
                 val em = email.text.toString().trim()
-                val newBio = bio.text.toString().trim()
+                origBio = bio.text.toString().trim()
                 val updatedUser: Map<String, Any> = mapOf (
-                    "username" to username,
+                    "username" to origName,
                     "email" to em,
-                    "password" to password,
-                    "bio" to newBio
+                    "password" to origPass,
+                    "bio" to origBio
                 )
                 users
                     .whereEqualTo("email",em)
@@ -351,6 +358,9 @@ class ProfileActivity : Activity() {
             if(btn_logout.text.equals("Cancel")){
                 btn_edit.setText("Edit Information")
                 btn_logout.setText("Log Out")
+                name.setText(origName)
+                bio.setText(origBio)
+                pass.setText(origPass)
                 imgpfp.clearColorFilter()
                 for (editText in editList) {
                     editText.setBackgroundResource(android.R.color.transparent)
