@@ -1,5 +1,6 @@
 package edu.citu.csit284.lockedin.fragments
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,6 +11,8 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.ListView
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.ProfileActivity
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.util.LoadingAnimationUtil
@@ -18,6 +21,7 @@ import edu.citu.csit284.lockedin.util.fetchArticles
 class ExploreFragment : Fragment() {
 
     private var caller: String? = null
+    private val users = Firebase.firestore.collection("users")
     private lateinit var loadingView1: View
     private lateinit var loadingView2: View
     private lateinit var noInternetBox: LinearLayout
@@ -40,7 +44,34 @@ class ExploreFragment : Fragment() {
         val btnProfile = view.findViewById<ImageButton>(R.id.button_profile)
         btnProfile.setOnClickListener {
             startActivity(Intent(requireContext(), ProfileActivity::class.java))
+            requireActivity().supportFragmentManager.popBackStack()
         }
+        val sharedPref = requireActivity().getSharedPreferences("User", Activity.MODE_PRIVATE)
+        val userInfo = sharedPref.getString("username","")
+        var pfp : Int
+        users
+            .whereEqualTo("username",userInfo)
+            .get()
+            .addOnSuccessListener {documents ->
+                if(!documents.isEmpty){
+                    val document = documents.documents[0]
+                    pfp = document.getLong("pfpID")?.toInt() ?: 2
+                    when (pfp) {
+                        1 -> {
+                            btnProfile.setImageResource(R.drawable.red_pfp)
+                        }
+                        2 -> {
+                            btnProfile.setImageResource(R.drawable.default_pfp)
+                        }
+                        3 -> {
+                            btnProfile.setImageResource(R.drawable.green_pfp)
+                        }
+                        4 -> {
+                            btnProfile.setImageResource(R.drawable.blue_pfp)
+                        }
+                    }
+                }
+            }
 
         val btnBack = view.findViewById<ImageButton>(R.id.button_back)
         btnBack.setOnClickListener {
