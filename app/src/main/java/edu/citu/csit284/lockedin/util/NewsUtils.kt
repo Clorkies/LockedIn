@@ -23,8 +23,10 @@ fun fetchArticles(
     apiService.getEsportsArticles().enqueue(object : Callback<NewsResponse> {
         override fun onResponse(call: Call<NewsResponse>, response: Response<NewsResponse>) {
             if (response.isSuccessful) {
-                val articles = response.body()?.articles ?: emptyList()
-
+                var articles = response.body()?.articles ?: emptyList()
+                if (caller == "explore") {
+                    articles = articles.shuffled()
+                }
                 listView.adapter = ArticleAdapter(context, articles)
 
                 listView.setOnItemClickListener { _, _, position, _ ->
