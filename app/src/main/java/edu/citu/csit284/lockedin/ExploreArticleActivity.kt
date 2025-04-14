@@ -47,6 +47,7 @@ class ExploreArticleActivity : Activity() {
 
         val bookmark = findViewById<CheckBox>(R.id.bookmarkCheckbox)
 
+
         setInitialBookmarkState(bookmark, title, articleUrl)
 
         if (!articleUrl.isNullOrEmpty()) {

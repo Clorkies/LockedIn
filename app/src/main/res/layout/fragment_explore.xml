@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -38,13 +39,61 @@
 
     </LinearLayout>
 
-    <Space
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="20dp"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginVertical="20dp"
+        >
 
+        <ImageButton
+            android:id="@+id/bookmarkedList"
+            android:layout_height="50dp"
+            android:layout_width="50dp"
+            android:background="@drawable/rectangle_rounded_titles_bg"
+            android:src="@drawable/icon_bookmark_checked"
+            />
 
+        <Space android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/game1List"
+            android:layout_height="50dp"
+            android:layout_width="180dp"
+            android:background="@drawable/rectangle_rounded_titles_bg"
+            android:text="VALORANT"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            />
+
+        <Space android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/game2List"
+            android:layout_height="50dp"
+            android:layout_width="50dp"
+            android:text="C"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/rectangle_rounded_titles_bg"
+            />
+
+        <Space android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/game3List"
+            android:layout_height="50dp"
+            android:layout_width="50dp"
+            android:text="D"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/rectangle_rounded_titles_bg"
+            />
+    </LinearLayout>
 
     <FrameLayout
+        android:id="@+id/articlesList"
+        android:translationY="0dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
