@@ -5,22 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue"
-    android:paddingBottom="18dp">
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="35dp"/>
+    android:padding="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingHorizontal="20dp"
         android:gravity="top">
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:background="@drawable/logo"/>
 
         <View
@@ -31,8 +26,8 @@
         <ImageButton
             android:id="@+id/button_profile"
             android:background="@drawable/btn_profile"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:padding="7dp"
             android:scaleType="centerCrop"
             android:src="@drawable/icon_outline_user"/>
@@ -136,7 +131,6 @@
             android:id="@+id/articleListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingHorizontal="20dp"
             android:divider="@android:color/transparent"
             android:dividerHeight="25dp"
             android:clipToPadding="false"/>
@@ -174,7 +168,6 @@
             android:id="@+id/loadingView1"
             android:layout_width="match_parent"
             android:layout_height="280dp"
-            android:layout_marginHorizontal="20dp"
             android:layout_gravity="top"
             android:background="@drawable/loading_background"
             android:visibility="gone"/>
@@ -184,7 +177,6 @@
             android:id="@+id/loadingView2"
             android:layout_width="match_parent"
             android:layout_height="280dp"
-            android:layout_marginHorizontal="20dp"
             android:layout_gravity="top"
             android:background="@drawable/loading_background"
             android:visibility="gone"/>
