@@ -13,28 +13,13 @@ import androidx.appcompat.widget.SwitchCompat
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class SettingsActivity : Activity() {
-    private fun diaLogout() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Confirm Logout")
-            .setMessage("Are you sure you want to logout?")
-            .setPositiveButton("Yes") { dialog, _ ->
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-                dialog.dismiss()
-            }
-            .setNegativeButton("No") { dialog, _ ->
-                dialog.dismiss()
-            }
-        val dialog = builder.create()
-        dialog.show()
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
         findViewById<ImageView>(R.id.backBtn).setOnClickListener { startActivity(Intent(this, ProfileActivity::class.java)) ; finish()}
 
-        findViewById<Button>(R.id.btnDeveloper).setOnClickListener { startActivity(Intent(this, AboutDevActivity::class.java)) }
+        findViewById<Button>(R.id.btnDeveloper).setOnClickListener { startActivity(Intent(this, AboutDevActivity::class.java)); finish() }
 
         val btnLogout = findViewById<Button>(R.id.btnLogout)
         btnLogout.setOnClickListener {

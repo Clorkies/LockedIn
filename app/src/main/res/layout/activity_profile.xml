@@ -65,7 +65,7 @@
                     android:layout_width="180dp"
                     android:layout_height="180dp"
                     android:background="@drawable/circle_frame"
-                    android:scaleType="fitCenter"
+                    android:scaleType="centerCrop"
                     android:clipToOutline="true"
                     android:src="@drawable/default_pfp" />
             </FrameLayout>
