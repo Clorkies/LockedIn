@@ -1,6 +1,7 @@
 package edu.citu.csit284.lockedin
 
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -8,17 +9,20 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.app.AlertDialog
-import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.firestore.SetOptions
@@ -37,12 +41,79 @@ class ProfileActivity : Activity() {
         val bio = findViewById<EditText>(R.id.bio)
         val pass = findViewById<EditText>(R.id.password)
         val email = findViewById<EditText>(R.id.email)
+        val passReq = findViewById<LinearLayout>(R.id.passwordRequirements)
+        passReq.visibility = View.GONE
+        val profileBottomSheet = findViewById<LinearLayout>(R.id.profileBottomSheet)
+        profileBottomSheet.translationY = 1330f
         val imgPriv = findViewById<ImageView>(R.id.imgPriv)
         pass.toggle(imgPriv)
         val sharedPref = getSharedPreferences("User", MODE_PRIVATE)
         val editList  = listOf(name,bio,pass)
         val imgpfp = findViewById<ImageView>(R.id.pfp)
         var pfp : Int
+
+        val btn_edit = findViewById<Button>(R.id.btn_edit)
+        val btn_logout = findViewById<Button>(R.id.button_logout)
+
+        // Password Requirements
+        val tvPasswordStrength = findViewById<TextView>(R.id.tvPasswordStrength)
+        val tvRuleLength = findViewById<TextView>(R.id.tvRuleLength)
+        val tvRuleUppercase = findViewById<TextView>(R.id.tvRuleUppercase)
+        val tvRuleNumber = findViewById<TextView>(R.id.tvRuleNumber)
+        pass.addTextChangedListener(object : TextWatcher {
+            @SuppressLint("ResourceAsColor", "SetTextI18n")
+            override fun afterTextChanged(s: Editable?) {
+                val pass = s.toString()
+                var metRules = 0
+
+                val isLengthValid = pass.length >= 8
+                val isGreaterThanMin = pass.length > 8
+                val hasUppercase = pass.any { it.isUpperCase() }
+                val hasNumber = pass.any { it.isDigit() }
+
+                metRules += updateRuleStatus(tvRuleLength, isLengthValid)
+                metRules += updateRuleStatus(tvRuleUppercase, hasUppercase)
+                metRules += updateRuleStatus(tvRuleNumber, hasNumber)
+                metRules += if (isGreaterThanMin) 1 else 0
+
+                when (metRules) {
+                    0, 1 -> {
+                        tvPasswordStrength.text = "Weak"
+                        btn_edit.isEnabled = false
+                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.red))
+                        btn_edit.setBackgroundResource(R.drawable.btn_register_disabled)
+                    }
+                    2 -> {
+                        tvPasswordStrength.text = "Good"
+                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.devYellow))
+                        btn_edit.isEnabled = isLengthValid
+                        if (isLengthValid) btn_edit.setBackgroundResource(R.drawable.btn_register)
+                    }
+                    3 -> {
+                        tvPasswordStrength.text = "Strong"
+                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.teal_700))
+                        btn_edit.isEnabled = isLengthValid
+                        if (isLengthValid) btn_edit.setBackgroundResource(R.drawable.btn_register)
+                    }
+                    4 -> {
+                        tvPasswordStrength.text = "Very Strong"
+                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.purple_500))
+                        btn_edit.isEnabled = isGreaterThanMin
+                        if (isGreaterThanMin) btn_edit.setBackgroundResource(R.drawable.btn_register)
+                    }
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            private fun updateRuleStatus(textView: TextView, isValid: Boolean): Int {
+                val color = if (!isValid) R.color.passwordReqs else R.color.devYellow
+                textView.setTextColor(ContextCompat.getColor(this@ProfileActivity, color))
+                return if (isValid) 1 else 0
+            }
+        })
+
 
         val userInfo = sharedPref.getString("username","")
         users
@@ -89,8 +160,6 @@ class ProfileActivity : Activity() {
                 }
             }
 
-        val btn_edit = findViewById<Button>(R.id.btn_edit)
-        val btn_logout = findViewById<Button>(R.id.button_logout)
         var editIsClicked = false
         btn_edit.setOnClickListener {
             if(btn_edit.text.equals("Edit Information")){
@@ -112,6 +181,22 @@ class ProfileActivity : Activity() {
                         bio.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE
                     }
                 }
+                profileBottomSheet.translationY = 1330f-136f
+
+                passReq.visibility = View.VISIBLE
+
+                profileBottomSheet.post {
+                    profileBottomSheet.requestLayout()
+                    profileBottomSheet.invalidate()
+
+                    profileBottomSheet.animate()
+                        .translationY(1050f)
+                        .setDuration(300)
+                        .setInterpolator(DecelerateInterpolator())
+                        .start()
+                }
+
+
             }else{
                 editIsClicked = false
                 imgpfp.clearColorFilter()
@@ -196,6 +281,21 @@ class ProfileActivity : Activity() {
                     dialog.dismiss()
                 }
                 dialog.show()
+                passReq.visibility = View.GONE
+
+                profileBottomSheet.translationY = 1050+136f
+
+
+                profileBottomSheet.post {
+                    profileBottomSheet.requestLayout()
+                    profileBottomSheet.invalidate()
+
+                    profileBottomSheet.animate()
+                        .translationY(1330f)
+                        .setDuration(300)
+                        .setInterpolator(DecelerateInterpolator())
+                        .start()
+                }
             }
         }
         findViewById<ImageButton>(R.id.button_back).setOnClickListener { finish(); }
