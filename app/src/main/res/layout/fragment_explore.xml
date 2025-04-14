@@ -63,6 +63,36 @@
             android:dividerHeight="25dp"
             android:clipToPadding="false"/>
 
+        <LinearLayout
+            android:id="@+id/noInternetBox"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_gravity="top"
+            android:layout_marginTop="100dp"
+            android:background="@drawable/loading_background"
+            android:visibility="gone"
+            android:orientation="vertical"
+            android:gravity="center"
+            >
+
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/icon_no_internet"
+                android:layout_marginBottom="20dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No internet connection"
+                android:textColor="@color/white"
+                android:textSize="15dp"/>
+
+        </LinearLayout>
+
+
         <View
             android:id="@+id/loadingView1"
             android:layout_width="match_parent"

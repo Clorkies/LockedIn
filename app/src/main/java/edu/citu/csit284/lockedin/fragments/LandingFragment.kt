@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.ListView
+import android.widget.Toast
 import edu.citu.csit284.lockedin.MatchDetailsActivity
 import edu.citu.csit284.lockedin.ProfileActivity
 import edu.citu.csit284.lockedin.R
@@ -20,6 +22,7 @@ class LandingFragment : Fragment() {
     private var caller: String? = null
     private lateinit var loadingView1: View
     private lateinit var loadingView2: View
+    private lateinit var noInternetBox: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +41,8 @@ class LandingFragment : Fragment() {
 
         loadingView1 = view.findViewById(R.id.loadingView1)
         loadingView2 = view.findViewById(R.id.loadingView2)
+        noInternetBox = view.findViewById(R.id.noInternetBox)
+        noInternetBox.visibility = View.GONE
 
         LoadingAnimationUtil.setupLoadingViews(requireContext(), loadingView1, loadingView2)
         LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
@@ -49,8 +54,9 @@ class LandingFragment : Fragment() {
 
         val listView = view.findViewById<ListView>(R.id.articleListView)
 
-        fetchArticles(requireContext(), listView, caller = "landing") {
+        fetchArticles(requireContext(), listView, caller = "landing") { hasInternet ->
             LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
+            noInternetBox.visibility = if (!hasInternet) View.VISIBLE else View.GONE
         }
 
         val matchDetail = view.findViewById<FrameLayout>(R.id.ongoingMatch)
@@ -63,5 +69,3 @@ class LandingFragment : Fragment() {
         LoadingAnimationUtil.cancelAnimations()
     }
 }
-
-

@@ -14,7 +14,7 @@ fun fetchArticles(
     context: Context,
     listView: ListView,
     caller: String = "landing",
-    onComplete: () -> Unit = {}
+    onComplete: (hasInternet: Boolean) -> Unit = {}
 ) {
     val apiService = RetrofitClient.newsApiService
     apiService.getEsportsArticles().enqueue(object : Callback<NewsResponse> {
@@ -39,12 +39,11 @@ fun fetchArticles(
             } else {
                 Toast.makeText(context, "Failed to load articles", Toast.LENGTH_SHORT).show()
             }
-            onComplete()
+            onComplete(true)
         }
 
         override fun onFailure(call: Call<NewsResponse>, t: Throwable) {
-            Toast.makeText(context, "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
-            onComplete()
+            onComplete(false)
         }
     })
 }

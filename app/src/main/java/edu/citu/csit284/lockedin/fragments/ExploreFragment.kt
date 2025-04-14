@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.ListView
 import androidx.navigation.fragment.findNavController
 import edu.citu.csit284.lockedin.ProfileActivity
@@ -19,6 +20,7 @@ class ExploreFragment : Fragment() {
     private var caller: String? = null
     private lateinit var loadingView1: View
     private lateinit var loadingView2: View
+    private lateinit var noInternetBox: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,13 +55,16 @@ class ExploreFragment : Fragment() {
 
         loadingView1 = view.findViewById(R.id.loadingView1)
         loadingView2 = view.findViewById(R.id.loadingView2)
+        noInternetBox = view.findViewById(R.id.noInternetBox)
+        noInternetBox.visibility = View.GONE
 
         LoadingAnimationUtil.setupLoadingViews(requireContext(), loadingView1, loadingView2)
         LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
 
         val listView = view.findViewById<ListView>(R.id.articleListView)
-        fetchArticles(requireContext(), listView, caller = "explore") {
+        fetchArticles(requireContext(), listView, caller = "explore") { hasInternet ->
             LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
+            noInternetBox.visibility = if (!hasInternet) View.VISIBLE else View.GONE
         }
     }
 
