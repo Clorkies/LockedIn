@@ -46,49 +46,84 @@
         android:layout_marginVertical="20dp"
         >
 
-        <ImageButton
+        <LinearLayout
             android:id="@+id/bookmarkedList"
             android:layout_height="50dp"
             android:layout_width="50dp"
-            android:background="@drawable/rectangle_rounded_titles_bg"
-            android:src="@drawable/icon_bookmark_checked"
-            />
+            android:background="@drawable/rectangle_rounded_bg"
+            android:orientation="vertical"
+            android:gravity="center"
+            >
+
+            <ImageView
+                android:id="@+id/bookmarkedListImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_bookmark_checked"/>
+
+        </LinearLayout>
 
         <Space android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" />
 
-        <Button
+        <LinearLayout
             android:id="@+id/game1List"
             android:layout_height="50dp"
             android:layout_width="180dp"
-            android:background="@drawable/rectangle_rounded_titles_bg"
-            android:text="VALORANT"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            />
+            android:background="@drawable/rectangle_rounded_bg"
+            android:orientation="vertical"
+            android:gravity="center"
+            >
+            <TextView
+                android:id="@+id/game1ListText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="VALORANT"
+                android:textColor="@color/white"
+                />
+        </LinearLayout>
 
         <Space android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" />
 
-        <Button
+
+        <LinearLayout
             android:id="@+id/game2List"
             android:layout_height="50dp"
             android:layout_width="50dp"
-            android:text="C"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:background="@drawable/rectangle_rounded_titles_bg"
-            />
+            android:background="@drawable/rectangle_rounded_bg"
+            android:orientation="vertical"
+            android:gravity="center"
+            >
+            <TextView
+                android:id="@+id/game2ListText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="C"
+                android:textColor="@color/white"
+                />
+        </LinearLayout>
 
         <Space android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" />
 
-        <Button
+
+        <LinearLayout
             android:id="@+id/game3List"
             android:layout_height="50dp"
             android:layout_width="50dp"
-            android:text="D"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:background="@drawable/rectangle_rounded_titles_bg"
-            />
+            android:background="@drawable/rectangle_rounded_bg"
+            android:orientation="vertical"
+            android:gravity="center"
+            >
+            <TextView
+                android:id="@+id/game3ListText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="D"
+                android:textColor="@color/white"
+                />
+        </LinearLayout>
     </LinearLayout>
 
     <FrameLayout

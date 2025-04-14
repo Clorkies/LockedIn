@@ -11,8 +11,10 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ListView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import edu.citu.csit284.lockedin.ProfileActivity
@@ -29,10 +31,14 @@ class ExploreFragment : Fragment() {
     private lateinit var noInternetBox: LinearLayout
     private lateinit var articlesContainer: FrameLayout
 
-    private lateinit var bookmarkedListButton: ImageButton
-    private lateinit var game1ListButton: Button
-    private lateinit var game2ListButton: Button
-    private lateinit var game3ListButton: Button
+    private lateinit var bookmarkedListButton: LinearLayout
+    private lateinit var bookmarkedListImage: ImageView
+    private lateinit var game1ListButton: LinearLayout
+    private lateinit var game1ListButtonText: TextView
+    private lateinit var game2ListButton: LinearLayout
+    private lateinit var game2ListButtonText: TextView
+    private lateinit var game3ListButton: LinearLayout
+    private lateinit var game3ListButtonText: TextView
 
     private lateinit var listView: ListView
 
@@ -82,9 +88,14 @@ class ExploreFragment : Fragment() {
         articlesContainer.translationY = 0f
 
         bookmarkedListButton = view.findViewById(R.id.bookmarkedList)
+        bookmarkedListImage = view.findViewById(R.id.bookmarkedListImage)
         game1ListButton = view.findViewById(R.id.game1List)
+        game1ListButtonText = view.findViewById(R.id.game1ListText)
         game2ListButton = view.findViewById(R.id.game2List)
+        game2ListButtonText = view.findViewById(R.id.game2ListText)
         game3ListButton = view.findViewById(R.id.game3List)
+        game3ListButtonText = view.findViewById(R.id.game3ListText)
+
 
         updateButtonStyles("game1")
 
@@ -138,18 +149,18 @@ class ExploreFragment : Fragment() {
     }
 
     private fun updateButtonStyles(activeCategory: String) {
-        val inactiveBackground = ContextCompat.getDrawable(requireContext(), R.drawable.rectangle_rounded_titles_bg)
+        val inactiveBackground = ContextCompat.getDrawable(requireContext(), R.drawable.rectangle_rounded_bg)
         val inactiveTextColor = ContextCompat.getColor(requireContext(), R.color.white)
 
         bookmarkedListButton.background = inactiveBackground
-        bookmarkedListButton.setImageResource(R.drawable.icon_bookmark_checked)
+        bookmarkedListImage.setImageResource(R.drawable.icon_bookmark_checked)
         game1ListButton.background = inactiveBackground
         game2ListButton.background = inactiveBackground
         game3ListButton.background = inactiveBackground
 
-        game1ListButton.setTextColor(inactiveTextColor)
-        game2ListButton.setTextColor(inactiveTextColor)
-        game3ListButton.setTextColor(inactiveTextColor)
+        game1ListButtonText.setTextColor(inactiveTextColor)
+        game2ListButtonText.setTextColor(inactiveTextColor)
+        game3ListButtonText.setTextColor(inactiveTextColor)
 
         val activeBackground = ContextCompat.getDrawable(requireContext(), R.drawable.rectangle_rounded_titles_bg_selected)
         val activeTextColor = ContextCompat.getColor(requireContext(), R.color.bg)
@@ -157,19 +168,19 @@ class ExploreFragment : Fragment() {
         when (activeCategory) {
             "bookmarked" -> {
                 bookmarkedListButton.background = activeBackground
-                bookmarkedListButton.setImageResource(R.drawable.icon_bookmark_dark)
+                bookmarkedListImage.setImageResource(R.drawable.icon_bookmark_dark)
             }
             "game1" -> {
                 game1ListButton.background = activeBackground
-                game1ListButton.setTextColor(activeTextColor)
+                game1ListButtonText.setTextColor(activeTextColor)
             }
             "game2" -> {
                 game2ListButton.background = activeBackground
-                game2ListButton.setTextColor(activeTextColor)
+                game2ListButtonText.setTextColor(activeTextColor)
             }
             "game3" -> {
                 game3ListButton.background = activeBackground
-                game3ListButton.setTextColor(activeTextColor)
+                game3ListButtonText.setTextColor(activeTextColor)
             }
         }
     }
