@@ -1,6 +1,5 @@
 package edu.citu.csit284.lockedin
 
-import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
@@ -8,19 +7,22 @@ import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
-import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.animation.DecelerateInterpolator
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.ScrollView
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.firestore.SetOptions
@@ -31,6 +33,7 @@ import edu.citu.csit284.lockedin.util.toggle
 
 class ProfileActivity : Activity() {
     private val users = Firebase.firestore.collection("users")
+    @RequiresApi(35)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
@@ -46,7 +49,16 @@ class ProfileActivity : Activity() {
         val imgPriv = findViewById<ImageView>(R.id.imgPriv)
         pass.toggle(imgPriv)
         val sharedPref = getSharedPreferences("User", MODE_PRIVATE)
-        val editList  = listOf(name,bio,pass)
+        val editList  = mutableListOf(name,bio)
+
+        editList.forEach{editText ->
+            editText.setOnFocusChangeListener{_, hasFocus ->
+                if (hasFocus) {
+                    editText.setSelection(editText.text.length)
+                }
+            }
+        }
+        editList.add(pass)
         val imgpfp = findViewById<ImageView>(R.id.pfp)
         var pfp : Int
 
@@ -58,6 +70,9 @@ class ProfileActivity : Activity() {
         val tvRuleLength = findViewById<TextView>(R.id.tvRuleLength)
         val tvRuleUppercase = findViewById<TextView>(R.id.tvRuleUppercase)
         val tvRuleNumber = findViewById<TextView>(R.id.tvRuleNumber)
+        var origName = name.text.toString()
+        var origBio = bio.text.toString()
+        var origPass = pass.text.toString()
         pass.addTextChangedListener(object : TextWatcher {
             @SuppressLint("ResourceAsColor", "SetTextI18n")
             override fun afterTextChanged(s: Editable?) {
@@ -142,46 +157,6 @@ class ProfileActivity : Activity() {
                 }
             }
 
-        imgpfp.setOnClickListener {
-            val dialog = BottomSheetDialog(this)
-            val view = layoutInflater.inflate(R.layout.profile_picker, null)
-            val em = email.text.toString()
-            dialog.setContentView(view)
-
-            val option1 = view.findViewById<ImageView>(R.id.option1)
-            val option2 = view.findViewById<ImageView>(R.id.option2)
-            val option3 = view.findViewById<ImageView>(R.id.option3)
-            val option4 = view.findViewById<ImageView>(R.id.option4)
-            option1.setOnClickListener {
-                imgpfp.setImageResource(R.drawable.red_pfp)
-                pfp = 1
-                name.setTextColor(ContextCompat.getColor(this,R.color.red))
-                updatePFP(em,pfp)
-                dialog.dismiss()
-            }
-            option2.setOnClickListener {
-                imgpfp.setImageResource(R.drawable.default_pfp)
-                pfp = 2
-                name.setTextColor(ContextCompat.getColor(this,R.color.yellow))
-                updatePFP(em,pfp)
-                dialog.dismiss()
-            }
-            option3.setOnClickListener {
-                imgpfp.setImageResource(R.drawable.green_pfp)
-                pfp = 3
-                name.setTextColor(ContextCompat.getColor(this,R.color.green))
-                updatePFP(em,pfp)
-                dialog.dismiss()
-            }
-            option4.setOnClickListener {
-                imgpfp.setImageResource(R.drawable.blue_pfp)
-                pfp = 4
-                name.setTextColor(ContextCompat.getColor(this,R.color.pfpblue))
-                updatePFP(em,pfp)
-                dialog.dismiss()
-            }
-            dialog.show()
-        }
         users
             .whereEqualTo("username",userInfo)
             .get()
@@ -191,6 +166,10 @@ class ProfileActivity : Activity() {
                         name.setText(document.getString("username"))
                         pass.setText(document.getString("password"))
                         email.setText(document.getString("email"))
+                        origName = name.text.toString()
+                        origBio = bio.text.toString()
+                        origPass = pass.text.toString()
+
                         if(document.contains("bio")){
                             bio.setText(document.getString("bio"))
                         }
@@ -198,8 +177,43 @@ class ProfileActivity : Activity() {
                 }
             }
 
+        var editIsClicked = false
+        pass.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                pass.setSelection(pass.text.length)
+                profileBottomSheet.translationY = 1330f-136f
+
+                passReq.visibility = View.VISIBLE
+
+                profileBottomSheet.post {
+                    profileBottomSheet.requestLayout()
+                    profileBottomSheet.invalidate()
+
+                    profileBottomSheet.animate()
+                        .translationY(600f)
+                        .setDuration(300)
+                        .setInterpolator(DecelerateInterpolator())
+                        .start()
+
+                }
+            } else {
+                passReq.visibility = View.GONE
+
+                profileBottomSheet.post {
+                    profileBottomSheet.requestLayout()
+                    profileBottomSheet.invalidate()
+
+                    profileBottomSheet.animate()
+                        .translationY(1330f)
+                        .setDuration(300)
+                        .setInterpolator(DecelerateInterpolator())
+                        .start()
+                }
+            }
+        }
         btn_edit.setOnClickListener {
             if(btn_edit.text.equals("Edit Information")){
+                editIsClicked = true
                 btn_edit.setText("Save Changes")
                 btn_logout.setText("Cancel")
                 imgpfp.setColorFilter(Color.argb(100, 255, 255, 255), PorterDuff.Mode.LIGHTEN)
@@ -217,23 +231,9 @@ class ProfileActivity : Activity() {
                         bio.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE
                     }
                 }
-                profileBottomSheet.translationY = 1330f-136f
-
-                passReq.visibility = View.VISIBLE
-
-                profileBottomSheet.post {
-                    profileBottomSheet.requestLayout()
-                    profileBottomSheet.invalidate()
-
-                    profileBottomSheet.animate()
-                        .translationY(1050f)
-                        .setDuration(300)
-                        .setInterpolator(DecelerateInterpolator())
-                        .start()
-                }
-
 
             }else{
+                editIsClicked = false
                 imgpfp.clearColorFilter()
                 btn_edit.setText("Edit Information")
                 btn_logout.setText("Log Out")
@@ -251,15 +251,15 @@ class ProfileActivity : Activity() {
                         bio.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE
                     }
                 }
-                val username = name.text.toString().trim()
-                val password = pass.text.toString().trim()
+                origName = name.text.toString().trim()
+                origPass = pass.text.toString().trim()
                 val em = email.text.toString().trim()
-                val newBio = bio.text.toString().trim()
+                origBio = bio.text.toString().trim()
                 val updatedUser: Map<String, Any> = mapOf (
-                    "username" to username,
+                    "username" to origName,
                     "email" to em,
-                    "password" to password,
-                    "bio" to newBio
+                    "password" to origPass,
+                    "bio" to origBio
                 )
                 users
                     .whereEqualTo("email",em)
@@ -273,7 +273,48 @@ class ProfileActivity : Activity() {
                                 toast("Updated Successfully!")
                             }
                     }
+            }
+        }
+        imgpfp.setOnClickListener {
+            if(editIsClicked){
+                val dialog = BottomSheetDialog(this)
+                val view = layoutInflater.inflate(R.layout.profile_picker, null)
+                val em = email.text.toString()
+                dialog.setContentView(view)
 
+                val option1 = view.findViewById<ImageView>(R.id.option1)
+                val option2 = view.findViewById<ImageView>(R.id.option2)
+                val option3 = view.findViewById<ImageView>(R.id.option3)
+                val option4 = view.findViewById<ImageView>(R.id.option4)
+                option1.setOnClickListener {
+                    imgpfp.setImageResource(R.drawable.red_pfp)
+                    pfp = 1
+                    name.setTextColor(ContextCompat.getColor(this,R.color.red))
+                    updatePFP(em,pfp)
+                    dialog.dismiss()
+                }
+                option2.setOnClickListener {
+                    imgpfp.setImageResource(R.drawable.default_pfp)
+                    pfp = 2
+                    name.setTextColor(ContextCompat.getColor(this,R.color.yellow))
+                    updatePFP(em,pfp)
+                    dialog.dismiss()
+                }
+                option3.setOnClickListener {
+                    imgpfp.setImageResource(R.drawable.green_pfp)
+                    pfp = 3
+                    name.setTextColor(ContextCompat.getColor(this,R.color.green))
+                    updatePFP(em,pfp)
+                    dialog.dismiss()
+                }
+                option4.setOnClickListener {
+                    imgpfp.setImageResource(R.drawable.blue_pfp)
+                    pfp = 4
+                    name.setTextColor(ContextCompat.getColor(this,R.color.pfpblue))
+                    updatePFP(em,pfp)
+                    dialog.dismiss()
+                }
+                dialog.show()
                 passReq.visibility = View.GONE
 
                 profileBottomSheet.translationY = 1050+136f
@@ -292,6 +333,23 @@ class ProfileActivity : Activity() {
             }
         }
         findViewById<ImageButton>(R.id.button_back).setOnClickListener { finish(); }
+        editList.forEach { editText ->
+            editText.setOnEditorActionListener { v, actionId, event ->
+                if (actionId == EditorInfo.IME_ACTION_DONE ||
+                    (event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)
+                ) {
+
+                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(v.windowToken, 0)
+
+                    v.clearFocus()
+
+                    true
+                } else {
+                    false
+                }
+            }
+        }
 
         val btn_settings = findViewById<ImageButton>(R.id.button_settings)
         btn_settings.setOnClickListener { startActivity(Intent(this, SettingsActivity::class.java)); finish(); }
@@ -300,6 +358,9 @@ class ProfileActivity : Activity() {
             if(btn_logout.text.equals("Cancel")){
                 btn_edit.setText("Edit Information")
                 btn_logout.setText("Log Out")
+                name.setText(origName)
+                bio.setText(origBio)
+                pass.setText(origPass)
                 imgpfp.clearColorFilter()
                 for (editText in editList) {
                     editText.setBackgroundResource(android.R.color.transparent)

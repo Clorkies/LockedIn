@@ -15,8 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingHorizontal="20dp"
-        android:gravity="top">
+        android:paddingHorizontal="20dp">
 
         <ImageView
             android:layout_width="40dp"
@@ -30,12 +29,11 @@
 
         <ImageButton
             android:id="@+id/button_profile"
-            android:background="@drawable/btn_profile"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:padding="7dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/icon_outline_user"/>
+            android:padding="0dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/default_pfp"/>
 
     </LinearLayout>
 
