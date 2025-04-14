@@ -13,6 +13,7 @@
     <color name="privbg">#FFA500</color>
     <color name="activebg">#90FBB5</color>
     <color name="settingsbg">#192a45</color>
+    <color name="articlebg">#0E1825</color>
     <color name="devYellow">#EEA023</color>
 
     <color name="loadingstate_dark">#192a45</color>
