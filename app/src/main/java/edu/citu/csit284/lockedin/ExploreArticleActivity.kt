@@ -1,22 +1,32 @@
 package edu.citu.csit284.lockedin
 
 import android.app.Activity
+import android.content.Context
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.DecelerateInterpolator
+import android.widget.CheckBox
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
 
+
 class ExploreArticleActivity : Activity() {
+    private val users = Firebase.firestore.collection("users")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_explore_article)
@@ -34,6 +44,10 @@ class ExploreArticleActivity : Activity() {
         val textView = findViewById<TextView>(R.id.articleTextView)
         val dateView = findViewById<TextView>(R.id.articleDateView)
         val readMore = findViewById<LinearLayout>(R.id.readMore)
+
+        val bookmark = findViewById<CheckBox>(R.id.bookmarkCheckbox)
+
+        setInitialBookmarkState(bookmark, title, articleUrl)
 
         if (!articleUrl.isNullOrEmpty()) {
             readMore.setOnClickListener {
@@ -89,5 +103,98 @@ class ExploreArticleActivity : Activity() {
 
         titleView.text = title
         textView.text = articleText
+    }
+    private fun setInitialBookmarkState(checkbox: CheckBox, title: String, articleUrl: String?) {
+        checkbox.setOnCheckedChangeListener(null)
+
+        checkbox.isChecked = false
+
+        val sharedPref = getSharedPreferences("User", Context.MODE_PRIVATE)
+        val username = sharedPref.getString("username", null)
+
+        if (username == null || articleUrl == null) {
+            setCheckboxListener(checkbox, title, articleUrl)
+            return
+        }
+
+        users
+            .whereEqualTo("username", username)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { userDocs ->
+                if (userDocs.documents.isNotEmpty()) {
+                    val userDoc = userDocs.documents[0]
+                    val bookmarks = userDoc.get("bookmarks") as? List<Map<String, Any>> ?: listOf()
+
+                    val isBookmarked = bookmarks.any {
+                        it["title"] == title && it["url"] == articleUrl
+                    }
+
+                    checkbox.isChecked = isBookmarked
+                    Log.d("Bookmarks", "Article is bookmarked: $isBookmarked")
+                }
+
+                setCheckboxListener(checkbox, title, articleUrl)
+            }
+            .addOnFailureListener { e ->
+                Log.e("Firestore", "Error checking bookmark status", e)
+                setCheckboxListener(checkbox, title, articleUrl)
+            }
+    }
+
+    private fun setCheckboxListener(checkbox: CheckBox, title: String, articleUrl: String?) {
+        checkbox.setOnCheckedChangeListener { _, isChecked ->
+            val sharedPref = getSharedPreferences("User", Context.MODE_PRIVATE)
+            val username = sharedPref.getString("username", null)
+
+            if (username == null || articleUrl == null) {
+                Toast.makeText(this, "Please log in to bookmark articles", Toast.LENGTH_SHORT).show()
+                checkbox.isChecked = !isChecked
+                return@setOnCheckedChangeListener
+            }
+
+            val bookmarkData = mapOf("title" to title, "url" to articleUrl)
+
+            users
+                .whereEqualTo("username", username)
+                .limit(1)
+                .get()
+                .addOnSuccessListener { userDocs ->
+                    if (userDocs.documents.isEmpty()) {
+                        Toast.makeText(this, "User account not found", Toast.LENGTH_SHORT).show()
+                        checkbox.isChecked = !isChecked
+                        return@addOnSuccessListener
+                    }
+
+                    val docRef = userDocs.documents[0].reference
+
+                    if (isChecked) {
+                        docRef.update("bookmarks", FieldValue.arrayUnion(bookmarkData))
+                            .addOnSuccessListener {
+                                Toast.makeText(this, "Added to bookmarks", Toast.LENGTH_SHORT).show()
+                            }
+                            .addOnFailureListener { e ->
+                                Log.e("Firestore", "Error adding bookmark", e)
+                                checkbox.isChecked = false
+                                Toast.makeText(this, "Failed to bookmark article", Toast.LENGTH_SHORT).show()
+                            }
+                    } else {
+                        docRef.update("bookmarks", FieldValue.arrayRemove(bookmarkData))
+                            .addOnSuccessListener {
+                                Toast.makeText(this, "Removed from bookmarks", Toast.LENGTH_SHORT).show()
+                            }
+                            .addOnFailureListener { e ->
+                                Log.e("Firestore", "Error removing bookmark", e)
+                                checkbox.isChecked = true
+                                Toast.makeText(this, "Failed to remove bookmark", Toast.LENGTH_SHORT).show()
+                            }
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Error managing bookmarks", Toast.LENGTH_SHORT).show()
+                    Log.e("Firestore", "Error fetching user document", e)
+                    checkbox.isChecked = !isChecked
+                }
+        }
     }
 }
