@@ -86,7 +86,7 @@ fun fetchBookmarkedArticles(
             val articles = bookmarks.map { bookmark ->
                 Article(
                     title = bookmark["title"] as? String ?: "Untitled",
-                    description = "",
+                    description = bookmark["description"] as? String ?: "Untitled",
                     url = bookmark["url"] as? String ?: "",
                     urlToImage = bookmark["imageUrl"] as? String ?: "",
                     publishedAt = bookmark["date"] as? String ?: ""
