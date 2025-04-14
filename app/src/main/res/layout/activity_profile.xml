@@ -69,24 +69,24 @@
                     android:clipToOutline="true"
                     android:src="@drawable/default_pfp" />
             </FrameLayout>
+
         <EditText
-            android:layout_marginTop="15dp"
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@android:color/transparent"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:fontFamily="@font/poppins_medium"
+            android:longClickable="false"
+            android:maxLength="20"
+            android:maxLines="1"
+            android:singleLine="true"
             android:text="Placeholder Name"
             android:textColor="@color/yellow"
-            android:textStyle="bold"
             android:textSize="28sp"
-            android:fontFamily="@font/poppins_medium"
-            android:background="@android:color/transparent"
-            android:focusable="false"
-            android:cursorVisible="false"
-            android:longClickable="false"
-            android:inputType="textNoSuggestions"
-            android:maxLines="1"
-            android:maxLength="20"
-            />
+            android:textStyle="bold" />
         <EditText
             android:layout_marginTop="5dp"
             android:id="@+id/bio"
@@ -102,8 +102,8 @@
             android:focusable="false"
             android:cursorVisible="false"
             android:longClickable="false"
-            android:inputType="textMultiLine|textNoSuggestions"
-            android:maxLines="2"
+            android:singleLine="true"
+            android:maxLines="1"
             android:maxLength="75"
             />
     </LinearLayout>
@@ -190,6 +190,8 @@
                     android:cursorVisible="false"
                     android:clickable="false"
                     android:inputType="textPassword"
+                    android:imeOptions="actionDone"
+                    android:singleLine="true"
                     android:maxLines="1"
                     android:maxLength="64"
                     />

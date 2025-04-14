@@ -8,11 +8,15 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
@@ -69,46 +73,6 @@ class ProfileActivity : Activity() {
                 }
             }
 
-        imgpfp.setOnClickListener {
-            val dialog = BottomSheetDialog(this)
-            val view = layoutInflater.inflate(R.layout.profile_picker, null)
-            val em = email.text.toString()
-            dialog.setContentView(view)
-
-            val option1 = view.findViewById<ImageView>(R.id.option1)
-            val option2 = view.findViewById<ImageView>(R.id.option2)
-            val option3 = view.findViewById<ImageView>(R.id.option3)
-            val option4 = view.findViewById<ImageView>(R.id.option4)
-            option1.setOnClickListener {
-                imgpfp.setImageResource(R.drawable.red_pfp)
-                pfp = 1
-                name.setTextColor(ContextCompat.getColor(this,R.color.red))
-                updatePFP(em,pfp)
-                dialog.dismiss()
-            }
-            option2.setOnClickListener {
-                imgpfp.setImageResource(R.drawable.default_pfp)
-                pfp = 2
-                name.setTextColor(ContextCompat.getColor(this,R.color.yellow))
-                updatePFP(em,pfp)
-                dialog.dismiss()
-            }
-            option3.setOnClickListener {
-                imgpfp.setImageResource(R.drawable.green_pfp)
-                pfp = 3
-                name.setTextColor(ContextCompat.getColor(this,R.color.green))
-                updatePFP(em,pfp)
-                dialog.dismiss()
-            }
-            option4.setOnClickListener {
-                imgpfp.setImageResource(R.drawable.blue_pfp)
-                pfp = 4
-                name.setTextColor(ContextCompat.getColor(this,R.color.pfpblue))
-                updatePFP(em,pfp)
-                dialog.dismiss()
-            }
-            dialog.show()
-        }
         users
             .whereEqualTo("username",userInfo)
             .get()
@@ -127,8 +91,10 @@ class ProfileActivity : Activity() {
 
         val btn_edit = findViewById<Button>(R.id.btn_edit)
         val btn_logout = findViewById<Button>(R.id.button_logout)
+        var editIsClicked = false
         btn_edit.setOnClickListener {
             if(btn_edit.text.equals("Edit Information")){
+                editIsClicked = true
                 btn_edit.setText("Save Changes")
                 btn_logout.setText("Cancel")
                 imgpfp.setColorFilter(Color.argb(100, 255, 255, 255), PorterDuff.Mode.LIGHTEN)
@@ -147,6 +113,7 @@ class ProfileActivity : Activity() {
                     }
                 }
             }else{
+                editIsClicked = false
                 imgpfp.clearColorFilter()
                 btn_edit.setText("Edit Information")
                 btn_logout.setText("Log Out")
@@ -189,7 +156,66 @@ class ProfileActivity : Activity() {
 
             }
         }
+        imgpfp.setOnClickListener {
+            if(editIsClicked){
+                val dialog = BottomSheetDialog(this)
+                val view = layoutInflater.inflate(R.layout.profile_picker, null)
+                val em = email.text.toString()
+                dialog.setContentView(view)
+
+                val option1 = view.findViewById<ImageView>(R.id.option1)
+                val option2 = view.findViewById<ImageView>(R.id.option2)
+                val option3 = view.findViewById<ImageView>(R.id.option3)
+                val option4 = view.findViewById<ImageView>(R.id.option4)
+                option1.setOnClickListener {
+                    imgpfp.setImageResource(R.drawable.red_pfp)
+                    pfp = 1
+                    name.setTextColor(ContextCompat.getColor(this,R.color.red))
+                    updatePFP(em,pfp)
+                    dialog.dismiss()
+                }
+                option2.setOnClickListener {
+                    imgpfp.setImageResource(R.drawable.default_pfp)
+                    pfp = 2
+                    name.setTextColor(ContextCompat.getColor(this,R.color.yellow))
+                    updatePFP(em,pfp)
+                    dialog.dismiss()
+                }
+                option3.setOnClickListener {
+                    imgpfp.setImageResource(R.drawable.green_pfp)
+                    pfp = 3
+                    name.setTextColor(ContextCompat.getColor(this,R.color.green))
+                    updatePFP(em,pfp)
+                    dialog.dismiss()
+                }
+                option4.setOnClickListener {
+                    imgpfp.setImageResource(R.drawable.blue_pfp)
+                    pfp = 4
+                    name.setTextColor(ContextCompat.getColor(this,R.color.pfpblue))
+                    updatePFP(em,pfp)
+                    dialog.dismiss()
+                }
+                dialog.show()
+            }
+        }
         findViewById<ImageButton>(R.id.button_back).setOnClickListener { finish(); }
+        editList.forEach { editText ->
+            editText.setOnEditorActionListener { v, actionId, event ->
+                if (actionId == EditorInfo.IME_ACTION_DONE ||
+                    (event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)
+                ) {
+
+                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(v.windowToken, 0)
+
+                    v.clearFocus()
+
+                    true
+                } else {
+                    false
+                }
+            }
+        }
 
         val btn_settings = findViewById<ImageButton>(R.id.button_settings)
         btn_settings.setOnClickListener { startActivity(Intent(this, SettingsActivity::class.java)); finish(); }
