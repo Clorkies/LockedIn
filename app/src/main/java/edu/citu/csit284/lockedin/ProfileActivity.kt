@@ -1,6 +1,5 @@
 package edu.citu.csit284.lockedin
 
-import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
@@ -8,21 +7,22 @@ import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
-import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.ScrollView
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.firestore.SetOptions
@@ -33,6 +33,7 @@ import edu.citu.csit284.lockedin.util.toggle
 
 class ProfileActivity : Activity() {
     private val users = Firebase.firestore.collection("users")
+    @RequiresApi(35)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
@@ -48,7 +49,16 @@ class ProfileActivity : Activity() {
         val imgPriv = findViewById<ImageView>(R.id.imgPriv)
         pass.toggle(imgPriv)
         val sharedPref = getSharedPreferences("User", MODE_PRIVATE)
-        val editList  = listOf(name,bio,pass)
+        val editList  = mutableListOf(name,bio)
+
+        editList.forEach{editText ->
+            editText.setOnFocusChangeListener{_, hasFocus ->
+                if (hasFocus) {
+                    editText.setSelection(editText.text.length)
+                }
+            }
+        }
+        editList.add(pass)
         val imgpfp = findViewById<ImageView>(R.id.pfp)
         var pfp : Int
 
@@ -161,6 +171,39 @@ class ProfileActivity : Activity() {
             }
 
         var editIsClicked = false
+        pass.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                pass.setSelection(pass.text.length)
+                profileBottomSheet.translationY = 1330f-136f
+
+                passReq.visibility = View.VISIBLE
+
+                profileBottomSheet.post {
+                    profileBottomSheet.requestLayout()
+                    profileBottomSheet.invalidate()
+
+                    profileBottomSheet.animate()
+                        .translationY(600f)
+                        .setDuration(300)
+                        .setInterpolator(DecelerateInterpolator())
+                        .start()
+
+                }
+            } else {
+                passReq.visibility = View.GONE
+
+                profileBottomSheet.post {
+                    profileBottomSheet.requestLayout()
+                    profileBottomSheet.invalidate()
+
+                    profileBottomSheet.animate()
+                        .translationY(1330f)
+                        .setDuration(300)
+                        .setInterpolator(DecelerateInterpolator())
+                        .start()
+                }
+            }
+        }
         btn_edit.setOnClickListener {
             if(btn_edit.text.equals("Edit Information")){
                 editIsClicked = true
@@ -181,21 +224,6 @@ class ProfileActivity : Activity() {
                         bio.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE
                     }
                 }
-                profileBottomSheet.translationY = 1330f-136f
-
-                passReq.visibility = View.VISIBLE
-
-                profileBottomSheet.post {
-                    profileBottomSheet.requestLayout()
-                    profileBottomSheet.invalidate()
-
-                    profileBottomSheet.animate()
-                        .translationY(1050f)
-                        .setDuration(300)
-                        .setInterpolator(DecelerateInterpolator())
-                        .start()
-                }
-
 
             }else{
                 editIsClicked = false
@@ -238,7 +266,6 @@ class ProfileActivity : Activity() {
                                 toast("Updated Successfully!")
                             }
                     }
-
             }
         }
         imgpfp.setOnClickListener {
