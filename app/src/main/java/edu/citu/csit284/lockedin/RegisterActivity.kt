@@ -118,7 +118,6 @@ class RegisterActivity : Activity() {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
-        val sharedPref = getSharedPreferences("User", MODE_PRIVATE)
         btnRegister.setOnClickListener {
             val em = email.text.toString()
             val pass = password.text.toString()

@@ -2,6 +2,7 @@ package edu.citu.csit284.lockedin.fragments
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -37,10 +39,27 @@ class GamesFragment : Fragment() {
     private lateinit var adapter: MatchAdapter
     private val matches = mutableListOf<Match>()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
+    private var prefGamesInt: MutableList<Int> = mutableListOf()
+    private val games = listOf(
+        1 to "Valorant",
+        2 to "League",
+        3 to "CS:GO",
+        4 to "Dota",
+        5 to "Rivals",
+        6 to "Overwatch"
+    )
+    private val gameMap: Map<Int, String> = games.toMap()
+    private lateinit var tvGame1 : TextView
+    private lateinit var tvGame2 : TextView
+    private lateinit var tvGame3 : TextView
+    private lateinit var sharedPref: SharedPreferences
+    private var userInfo: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         caller = arguments?.getString("caller")
+        sharedPref = requireActivity().getSharedPreferences("User", Activity.MODE_PRIVATE)
+        userInfo = sharedPref.getString("username", "")
     }
 
 
@@ -48,7 +67,30 @@ class GamesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_games, container, false)
+        val root = inflater.inflate(R.layout.fragment_games, container, false)
+
+        tvGame1 = root.findViewById(R.id.game1)
+        tvGame2 = root.findViewById(R.id.game2)
+        tvGame3 = root.findViewById(R.id.game3)
+
+        users
+            .whereEqualTo("username", userInfo)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty()) {
+                    val document = documents.documents[0]
+                    val rawList = document.get("favGames") as? List<Long>
+                    val prefNames = rawList
+                        ?.map { it.toInt() }
+                        ?.mapNotNull { gameMap[it] }
+                        ?: emptyList()
+                    tvGame1.text = prefNames.getOrNull(0)?.firstOrNull()?.toString() ?: ""
+                    tvGame2.text = prefNames.getOrNull(1)?.firstOrNull()?.toString() ?: ""
+                    tvGame3.text = prefNames.getOrNull(2)?.firstOrNull()?.toString() ?: ""
+                }
+            }
+
+        return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,8 +108,6 @@ class GamesFragment : Fragment() {
             startActivity(Intent(requireContext(), ProfileActivity::class.java))
             requireActivity().supportFragmentManager.popBackStack()
         }
-        val sharedPref = requireActivity().getSharedPreferences("User", Activity.MODE_PRIVATE)
-        val userInfo = sharedPref.getString("username","")
         var pfp : Int
         users
             .whereEqualTo("username",userInfo)
@@ -105,12 +145,12 @@ class GamesFragment : Fragment() {
         }
 
 
-
         btnProfile.setOnClickListener {
             val intent = Intent(requireContext(), ProfileActivity::class.java).apply {
                 putExtra("caller", "game")
             }
             startActivity(intent)
+            requireActivity().supportFragmentManager.popBackStack()
         }
 
         btnBack.setOnClickListener {
