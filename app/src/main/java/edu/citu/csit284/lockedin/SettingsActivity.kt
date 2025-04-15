@@ -33,6 +33,7 @@ class SettingsActivity : Activity() {
             }
             val logout = sheet.findViewById<Button>(R.id.logout)
             logout.setOnClickListener {
+                getSharedPreferences("User", MODE_PRIVATE).edit().clear().apply()
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
             }
