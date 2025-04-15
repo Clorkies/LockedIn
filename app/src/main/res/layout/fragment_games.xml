@@ -27,14 +27,15 @@
             android:layout_height="20dp"
             android:layout_weight="1"/>
 
+
         <ImageButton
             android:id="@+id/button_profile"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:clipToOutline="true"
+            android:scaleType="fitCenter"
             android:background="@drawable/btn_profile"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:padding="7dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/icon_outline_user"/>
+            android:src="@drawable/default_pfp"/>
 
     </LinearLayout>
 
@@ -57,7 +58,7 @@
             android:textColor="@color/white"
             />
 
-        <Space android:layout_width="20dp" android:layout_height="wrap_content" />
+        <Space android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" />
 
         <Button
             android:layout_height="50dp"
@@ -65,7 +66,7 @@
             android:background="@drawable/rectangle_rounded_bg"
             />
 
-        <Space android:layout_width="20dp" android:layout_height="wrap_content" />
+        <Space android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" />
 
         <Button
             android:layout_height="50dp"
@@ -73,7 +74,7 @@
             android:background="@drawable/rectangle_rounded_bg"
             />
 
-        <Space android:layout_width="20dp" android:layout_height="wrap_content" />
+        <Space android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" />
 
         <Button
             android:layout_height="50dp"
@@ -98,13 +99,13 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="20dp">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginHorizontal="20dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
