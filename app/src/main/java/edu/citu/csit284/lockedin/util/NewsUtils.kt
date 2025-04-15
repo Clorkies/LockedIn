@@ -13,6 +13,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+private lateinit var bookmarks: List<Map<String, Any>>
+
+private lateinit var con: Context
+private lateinit var listV: ListView
+private lateinit var onComp: (hasArticles: Boolean) -> Unit
+
 fun fetchArticles(
     context: Context,
     listView: ListView,
@@ -52,16 +58,18 @@ fun fetchArticles(
         }
     })
 }
-
 fun fetchBookmarkedArticles(
     context: Context,
     listView: ListView,
     caller: String = "explore",
     onComplete: (hasArticles: Boolean) -> Unit = {}
 ) {
+    con = context
+    listV = listView
+    onComp = onComplete
+
     val sharedPref = context.getSharedPreferences("User", Context.MODE_PRIVATE)
     val username = sharedPref.getString("username", null)
-
 
     val users = Firebase.firestore.collection("users")
 
@@ -76,24 +84,15 @@ fun fetchBookmarkedArticles(
             }
 
             val userDoc = userDocs.documents[0]
-            val bookmarks = userDoc.get("bookmarks") as? List<Map<String, Any>> ?: listOf()
+            bookmarks = userDoc.get("bookmarks") as? List<Map<String, Any>> ?: listOf()
 
             if (bookmarks.isEmpty()) {
                 listView.adapter = ArticleAdapter(context, emptyList())
-                Toast.makeText(context, "No bookmarked articles yet", Toast.LENGTH_SHORT).show()
                 onComplete(false)
                 return@addOnSuccessListener
             }
 
-            val articles = bookmarks.map { bookmark ->
-                Article(
-                    title = bookmark["title"] as? String ?: "Untitled",
-                    description = bookmark["description"] as? String ?: "Untitled",
-                    url = bookmark["url"] as? String ?: "",
-                    urlToImage = bookmark["imageUrl"] as? String ?: "",
-                    publishedAt = bookmark["date"] as? String ?: ""
-                )
-            }
+            var articles = getArticles()
 
             listView.adapter = ArticleAdapter(context, articles)
 
@@ -116,4 +115,21 @@ fun fetchBookmarkedArticles(
             Toast.makeText(context, "Failed to load bookmarks", Toast.LENGTH_SHORT).show()
             onComplete(false)
         }
+}
+
+fun getArticles(): List<Article> {
+    val articles = bookmarks.map { bookmark ->
+        Article(
+            title = bookmark["title"] as? String ?: "Untitled",
+            description = bookmark["description"] as? String ?: "Untitled",
+            url = bookmark["url"] as? String ?: "",
+            urlToImage = bookmark["imageUrl"] as? String ?: "",
+            publishedAt = bookmark["date"] as? String ?: ""
+        )
+    }
+    return articles
+}
+
+fun updateArticles() {
+    fetchBookmarkedArticles(con, listV, "explore", onComp)
 }

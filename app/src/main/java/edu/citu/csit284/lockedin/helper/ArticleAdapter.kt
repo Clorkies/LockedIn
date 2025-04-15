@@ -65,5 +65,7 @@ class ArticleAdapter(
 
         return itemView
     }
+
+    override fun getCount() : Int = articles.size
 }
 

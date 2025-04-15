@@ -34,9 +34,11 @@ class ExploreFragment : Fragment() {
     private lateinit var loadingView2: View
     private lateinit var noInternetBox: LinearLayout
     private lateinit var articlesContainer: FrameLayout
+    private lateinit var noBookmarkBox: LinearLayout
 
     private lateinit var bookmarkedListButton: LinearLayout
     private lateinit var bookmarkedListImage: ImageView
+    private lateinit var bookmarkedListText: TextView
     private lateinit var game1ListButton: LinearLayout
     private lateinit var game1ListButtonText: TextView
     private lateinit var game2ListButton: LinearLayout
@@ -109,6 +111,8 @@ class ExploreFragment : Fragment() {
         noInternetBox = view.findViewById(R.id.noInternetBox)
         noInternetBox.visibility = View.GONE
         articlesContainer = view.findViewById(R.id.articlesList)
+        noBookmarkBox = view.findViewById(R.id.noBookmarksBox)
+        noBookmarkBox.visibility = View.GONE
 
         LoadingAnimationUtil.setupLoadingViews(requireContext(), loadingView1, loadingView2)
         LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
@@ -121,6 +125,7 @@ class ExploreFragment : Fragment() {
 
         bookmarkedListButton = view.findViewById(R.id.bookmarkedList)
         bookmarkedListImage = view.findViewById(R.id.bookmarkedListImage)
+        bookmarkedListText = view.findViewById(R.id.bookmarkListText)
         game1ListButton = view.findViewById(R.id.game1List)
         game1ListButtonText = view.findViewById(R.id.game1ListText)
         game2ListButton = view.findViewById(R.id.game2List)
@@ -186,13 +191,31 @@ class ExploreFragment : Fragment() {
 
         bookmarkedListButton.background = inactiveBackground
         bookmarkedListImage.setImageResource(R.drawable.icon_bookmark_checked)
+        bookmarkedListImage.visibility = View.VISIBLE
+        bookmarkedListText.visibility = View.GONE
         game1ListButton.background = inactiveBackground
         game2ListButton.background = inactiveBackground
         game3ListButton.background = inactiveBackground
 
         game1ListButtonText.setTextColor(inactiveTextColor)
+        game1ListButtonText.setText("V")
         game2ListButtonText.setTextColor(inactiveTextColor)
+        game2ListButtonText.setText("C")
         game3ListButtonText.setTextColor(inactiveTextColor)
+        game3ListButtonText.setText("R")
+
+        var params = bookmarkedListButton.layoutParams
+        params.width = 150
+        bookmarkedListButton.layoutParams = params
+        params = game1ListButton.layoutParams
+        params.width = 150
+        game1ListButton.layoutParams = params
+        params = game2ListButton.layoutParams
+        params.width = 150
+        game2ListButton.layoutParams = params
+        params = game3ListButton.layoutParams
+        params.width = 150
+        game3ListButton.layoutParams = params
 
         val activeBackground = ContextCompat.getDrawable(requireContext(), R.drawable.rectangle_rounded_titles_bg_selected)
         val activeTextColor = ContextCompat.getColor(requireContext(), R.color.bg)
@@ -200,19 +223,36 @@ class ExploreFragment : Fragment() {
         when (activeCategory) {
             "bookmarked" -> {
                 bookmarkedListButton.background = activeBackground
+                params = bookmarkedListButton.layoutParams
+                params.width = 350
+                bookmarkedListButton.layoutParams = params
                 bookmarkedListImage.setImageResource(R.drawable.icon_bookmark_dark)
+                bookmarkedListImage.visibility = View.GONE
+                bookmarkedListText.visibility = View.VISIBLE
             }
             "game1" -> {
                 game1ListButton.background = activeBackground
+                params = game1ListButton.layoutParams
+                params.width = 350
+                game1ListButton.layoutParams = params
                 game1ListButtonText.setTextColor(activeTextColor)
+                game1ListButtonText.setText("Valorant")
             }
             "game2" -> {
                 game2ListButton.background = activeBackground
+                params = game2ListButton.layoutParams
+                params.width = 350
+                game2ListButton.layoutParams = params
                 game2ListButtonText.setTextColor(activeTextColor)
+                game2ListButtonText.setText("CS:GO")
             }
             "game3" -> {
                 game3ListButton.background = activeBackground
+                params = game3ListButton.layoutParams
+                params.width = 350
+                game3ListButton.layoutParams = params
                 game3ListButtonText.setTextColor(activeTextColor)
+                game3ListButtonText.setText("Roblox")
             }
         }
     }
@@ -221,24 +261,30 @@ class ExploreFragment : Fragment() {
         when (category) {
             "bookmarked" -> {
                 fetchBookmarkedArticles(requireContext(), listView, caller = "explore") { hasArticles ->
+                    if (listView.adapter.count == 0) {
+                        noBookmarkBox.visibility = View.VISIBLE
+                    }
                     LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
                     noInternetBox.visibility = View.GONE
                 }
             }
             "game1" -> {
                 fetchArticles(requireContext(), listView, caller = "explore") { hasInternet ->
+                    noBookmarkBox.visibility = View.GONE
                     LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
                     noInternetBox.visibility = if (!hasInternet) View.VISIBLE else View.GONE
                 }
             }
             "game2" -> {
                 fetchArticles(requireContext(), listView, caller = "explore") { hasInternet ->
+                    noBookmarkBox.visibility = View.GONE
                     LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
                     noInternetBox.visibility = if (!hasInternet) View.VISIBLE else View.GONE
                 }
             }
             "game3" -> {
                 fetchArticles(requireContext(), listView, caller = "explore") { hasInternet ->
+                    noBookmarkBox.visibility = View.GONE
                     LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
                     noInternetBox.visibility = if (!hasInternet) View.VISIBLE else View.GONE
                 }

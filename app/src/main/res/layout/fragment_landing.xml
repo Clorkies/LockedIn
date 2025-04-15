@@ -165,16 +165,16 @@
         <View
             android:id="@+id/loadingView1"
             android:layout_width="match_parent"
-            android:layout_height="280dp"
+            android:layout_height="360dp"
             android:layout_gravity="top"
             android:background="@drawable/loading_background"
             android:visibility="gone"/>
 
         <View
-            android:layout_marginTop="300dp"
+            android:layout_marginTop="385dp"
             android:id="@+id/loadingView2"
             android:layout_width="match_parent"
-            android:layout_height="280dp"
+            android:layout_height="360dp"
             android:layout_gravity="top"
             android:background="@drawable/loading_background"
             android:visibility="gone"/>

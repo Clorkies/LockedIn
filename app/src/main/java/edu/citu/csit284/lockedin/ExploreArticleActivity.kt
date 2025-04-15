@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.animation.DecelerateInterpolator
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -20,6 +21,7 @@ import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import edu.citu.csit284.lockedin.util.updateArticles
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -31,7 +33,8 @@ class ExploreArticleActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_explore_article)
 
-        findViewById<ImageButton>(R.id.button_back).setOnClickListener { finish() }
+        val backBtn = findViewById<ImageButton>(R.id.button_back)
+        backBtn.setOnClickListener { updateArticles(); finish() }
 
         val imageUrl = intent.getStringExtra("imageUrl")
         val title = intent.getStringExtra("title") ?: "Untitled"
