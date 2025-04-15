@@ -129,13 +129,3 @@ fun getArticles(): List<Article> {
     }
     return articles
 }
-
-fun updateArticles(context: Context? = null, listView: ListView? = null, onComplete: ((Boolean) -> Unit)? = null) {
-    if (context != null && listView != null && onComplete != null) {
-        fetchBookmarkedArticles(context, listView, "explore", onComplete)
-    } else if (::con.isInitialized && ::listV.isInitialized && ::onComp.isInitialized) {
-        fetchBookmarkedArticles(con, listV, "explore", onComp)
-    } else {
-        Log.d("NewsUtils", "Cannot update articles: required parameters not initialized")
-    }
-}
