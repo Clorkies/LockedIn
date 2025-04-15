@@ -20,7 +20,6 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.R
-import edu.citu.csit284.lockedin.util.updateArticles
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
