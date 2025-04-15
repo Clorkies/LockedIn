@@ -94,8 +94,17 @@ fun fetchArticlesSpecific(
             if (response.isSuccessful) {
                 val allArticles = response.body()?.articles ?: emptyList()
 
-                val displayArticles = allArticles.filter { isSafeArticle(it) }.shuffled()
+                val displayArticles = if (caller == "explore" && gameName.isNotEmpty()) {
+                    val filtered = FilterUtil.filterArticlesByGame(allArticles, gameName)
 
+                    if (filtered.isEmpty()) {
+                        Toast.makeText(context, "No articles found for $gameName", Toast.LENGTH_SHORT).show()
+                    }
+
+                    filtered.shuffled()
+                } else {
+                    allArticles.shuffled()
+                }
 
                 listView.adapter = ArticleAdapter(context, displayArticles)
 
