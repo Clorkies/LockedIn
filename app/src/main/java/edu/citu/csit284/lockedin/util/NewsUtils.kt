@@ -10,12 +10,12 @@ import edu.citu.csit284.lockedin.helper.ArticleAdapter
 import edu.citu.csit284.lockedin.activities.ExploreArticleActivity
 import edu.citu.csit284.lockedin.data.Article
 import edu.citu.csit284.lockedin.data.NewsResponse
+import edu.citu.csit284.lockedin.util.FilterUtil.getGameKeywords
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 private lateinit var bookmarks: List<Map<String, Any>>
-
 private lateinit var con: Context
 private lateinit var listV: ListView
 private lateinit var onComp: (hasArticles: Boolean) -> Unit
@@ -24,7 +24,6 @@ fun fetchArticles(
     context: Context,
     listView: ListView,
     caller: String = "landing",
-    gameName: String = "valorant",
     onComplete: (hasInternet: Boolean) -> Unit = {}
 ) {
     val apiService = RetrofitClient.newsApiService
@@ -33,17 +32,9 @@ fun fetchArticles(
             if (response.isSuccessful) {
                 val allArticles = response.body()?.articles ?: emptyList()
 
-                val displayArticles = if (caller == "explore" && gameName.isNotEmpty()) {
-                    val filtered = FilterUtil.filterArticlesByGame(allArticles, gameName)
+                val displayArticles = allArticles.filter { isSafeArticle(it) }.shuffled()
 
-                    if (filtered.isEmpty()) {
-                        Toast.makeText(context, "No articles found for $gameName", Toast.LENGTH_SHORT).show()
-                    }
-
-                    filtered.shuffled()
-                } else {
-                    allArticles.shuffled()
-                }
+                Log.d("NSFW_Filter", "Filtered out ${allArticles.size - displayArticles.size} NSFW articles.")
 
                 listView.adapter = ArticleAdapter(context, displayArticles)
 
@@ -71,6 +62,68 @@ fun fetchArticles(
     })
 }
 
+
+fun fetchArticlesSpecific(
+    context: Context,
+    listView: ListView,
+    caller: String = "landing",
+    gameName: String = "valorant",
+    onComplete: (hasInternet: Boolean) -> Unit = {}
+) {
+    val apiService = RetrofitClient.newsApiService
+
+    val keywords = getGameKeywords(gameName)
+    val queryBuilder = StringBuilder("(")
+
+    keywords.forEachIndexed { index, keyword ->
+        val formattedKeyword = if (keyword.contains(" ")) "\"$keyword\"" else keyword
+        queryBuilder.append(formattedKeyword)
+
+        if (index < keywords.size - 1) {
+            queryBuilder.append(" OR ")
+        }
+    }
+
+    queryBuilder.append(") -football -soccer -basketball -baseball -cricket -tennis -NFL -NBA -MLB")
+
+    val finalQuery = queryBuilder.toString()
+    Log.d("ArticleFetcher", "Game query for $gameName: $finalQuery")
+
+    apiService.getGameSpecificArticles(gameQuery = finalQuery).enqueue(object : Callback<NewsResponse> {
+        override fun onResponse(call: Call<NewsResponse>, response: Response<NewsResponse>) {
+            if (response.isSuccessful) {
+                val allArticles = response.body()?.articles ?: emptyList()
+
+                val displayArticles = allArticles.filter { isSafeArticle(it) }.shuffled()
+
+
+                listView.adapter = ArticleAdapter(context, displayArticles)
+
+                listView.setOnItemClickListener { _, _, position, _ ->
+                    val article = displayArticles[position]
+                    val intent = Intent(context, ExploreArticleActivity::class.java).apply {
+                        putExtra("imageUrl", article.urlToImage)
+                        putExtra("title", article.title)
+                        putExtra("articleText", article.description)
+                        putExtra("date", article.publishedAt)
+                        putExtra("articleUrl", article.url)
+                        putExtra("caller", caller)
+                    }
+                    context.startActivity(intent)
+                }
+            } else {
+                Log.e("ArticleFetcher", "API error: ${response.code()} - ${response.errorBody()?.string()}")
+                Toast.makeText(context, "Failed to load articles", Toast.LENGTH_SHORT).show()
+            }
+            onComplete(true)
+        }
+
+        override fun onFailure(call: Call<NewsResponse>, t: Throwable) {
+            Log.e("ArticleFetcher", "API call failed", t)
+            onComplete(false)
+        }
+    })
+}
 fun fetchBookmarkedArticles(
     context: Context,
     listView: ListView,
@@ -154,3 +207,13 @@ fun getGameNameById(id: Int): String {
         else -> ""
     }
 }
+
+fun isSafeArticle(article: Article): Boolean {
+    val combinedText = "${article.title} ${article.description}".lowercase()
+    return nsfwKeywords.none { keyword -> combinedText.contains(keyword) }
+}
+
+val nsfwKeywords = listOf(
+    "nsfw", "explicit", "nude", "nudity", "sexual", "sex", "porn", "xxx", "18+", "onlyfans",
+    "lewd", "uncensored", "adult", "erotic", "naked", "boobs", "tits", "fetish", "kink", "r18"
+)

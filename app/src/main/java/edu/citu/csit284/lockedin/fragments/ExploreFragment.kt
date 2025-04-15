@@ -27,6 +27,7 @@ import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.util.FilterUtil
 import edu.citu.csit284.lockedin.util.LoadingAnimationUtil
 import edu.citu.csit284.lockedin.util.fetchArticles
+import edu.citu.csit284.lockedin.util.fetchArticlesSpecific
 import edu.citu.csit284.lockedin.util.fetchBookmarkedArticles
 import edu.citu.csit284.lockedin.util.getGameNameById
 
@@ -439,7 +440,7 @@ class ExploreFragment : Fragment() {
                 val gameId = getGameIdForButton(gameIndex)
                 val gameName = FilterUtil.getGameNameById(gameId)
 
-                fetchArticles(requireContext(), listView, caller = "explore", gameName = gameName) { hasInternet ->
+                fetchArticlesSpecific(requireContext(), listView, caller = "explore", gameName = gameName) { hasInternet ->
                     noBookmarkBox.visibility = View.GONE
                     LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
                     noInternetBox.visibility = if (!hasInternet) View.VISIBLE else View.GONE
