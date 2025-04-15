@@ -208,7 +208,7 @@ class LoginSplashScreen : Activity() {
 
                     docRef.update("favGames", favGames)
                         .addOnSuccessListener {
-                            val slideDownAnimation = ObjectAnimator.ofFloat(customizeSheet, "translationY", 300f, 2000f)
+                            val slideDownAnimation = ObjectAnimator.ofFloat(customizeSheet, "translationY", 650f, 2000f)
                             slideDownAnimation.duration = 500
                             slideDownAnimation.interpolator = AccelerateInterpolator()
                             slideDownAnimation.start()
