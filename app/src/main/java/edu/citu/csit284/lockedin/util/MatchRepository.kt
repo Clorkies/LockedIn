@@ -32,6 +32,42 @@ class MatchRepository {
             emptyList()
         }
     }
+    suspend fun getUpcomingLoLMatches(): List<Match> {
+        return try {
+            apiService.getUpcomingLoLMatches(apiKey)
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+    suspend fun getUpcomingCSGOMatches(): List<Match> {
+        return try {
+            apiService.getUpcomingCSGOMatches(apiKey)
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+    suspend fun getUpcomingDotaMatches(): List<Match> {
+        return try {
+            apiService.getUpcomingDotaMatches(apiKey)
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+    suspend fun getUpcomingRivalsMatches(): List<Match> {
+        return try {
+            apiService.getUpcomingRivalsMatches(apiKey)
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+    suspend fun getUpcomingOverwatchMatches(): List<Match> {
+        return try {
+            apiService.getUpcomingOverwatchMatches(apiKey)
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
     suspend fun getUpcomingMatches(): List<Match> {
         return try {
             apiService.getUpcomingMatches(apiKey)

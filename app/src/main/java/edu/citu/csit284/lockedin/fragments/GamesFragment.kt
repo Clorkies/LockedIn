@@ -11,7 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -39,21 +41,27 @@ class GamesFragment : Fragment() {
     private lateinit var adapter: MatchAdapter
     private val matches = mutableListOf<Match>()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
-    private var prefGamesInt: MutableList<Int> = mutableListOf()
+
     private val games = listOf(
         1 to "Valorant",
-        2 to "League",
+        2 to "LoL",
         3 to "CS:GO",
-        4 to "Dota",
-        5 to "Rivals",
+        4 to "Dota2",
+        5 to "Marvel Rivals",
         6 to "Overwatch"
     )
     private val gameMap: Map<Int, String> = games.toMap()
     private lateinit var tvGame1 : TextView
     private lateinit var tvGame2 : TextView
     private lateinit var tvGame3 : TextView
+    private lateinit var btnGame1 : LinearLayout
+    private lateinit var btnGame2 : LinearLayout
+    private lateinit var btnGame3 : LinearLayout
+    private var prefNames: List<String> = emptyList()
+
     private lateinit var sharedPref: SharedPreferences
     private var userInfo: String? = null
+    private var currentCategory = "game1"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +80,9 @@ class GamesFragment : Fragment() {
         tvGame1 = root.findViewById(R.id.game1)
         tvGame2 = root.findViewById(R.id.game2)
         tvGame3 = root.findViewById(R.id.game3)
+        btnGame1 = root.findViewById(R.id.game1Btn)
+        btnGame2 = root.findViewById(R.id.game2Btn)
+        btnGame3 = root.findViewById(R.id.game3Btn)
 
         users
             .whereEqualTo("username", userInfo)
@@ -80,13 +91,15 @@ class GamesFragment : Fragment() {
                 if (!documents.isEmpty()) {
                     val document = documents.documents[0]
                     val rawList = document.get("favGames") as? List<Long>
-                    val prefNames = rawList
+                    prefNames = rawList
                         ?.map { it.toInt() }
                         ?.mapNotNull { gameMap[it] }
                         ?: emptyList()
                     tvGame1.text = prefNames.getOrNull(0)?.firstOrNull()?.toString() ?: ""
                     tvGame2.text = prefNames.getOrNull(1)?.firstOrNull()?.toString() ?: ""
                     tvGame3.text = prefNames.getOrNull(2)?.firstOrNull()?.toString() ?: ""
+                    updateButtonStyles("game1")
+                    loadMatches(prefNames.getOrNull(0) ?: "Valorant")
                 }
             }
 
@@ -97,11 +110,9 @@ class GamesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         recyclerView = view.findViewById(R.id.rvView)
-        loadMatches()
         adapter = MatchAdapter(matches)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
 
         val btnProfile = view.findViewById<ImageButton>(R.id.button_profile)
         btnProfile.setOnClickListener {
@@ -133,6 +144,7 @@ class GamesFragment : Fragment() {
                 }
             }
 
+
         val btnBack = view.findViewById<ImageButton>(R.id.button_back)
         btnBack.setOnClickListener {
             when (caller) {
@@ -157,13 +169,101 @@ class GamesFragment : Fragment() {
             parentFragmentManager.popBackStack()
         }
 
-    }
-    private fun loadMatches() {
-        coroutineScope.launch {
-
-            val upcomingMatches = withContext(Dispatchers.IO) {
-                matchRepository.getUpcomingValorantMatches()
+        btnGame1.setOnClickListener {
+            if(currentCategory != "game1"){
+                updateButtonStyles("game1")
+                currentCategory = "game1"
+                loadMatches(prefNames.getOrNull(0) ?: "")
             }
+        }
+        btnGame2.setOnClickListener {
+            if(currentCategory != "game2"){
+                updateButtonStyles("game2")
+                currentCategory = "game2"
+                loadMatches(prefNames.getOrNull(1) ?: "")
+            }
+        }
+        btnGame3.setOnClickListener {
+            if(currentCategory != "game3"){
+                updateButtonStyles("game3")
+                currentCategory = "game3"
+                loadMatches(prefNames.getOrNull(2) ?: "")
+            }
+        }
+
+    }
+
+    private fun updateButtonStyles(activeCategory: String) {
+        val inactiveBackground = ContextCompat.getDrawable(requireContext(), R.drawable.rectangle_rounded_bg)
+        val inactiveTextColor = ContextCompat.getColor(requireContext(), R.color.white)
+
+        btnGame1.background = inactiveBackground
+        btnGame2.background = inactiveBackground
+        btnGame3.background = inactiveBackground
+
+        tvGame1.setTextColor(inactiveTextColor)
+        tvGame1.setText(prefNames.getOrNull(0)?.firstOrNull()?.toString() ?: "")
+        tvGame2.setTextColor(inactiveTextColor)
+        tvGame2.setText(prefNames.getOrNull(1)?.firstOrNull()?.toString() ?: "")
+        tvGame3.setTextColor(inactiveTextColor)
+        tvGame3.setText(prefNames.getOrNull(2)?.firstOrNull()?.toString() ?: "")
+
+        var params = btnGame1.layoutParams
+        params.width = 150
+        btnGame1.layoutParams = params
+        params = btnGame2.layoutParams
+        params.width = 150
+        btnGame2.layoutParams = params
+        params = btnGame3.layoutParams
+        params.width = 150
+        btnGame3.layoutParams = params
+
+        val activeBackground = ContextCompat.getDrawable(requireContext(), R.drawable.rectangle_rounded_titles_bg_selected)
+        val activeTextColor = ContextCompat.getColor(requireContext(), R.color.bg)
+
+        when (activeCategory) {
+            "game1" -> {
+                btnGame1.background = activeBackground
+                params = btnGame1.layoutParams
+                params.width = 350
+                btnGame1.layoutParams = params
+                tvGame1.setTextColor(activeTextColor)
+                tvGame1.text = prefNames.getOrNull(0) ?: ""
+            }
+            "game2" -> {
+                btnGame2.background = activeBackground
+                params = btnGame2.layoutParams
+                params.width = 350
+                btnGame2.layoutParams = params
+                tvGame2.setTextColor(activeTextColor)
+                tvGame2.text = prefNames.getOrNull(1) ?: ""
+            }
+            "game3" -> {
+                btnGame3.background = activeBackground
+                params = btnGame3.layoutParams
+                params.width = 350
+                btnGame3.layoutParams = params
+                tvGame3.setTextColor(activeTextColor)
+                tvGame3.text = prefNames.getOrNull(2) ?: ""
+            }
+        }
+    }
+    private fun loadMatches(game: String) {
+        coroutineScope.launch {
+            val upcomingMatches = withContext(Dispatchers.IO) {
+                when (game) {
+                    "Valorant" -> matchRepository.getUpcomingValorantMatches()
+                    "LoL" -> matchRepository.getUpcomingLoLMatches()
+                    "CS:GO" -> matchRepository.getUpcomingCSGOMatches()
+                    "Dota2" -> matchRepository.getUpcomingDotaMatches()
+                    "Marvel Rivals" -> matchRepository.getUpcomingRivalsMatches()
+                    "Overwatch" -> matchRepository.getUpcomingOverwatchMatches()
+                    else -> {
+                        emptyList()
+                    }
+                }
+            }
+
             matches.clear()
             matches.addAll(upcomingMatches)
             adapter.notifyDataSetChanged()
