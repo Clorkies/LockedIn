@@ -3,6 +3,7 @@ package edu.citu.csit284.lockedin.fragments
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,16 +11,33 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.MatchDetailsActivity
 import edu.citu.csit284.lockedin.ProfileActivity
 import edu.citu.csit284.lockedin.R
+import edu.citu.csit284.lockedin.data.Match
+import edu.citu.csit284.lockedin.helper.MatchAdapter
+import edu.citu.csit284.lockedin.util.MatchRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class GamesFragment : Fragment() {
 
     private var caller: String? = null
     private val users = Firebase.firestore.collection("users")
+    private val matchRepository = MatchRepository()
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: MatchAdapter
+    private val matches = mutableListOf<Match>()
+    private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         caller = arguments?.getString("caller")
@@ -35,6 +53,13 @@ class GamesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        recyclerView = view.findViewById(R.id.rvView)
+        loadMatches()
+        adapter = MatchAdapter(matches)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
 
         val btnProfile = view.findViewById<ImageButton>(R.id.button_profile)
         btnProfile.setOnClickListener {
@@ -80,8 +105,6 @@ class GamesFragment : Fragment() {
         }
 
 
-        val matchView1 = view.findViewById<FrameLayout>(R.id.ongoingMatch1)
-        val matchView2 = view.findViewById<FrameLayout>(R.id.ongoingMatch2)
 
         btnProfile.setOnClickListener {
             val intent = Intent(requireContext(), ProfileActivity::class.java).apply {
@@ -94,13 +117,21 @@ class GamesFragment : Fragment() {
             parentFragmentManager.popBackStack()
         }
 
-        matchView1.setOnClickListener { startActivity(Intent(requireContext(), MatchDetailsActivity::class.java)) }
+    }
+    private fun loadMatches() {
+        coroutineScope.launch {
 
-        matchView2.setOnClickListener {
-            val intent = Intent(requireContext(), MatchDetailsActivity::class.java).apply {
-                putExtra("caller", "game")
+            val upcomingMatches = withContext(Dispatchers.IO) {
+                matchRepository.getUpcomingValorantMatches()
             }
-            startActivity(intent)
+            matches.clear()
+            matches.addAll(upcomingMatches)
+            adapter.notifyDataSetChanged()
+
         }
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        coroutineScope.cancel()
     }
 }

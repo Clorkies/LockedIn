@@ -19,6 +19,8 @@ android {
 
     val newsApiKey = localProperties.getProperty("NEWS_API_KEY")
         ?: throw GradleException("Missing NEWS_API_KEY in local.properties")
+    val pandaScoreApiKey = localProperties.getProperty("pandaScoreApiKey")
+        ?: throw GradleException("Missing pandascore api key in local.properties")
 
     defaultConfig {
         applicationId = "edu.citu.csit284.lockedin"
@@ -33,6 +35,7 @@ android {
         }
 
         buildConfigField("String", "NEWS_API_KEY", "\"$newsApiKey\"")
+        buildConfigField("String", "PANDASCORE_API_KEY", "\"$pandaScoreApiKey\"")
     }
 
     buildTypes {
@@ -75,12 +78,16 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
+    // Logging
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
+
     // Image Handler
     implementation("com.squareup.picasso:picasso:2.71828")
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
     // Article Web View
     implementation("androidx.browser:browser:1.5.0")
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
