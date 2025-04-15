@@ -294,4 +294,11 @@ class ExploreFragment : Fragment() {
         super.onDestroy()
         LoadingAnimationUtil.cancelAnimations()
     }
+
+    override fun onResume() {
+        super.onResume()
+        if (currentCategory == "bookmarked") {
+            loadArticles("bookmarked")
+        }
+    }
 }

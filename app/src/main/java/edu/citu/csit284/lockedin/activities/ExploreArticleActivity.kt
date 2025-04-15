@@ -33,7 +33,7 @@ class ExploreArticleActivity : Activity() {
         setContentView(R.layout.activity_explore_article)
 
         val backBtn = findViewById<ImageButton>(R.id.button_back)
-        backBtn.setOnClickListener { updateArticles(); finish() } // Triggered in this line where I call UpdateARticles()
+        backBtn.setOnClickListener { finish() }
 
         val imageUrl = intent.getStringExtra("imageUrl")
         val title = intent.getStringExtra("title") ?: "Untitled"
