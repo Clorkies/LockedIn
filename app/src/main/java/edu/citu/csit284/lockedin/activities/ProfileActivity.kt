@@ -1,4 +1,4 @@
-package edu.citu.csit284.lockedin
+package edu.citu.csit284.lockedin.activities
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -28,6 +28,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.util.toast
 import edu.citu.csit284.lockedin.util.toggle
 
@@ -93,24 +94,32 @@ class ProfileActivity : Activity() {
                     0, 1 -> {
                         tvPasswordStrength.text = "Weak"
                         btn_edit.isEnabled = false
-                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.red))
+                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@ProfileActivity,
+                            R.color.red
+                        ))
                         btn_edit.setBackgroundResource(R.drawable.btn_register_disabled)
                     }
                     2 -> {
                         tvPasswordStrength.text = "Good"
-                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.devYellow))
+                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@ProfileActivity,
+                            R.color.devYellow
+                        ))
                         btn_edit.isEnabled = isLengthValid
                         if (isLengthValid) btn_edit.setBackgroundResource(R.drawable.btn_register)
                     }
                     3 -> {
                         tvPasswordStrength.text = "Strong"
-                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.teal_700))
+                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@ProfileActivity,
+                            R.color.teal_700
+                        ))
                         btn_edit.isEnabled = isLengthValid
                         if (isLengthValid) btn_edit.setBackgroundResource(R.drawable.btn_register)
                     }
                     4 -> {
                         tvPasswordStrength.text = "Very Strong"
-                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.purple_500))
+                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@ProfileActivity,
+                            R.color.purple_500
+                        ))
                         btn_edit.isEnabled = isGreaterThanMin
                         if (isGreaterThanMin) btn_edit.setBackgroundResource(R.drawable.btn_register)
                     }
@@ -139,19 +148,19 @@ class ProfileActivity : Activity() {
                     when (pfp) {
                         1 -> {
                             imgpfp.setImageResource(R.drawable.red_pfp)
-                            name.setTextColor(ContextCompat.getColor(this,R.color.red))
+                            name.setTextColor(ContextCompat.getColor(this, R.color.red))
                         }
                         2 -> {
                             imgpfp.setImageResource(R.drawable.default_pfp)
-                            name.setTextColor(ContextCompat.getColor(this,R.color.yellow))
+                            name.setTextColor(ContextCompat.getColor(this, R.color.yellow))
                         }
                         3 -> {
                             imgpfp.setImageResource(R.drawable.green_pfp)
-                            name.setTextColor(ContextCompat.getColor(this,R.color.green))
+                            name.setTextColor(ContextCompat.getColor(this, R.color.green))
                         }
                         4 -> {
                             imgpfp.setImageResource(R.drawable.blue_pfp)
-                            name.setTextColor(ContextCompat.getColor(this,R.color.pfpblue))
+                            name.setTextColor(ContextCompat.getColor(this, R.color.pfpblue))
                         }
                     }
                 }
@@ -289,28 +298,28 @@ class ProfileActivity : Activity() {
                 option1.setOnClickListener {
                     imgpfp.setImageResource(R.drawable.red_pfp)
                     pfp = 1
-                    name.setTextColor(ContextCompat.getColor(this,R.color.red))
+                    name.setTextColor(ContextCompat.getColor(this, R.color.red))
                     updatePFP(em,pfp)
                     dialog.dismiss()
                 }
                 option2.setOnClickListener {
                     imgpfp.setImageResource(R.drawable.default_pfp)
                     pfp = 2
-                    name.setTextColor(ContextCompat.getColor(this,R.color.yellow))
+                    name.setTextColor(ContextCompat.getColor(this, R.color.yellow))
                     updatePFP(em,pfp)
                     dialog.dismiss()
                 }
                 option3.setOnClickListener {
                     imgpfp.setImageResource(R.drawable.green_pfp)
                     pfp = 3
-                    name.setTextColor(ContextCompat.getColor(this,R.color.green))
+                    name.setTextColor(ContextCompat.getColor(this, R.color.green))
                     updatePFP(em,pfp)
                     dialog.dismiss()
                 }
                 option4.setOnClickListener {
                     imgpfp.setImageResource(R.drawable.blue_pfp)
                     pfp = 4
-                    name.setTextColor(ContextCompat.getColor(this,R.color.pfpblue))
+                    name.setTextColor(ContextCompat.getColor(this, R.color.pfpblue))
                     updatePFP(em,pfp)
                     dialog.dismiss()
                 }
@@ -377,7 +386,7 @@ class ProfileActivity : Activity() {
                 }
             }else{
                 val sheet = LayoutInflater.from(this).inflate(R.layout.logout_bottom_sheet, null)
-                val bottom = BottomSheetDialog(this,R.style.BottomSheetDialogTheme)
+                val bottom = BottomSheetDialog(this, R.style.BottomSheetDialogTheme)
                 bottom.setContentView(sheet)
                 val back = sheet.findViewById<Button>(R.id.back_btn)
                 back.setOnClickListener {

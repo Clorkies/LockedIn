@@ -1,4 +1,4 @@
-package edu.citu.csit284.lockedin
+package edu.citu.csit284.lockedin.activities
 
 import android.app.Activity
 import android.content.Intent
@@ -14,6 +14,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.splash.LoginSplashScreen
 import edu.citu.csit284.lockedin.util.toast
 import edu.citu.csit284.lockedin.util.toggle

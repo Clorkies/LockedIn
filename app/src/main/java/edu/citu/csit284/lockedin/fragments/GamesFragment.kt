@@ -12,8 +12,8 @@ import android.widget.ImageButton
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import edu.citu.csit284.lockedin.MatchDetailsActivity
-import edu.citu.csit284.lockedin.ProfileActivity
+import edu.citu.csit284.lockedin.activities.MatchDetailsActivity
+import edu.citu.csit284.lockedin.activities.ProfileActivity
 import edu.citu.csit284.lockedin.R
 
 class GamesFragment : Fragment() {

@@ -21,7 +21,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import edu.citu.csit284.lockedin.MainActivity
+import edu.citu.csit284.lockedin.activities.MainActivity
 import edu.citu.csit284.lockedin.R
 
 class LoginSplashScreen : Activity() {

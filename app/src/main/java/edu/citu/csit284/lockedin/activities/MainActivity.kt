@@ -1,4 +1,4 @@
-package edu.citu.csit284.lockedin
+package edu.citu.csit284.lockedin.activities
 
 import android.os.Bundle
 import android.view.Menu
@@ -10,6 +10,8 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import edu.citu.csit284.lockedin.databinding.ActivityMainBinding
 import androidx.navigation.NavDestination
+import edu.citu.csit284.lockedin.R
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

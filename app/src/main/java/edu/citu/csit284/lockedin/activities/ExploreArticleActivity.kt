@@ -1,4 +1,4 @@
-package edu.citu.csit284.lockedin
+package edu.citu.csit284.lockedin.activities
 
 import android.app.Activity
 import android.content.Context
@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.util.updateArticles
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -32,7 +33,7 @@ class ExploreArticleActivity : Activity() {
         setContentView(R.layout.activity_explore_article)
 
         val backBtn = findViewById<ImageButton>(R.id.button_back)
-        backBtn.setOnClickListener { updateArticles(); finish() }
+        backBtn.setOnClickListener { updateArticles(); finish() } // Triggered in this line where I call UpdateARticles()
 
         val imageUrl = intent.getStringExtra("imageUrl")
         val title = intent.getStringExtra("title") ?: "Untitled"

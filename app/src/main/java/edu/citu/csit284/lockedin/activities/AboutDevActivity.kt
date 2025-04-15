@@ -1,4 +1,4 @@
-package edu.citu.csit284.lockedin
+package edu.citu.csit284.lockedin.activities
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -8,6 +8,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import edu.citu.csit284.lockedin.R
 
 class AboutDevActivity : Activity() {
     @SuppressLint("SetTextI18n")

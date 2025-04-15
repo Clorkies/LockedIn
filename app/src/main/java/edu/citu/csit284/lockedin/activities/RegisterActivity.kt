@@ -1,4 +1,4 @@
-package edu.citu.csit284.lockedin
+package edu.citu.csit284.lockedin.activities
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -16,6 +16,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.util.toast
 import edu.citu.csit284.lockedin.util.toggle
 
@@ -80,24 +81,32 @@ class RegisterActivity : Activity() {
                     0, 1 -> {
                         tvPasswordStrength.text = "Weak"
                         btnRegister.isEnabled = false
-                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@RegisterActivity, R.color.red))
+                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@RegisterActivity,
+                            R.color.red
+                        ))
                         btnRegister.setBackgroundResource(R.drawable.btn_register_disabled)
                     }
                     2 -> {
                         tvPasswordStrength.text = "Good"
-                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@RegisterActivity, R.color.devYellow))
+                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@RegisterActivity,
+                            R.color.devYellow
+                        ))
                         btnRegister.isEnabled = isLengthValid
                         if (isLengthValid) btnRegister.setBackgroundResource(R.drawable.btn_register)
                     }
                     3 -> {
                         tvPasswordStrength.text = "Strong"
-                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@RegisterActivity, R.color.teal_700))
+                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@RegisterActivity,
+                            R.color.teal_700
+                        ))
                         btnRegister.isEnabled = isLengthValid
                         if (isLengthValid) btnRegister.setBackgroundResource(R.drawable.btn_register)
                     }
                     4 -> {
                         tvPasswordStrength.text = "Very Strong"
-                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@RegisterActivity, R.color.purple_500))
+                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@RegisterActivity,
+                            R.color.purple_500
+                        ))
                         btnRegister.isEnabled = isGreaterThanMin
                         if (isGreaterThanMin) btnRegister.setBackgroundResource(R.drawable.btn_register)
                     }

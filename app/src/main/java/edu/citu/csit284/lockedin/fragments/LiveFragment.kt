@@ -12,9 +12,9 @@ import android.widget.ListView
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import edu.citu.csit284.lockedin.ProfileActivity
+import edu.citu.csit284.lockedin.activities.ProfileActivity
 import edu.citu.csit284.lockedin.R
-import edu.citu.csit284.lockedin.TournamentActivity
+import edu.citu.csit284.lockedin.activities.TournamentActivity
 import edu.citu.csit284.lockedin.data.Tournament
 import edu.citu.csit284.lockedin.helper.TournamentCustomListView
 

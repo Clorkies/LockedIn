@@ -1,4 +1,4 @@
-package edu.citu.csit284.lockedin
+package edu.citu.csit284.lockedin.activities
 
 import android.app.Activity
 import android.content.Intent
@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ListView
+import edu.citu.csit284.lockedin.R
 
 class MatchDetailsActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {

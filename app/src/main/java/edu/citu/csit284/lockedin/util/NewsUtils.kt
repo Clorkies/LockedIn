@@ -1,12 +1,13 @@
 package edu.citu.csit284.lockedin.util
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.ListView
 import android.widget.Toast
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.helper.ArticleAdapter
-import edu.citu.csit284.lockedin.ExploreArticleActivity
+import edu.citu.csit284.lockedin.activities.ExploreArticleActivity
 import edu.citu.csit284.lockedin.data.Article
 import edu.citu.csit284.lockedin.data.NewsResponse
 import retrofit2.Call
@@ -129,6 +130,12 @@ fun getArticles(): List<Article> {
     return articles
 }
 
-fun updateArticles() {
-    fetchBookmarkedArticles(con, listV, "explore", onComp)
+fun updateArticles(context: Context? = null, listView: ListView? = null, onComplete: ((Boolean) -> Unit)? = null) {
+    if (context != null && listView != null && onComplete != null) {
+        fetchBookmarkedArticles(context, listView, "explore", onComplete)
+    } else if (::con.isInitialized && ::listV.isInitialized && ::onComp.isInitialized) {
+        fetchBookmarkedArticles(con, listV, "explore", onComp)
+    } else {
+        Log.d("NewsUtils", "Cannot update articles: required parameters not initialized")
+    }
 }

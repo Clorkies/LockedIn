@@ -1,4 +1,4 @@
-package edu.citu.csit284.lockedin
+package edu.citu.csit284.lockedin.activities
 
 import android.app.Activity
 import android.content.Intent
@@ -10,6 +10,7 @@ import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import edu.citu.csit284.lockedin.R
 
 class SettingsActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +24,7 @@ class SettingsActivity : Activity() {
         val btnLogout = findViewById<Button>(R.id.btnLogout)
         btnLogout.setOnClickListener {
             val sheet = LayoutInflater.from(this).inflate(R.layout.logout_bottom_sheet, null)
-            val bottom = BottomSheetDialog(this,R.style.BottomSheetDialogTheme)
+            val bottom = BottomSheetDialog(this, R.style.BottomSheetDialogTheme)
 
             bottom.setContentView(sheet)
 

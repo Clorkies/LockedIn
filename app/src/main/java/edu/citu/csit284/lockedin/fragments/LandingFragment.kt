@@ -18,8 +18,8 @@ import android.widget.LinearLayout
 import android.widget.ListView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import edu.citu.csit284.lockedin.MatchDetailsActivity
-import edu.citu.csit284.lockedin.ProfileActivity
+import edu.citu.csit284.lockedin.activities.MatchDetailsActivity
+import edu.citu.csit284.lockedin.activities.ProfileActivity
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.util.LoadingAnimationUtil
 import edu.citu.csit284.lockedin.util.fetchArticles

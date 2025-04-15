@@ -1,4 +1,4 @@
-package edu.citu.csit284.lockedin
+package edu.citu.csit284.lockedin.activities
 
 import android.app.Activity
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
+import edu.citu.csit284.lockedin.R
 
 class TournamentActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
