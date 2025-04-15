@@ -1,5 +1,9 @@
 package edu.citu.csit284.lockedin.fragments
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -7,12 +11,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.ListView
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.MatchDetailsActivity
@@ -27,6 +30,7 @@ class LandingFragment : Fragment() {
     private lateinit var loadingView1: View
     private lateinit var loadingView2: View
     private lateinit var noInternetBox: LinearLayout
+    private lateinit var onGoingMatch: FrameLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +51,8 @@ class LandingFragment : Fragment() {
         loadingView2 = view.findViewById(R.id.loadingView2)
         noInternetBox = view.findViewById(R.id.noInternetBox)
         noInternetBox.visibility = View.GONE
+        onGoingMatch = view.findViewById(R.id.ongoingMatch)
+        startPulsatingAnimation(onGoingMatch)
 
         LoadingAnimationUtil.setupLoadingViews(requireContext(), loadingView1, loadingView2)
         LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
@@ -99,4 +105,35 @@ class LandingFragment : Fragment() {
         super.onDestroy()
         LoadingAnimationUtil.cancelAnimations()
     }
+
+    private fun startPulsatingAnimation(view: View) {
+        val scaleUpX = ObjectAnimator.ofFloat(view, View.SCALE_X, 1f, 1.05f)
+        val scaleUpY = ObjectAnimator.ofFloat(view, View.SCALE_Y, 1f, 1.05f)
+        val scaleDownX = ObjectAnimator.ofFloat(view, View.SCALE_X, 1.05f, 1f)
+        val scaleDownY = ObjectAnimator.ofFloat(view, View.SCALE_Y, 1.05f, 1f)
+
+        val scaleUp = AnimatorSet().apply {
+            playTogether(scaleUpX, scaleUpY)
+            duration = 950
+            interpolator = AccelerateDecelerateInterpolator()
+        }
+
+        val scaleDown = AnimatorSet().apply {
+            playTogether(scaleDownX, scaleDownY)
+            duration = 950
+            interpolator = AccelerateDecelerateInterpolator()
+        }
+
+        val pulseAnimator = AnimatorSet().apply {
+            playSequentially(scaleUp, scaleDown)
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    start()
+                }
+            })
+        }
+
+        pulseAnimator.start()
+    }
+
 }

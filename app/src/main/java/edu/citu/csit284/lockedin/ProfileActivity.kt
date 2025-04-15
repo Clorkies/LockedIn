@@ -15,13 +15,13 @@ import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.ScrollView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -189,9 +189,9 @@ class ProfileActivity : Activity() {
                     profileBottomSheet.invalidate()
 
                     profileBottomSheet.animate()
-                        .translationY(600f)
+                        .translationY(1000f)
                         .setDuration(300)
-                        .setInterpolator(DecelerateInterpolator())
+                        .setInterpolator(AccelerateDecelerateInterpolator())
                         .start()
 
                 }
