@@ -31,13 +31,24 @@ fun fetchArticles(
     apiService.getEsportsArticles().enqueue(object : Callback<NewsResponse> {
         override fun onResponse(call: Call<NewsResponse>, response: Response<NewsResponse>) {
             if (response.isSuccessful) {
-                var articles = response.body()?.articles ?: emptyList()
-                articles = articles.shuffled()
+                val allArticles = response.body()?.articles ?: emptyList()
 
-                listView.adapter = ArticleAdapter(context, articles)
+                val displayArticles = if (caller == "explore" && gameName.isNotEmpty()) {
+                    val filtered = FilterUtil.filterArticlesByGame(allArticles, gameName)
+
+                    if (filtered.isEmpty()) {
+                        Toast.makeText(context, "No articles found for $gameName", Toast.LENGTH_SHORT).show()
+                    }
+
+                    filtered.shuffled()
+                } else {
+                    allArticles.shuffled()
+                }
+
+                listView.adapter = ArticleAdapter(context, displayArticles)
 
                 listView.setOnItemClickListener { _, _, position, _ ->
-                    val article = articles[position]
+                    val article = displayArticles[position]
                     val intent = Intent(context, ExploreArticleActivity::class.java).apply {
                         putExtra("imageUrl", article.urlToImage)
                         putExtra("title", article.title)
@@ -59,6 +70,7 @@ fun fetchArticles(
         }
     })
 }
+
 fun fetchBookmarkedArticles(
     context: Context,
     listView: ListView,

@@ -24,6 +24,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.activities.ProfileActivity
 import edu.citu.csit284.lockedin.R
+import edu.citu.csit284.lockedin.util.FilterUtil
 import edu.citu.csit284.lockedin.util.LoadingAnimationUtil
 import edu.citu.csit284.lockedin.util.fetchArticles
 import edu.citu.csit284.lockedin.util.fetchBookmarkedArticles
@@ -175,17 +176,48 @@ class ExploreFragment : Fragment() {
                 if (documents.isEmpty) return@addOnSuccessListener
 
                 val document = documents.documents[0]
-                val faveGames = document.get("faveGames") as? List<Long> ?: listOf(1L, 3L, 6L)
+
+                val rawFaveGames = document.get("favGames")
+                Log.d("ExploreFragment", "Raw faveGames: $rawFaveGames")
+
+                val faveGames = when (rawFaveGames) {
+                    is List<*> -> {
+                        val result = rawFaveGames.mapNotNull {
+                            when (it) {
+                                is Long -> it.toInt()
+                                is Int -> it
+                                is Double -> it.toInt()
+                                is String -> it.toIntOrNull()
+                                else -> null
+                            }
+                        }
+                        Log.d("ExploreFragment", "Converted faveGames: $result")
+                        if (result.size >= 3) result else listOf(1, 3, 6)
+                    }
+                    else -> {
+                        Log.d("ExploreFragment", "Using default faveGames")
+                        listOf(1, 3, 6)
+                    }
+                }
+
+                Log.d("ExploreFragment", "Final faveGames: $faveGames")
 
                 if (faveGames.size >= 1) {
-                    setupGameButton(game1ListButton, game1ListButtonText, faveGames[0].toInt(), 1)
+                    setupGameButton(game1ListButton, game1ListButtonText, faveGames[0], 1)
+                    Log.d("ExploreFragment", "Set game1 button with ID: ${faveGames[0]}")
                 }
                 if (faveGames.size >= 2) {
-                    setupGameButton(game2ListButton, game2ListButtonText, faveGames[1].toInt(), 2)
+                    setupGameButton(game2ListButton, game2ListButtonText, faveGames[1], 2)
+                    Log.d("ExploreFragment", "Set game2 button with ID: ${faveGames[1]}")
                 }
                 if (faveGames.size >= 3) {
-                    setupGameButton(game3ListButton, game3ListButtonText, faveGames[2].toInt(), 3)
+                    setupGameButton(game3ListButton, game3ListButtonText, faveGames[2], 3)
+                    Log.d("ExploreFragment", "Set game3 button with ID: ${faveGames[2]}")
                 }
+
+                Log.d("ExploreFragment", "game1 tag: ${game1ListButtonText.tag}")
+                Log.d("ExploreFragment", "game2 tag: ${game2ListButtonText.tag}")
+                Log.d("ExploreFragment", "game3 tag: ${game3ListButtonText.tag}")
 
                 updateButtonStyles(currentCategory)
                 loadArticles(currentCategory)
@@ -197,8 +229,13 @@ class ExploreFragment : Fragment() {
 
     private fun setupGameButton(button: LinearLayout, textView: TextView, gameId: Int, buttonIndex: Int) {
         val gameName = getGameNameById(gameId)
+        Log.d("ExploreFragment", "Setting up button $buttonIndex with gameId: $gameId, name: $gameName")
+
         val gameInitial = gameName.firstOrNull()?.uppercase() ?: ""
         button.setPadding(20)
+
+        textView.tag = gameId
+        Log.d("ExploreFragment", "Button $buttonIndex textView tag set to: ${textView.tag}")
 
         var logoView = button.findViewWithTag<ImageView>("gameLogoImage$buttonIndex")
         if (logoView == null) {
@@ -226,7 +263,6 @@ class ExploreFragment : Fragment() {
         textView.text = gameInitial
 
         button.tag = gameName
-        textView.tag = gameId
 
         button.setOnClickListener {
             if (currentCategory != "game$buttonIndex") {
@@ -236,12 +272,34 @@ class ExploreFragment : Fragment() {
     }
 
     private fun getGameIdForButton(buttonIndex: Int): Int {
-        return when (buttonIndex) {
-            1 -> game1ListButtonText.tag as? Int ?: 1
-            2 -> game2ListButtonText.tag as? Int ?: 3
-            3 -> game3ListButtonText.tag as? Int ?: 6
-            else -> 1
+        val tagValue = when (buttonIndex) {
+            1 -> game1ListButtonText.tag
+            2 -> game2ListButtonText.tag
+            3 -> game3ListButtonText.tag
+            else -> null
         }
+
+        Log.d("ExploreFragment", "getGameIdForButton($buttonIndex) - raw tag: $tagValue")
+
+        val gameId = when (tagValue) {
+            is Int -> tagValue
+            is Long -> tagValue.toInt()
+            is String -> tagValue.toIntOrNull() ?: when(buttonIndex) {
+                1 -> 1
+                2 -> 3
+                3 -> 6
+                else -> 1
+            }
+            else -> when(buttonIndex) {
+                1 -> 1
+                2 -> 3
+                3 -> 6
+                else -> 1
+            }
+        }
+
+        Log.d("ExploreFragment", "getGameIdForButton($buttonIndex) returning: $gameId")
+        return gameId
     }
     private fun switchCategory(newCategory: String) {
         articlesContainer.animate()
@@ -379,7 +437,7 @@ class ExploreFragment : Fragment() {
             "game1", "game2", "game3" -> {
                 val gameIndex = category.substring(4).toInt()
                 val gameId = getGameIdForButton(gameIndex)
-                val gameName = getGameNameById(gameId)
+                val gameName = FilterUtil.getGameNameById(gameId)
 
                 fetchArticles(requireContext(), listView, caller = "explore", gameName = gameName) { hasInternet ->
                     noBookmarkBox.visibility = View.GONE
