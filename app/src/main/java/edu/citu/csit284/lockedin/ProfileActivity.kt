@@ -15,6 +15,8 @@ import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -190,9 +192,9 @@ class ProfileActivity : Activity() {
                     profileBottomSheet.invalidate()
 
                     profileBottomSheet.animate()
-                        .translationY(600f)
+                        .translationY(1000f)
                         .setDuration(300)
-                        .setInterpolator(DecelerateInterpolator())
+                        .setInterpolator(AccelerateDecelerateInterpolator())
                         .start()
 
                 }
