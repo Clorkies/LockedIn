@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.Button
 import android.widget.CheckBox
@@ -93,8 +94,8 @@ class ExploreArticleActivity : Activity() {
         readMoreSheet.post {
             readMoreSheet.animate()
                 .translationX(280f)
-                .setDuration(2250)
-                .setInterpolator(DecelerateInterpolator())
+                .setDuration(1850)
+                .setInterpolator(AccelerateDecelerateInterpolator())
                 .start()
         }
 
