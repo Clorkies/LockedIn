@@ -24,6 +24,7 @@ fun fetchArticles(
     context: Context,
     listView: ListView,
     caller: String = "landing",
+    gameName: String = "valorant",
     onComplete: (hasInternet: Boolean) -> Unit = {}
 ) {
     val apiService = RetrofitClient.newsApiService
@@ -128,4 +129,16 @@ fun getArticles(): List<Article> {
         )
     }
     return articles
+}
+
+fun getGameNameById(id: Int): String {
+    return when (id) {
+        1 -> "valorant"
+        2 -> "league"
+        3 -> "csgo"
+        4 -> "dota"
+        5 -> "rivals"
+        6 -> "overwatch"
+        else -> ""
+    }
 }

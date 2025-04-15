@@ -23,6 +23,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.activities.MainActivity
 import edu.citu.csit284.lockedin.R
+import edu.citu.csit284.lockedin.util.getGameNameById
 
 class LoginSplashScreen : Activity() {
     private val users = Firebase.firestore.collection("users")
@@ -133,18 +134,6 @@ class LoginSplashScreen : Activity() {
                 updateSelectionCount(selectionCountText)
                 updateProceedButtonState(btnProceed)
             }
-        }
-    }
-
-    private fun getGameNameById(id: Int): String {
-        return when (id) {
-            1 -> "valorant"
-            2 -> "league"
-            3 -> "csgo"
-            4 -> "dota"
-            5 -> "rivals"
-            6 -> "overwatch"
-            else -> ""
         }
     }
 
