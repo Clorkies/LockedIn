@@ -36,6 +36,7 @@ class SettingsActivity : Activity() {
             logout.setOnClickListener {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
+                finish()
             }
 
             bottom.show()
