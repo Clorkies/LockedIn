@@ -272,21 +272,21 @@ class GamesFragment : Fragment() {
                 btnGame1Text.setTextColor(inactiveTextColor)
                 btnGame1Text.visibility = View.GONE
                 btnGame1.findViewWithTag<ImageView>("gameLogoImage1")?.visibility = View.VISIBLE
-                animateButtonWidth(btnGame1, 150)
+                animateButtonWidth(btnGame1, 250)
             }
             "game2" -> {
                 btnGame2.background = inactiveBackground
                 btnGame2Text.setTextColor(inactiveTextColor)
                 btnGame2Text.visibility = View.GONE
                 btnGame2.findViewWithTag<ImageView>("gameLogoImage2")?.visibility = View.VISIBLE
-                animateButtonWidth(btnGame2, 150)
+                animateButtonWidth(btnGame2, 250)
             }
             "game3" -> {
                 btnGame3.background = inactiveBackground
                 btnGame3Text.setTextColor(inactiveTextColor)
                 btnGame3Text.visibility = View.GONE
                 btnGame3.findViewWithTag<ImageView>("gameLogoImage3")?.visibility = View.VISIBLE
-                animateButtonWidth(btnGame3, 150)
+                animateButtonWidth(btnGame3, 250)
             }
         }
     }
