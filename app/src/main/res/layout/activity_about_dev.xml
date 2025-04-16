@@ -8,7 +8,6 @@
     >
 
     <ImageView
-
         android:id="@+id/imgDev"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,11 +16,13 @@
         android:adjustViewBounds="true"
         android:layout_marginBottom="200dp"
        />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="bottom"
         android:background="@drawable/vignette_btm"/>
+
     <ImageButton
         android:id="@+id/button_back"
         android:layout_width="35dp"
@@ -30,22 +31,24 @@
         android:scaleType="centerCrop"
         android:layout_marginEnd="10dp"
         android:layout_margin="25dp"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center_vertical"
         >
+
         <Space
             android:layout_width="match_parent"
             android:layout_height="450dp" />
 
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="300dp"
             android:orientation="vertical"
             android:background="@drawable/rectangle_rounded_bg_transparent"
+            android:translationY="850dp"
             >
 
             <LinearLayout
@@ -77,6 +80,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -106,6 +110,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -136,6 +141,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -167,18 +173,14 @@
             </LinearLayout>
         </LinearLayout>
 
-
-
         <!-- Bottom Sheet -->
         <LinearLayout
-            android:layout_marginTop="-25dp"
+            android:id="@+id/devsBottomSheet"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="-25dp"
+            android:layout_height="2100dp"
             android:background="@drawable/rectangle_rounded_bg_dark"
             android:gravity="center_horizontal"
             android:orientation="vertical">
-
 
             <TextView
                 android:layout_width="match_parent"
@@ -186,18 +188,17 @@
                 android:layout_margin="25dp"
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="center"
-                android:text="Meet the Developers:"
+                android:text="Meet the Developers"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
-
 
             <LinearLayout
                 android:layout_marginTop="-15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                >
 
 
                 <LinearLayout
@@ -271,6 +272,254 @@
                 </LinearLayout>
 
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="70dp"
+                android:clipToOutline="false"
+                android:clipToPadding="false"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="center"
+                    android:text="More information"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    />
+
+                <ImageView
+                    android:scaleY="-1"
+                    android:id="@+id/moreInfoArrow"
+                    android:translationY="-10dp"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:paddingBottom="10dp"
+                    android:paddingHorizontal="30dp"
+                    android:src="@drawable/arrow_down"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="40dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top|center"
+                android:paddingHorizontal="20dp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Developer's Mission"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    />
+
+                <LinearLayout
+                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:orientation="horizontal"
+                    android:padding="18dp"
+                    android:background="@drawable/rectangle_rounded_bg"
+                    android:elevation="6dp"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:clipToOutline="true"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/icon_connected" />
+
+                    <Space android:layout_width="10dp" android:layout_height="match_parent"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:textColor="@color/white"
+                            android:text="Deliver Timely Esports News"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:textStyle="bold"
+                            android:gravity="left"
+                            android:layout_marginBottom="5dp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ensure users stay informed with real-time updates and results."
+                            android:textSize="16sp"
+                            android:textColor="@color/fadedWhite"
+                            android:gravity="start"
+                            android:textAlignment="viewStart"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:orientation="horizontal"
+                    android:padding="18dp"
+                    android:background="@drawable/rectangle_rounded_bg"
+                    android:elevation="6dp"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:clipToOutline="true"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/icon_gaming" />
+
+                    <Space android:layout_width="10dp" android:layout_height="match_parent"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:textColor="@color/white"
+                            android:text="Prioritize User Preferences"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:textStyle="bold"
+                            android:gravity="left"
+                            android:layout_marginBottom="5dp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Curate content feeds based on games users love most."
+                            android:textSize="16sp"
+                            android:textColor="@color/fadedWhite"
+                            android:gravity="start"
+                            android:textAlignment="viewStart"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:orientation="horizontal"
+                    android:padding="18dp"
+                    android:background="@drawable/rectangle_rounded_bg"
+                    android:elevation="6dp"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:clipToOutline="true"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/icon_community" />
+
+                    <Space android:layout_width="10dp" android:layout_height="match_parent"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:textColor="@color/white"
+                            android:text="Empower the Esports Community"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:textStyle="bold"
+                            android:gravity="left"
+                            android:layout_marginBottom="5dp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Build a space where fans, players, and teams connect through shared passio"
+                            android:textSize="16sp"
+                            android:textColor="@color/fadedWhite"
+                            android:gravity="start"
+                            android:textAlignment="viewStart"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_marginTop="40dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top|center"
+                android:paddingHorizontal="20dp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Developer's Vision"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    />
+
+
+                <LinearLayout
+                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:orientation="horizontal"
+                    android:padding="18dp"
+                    android:background="@drawable/rectangle_rounded_bg"
+                    android:elevation="6dp"
+                    android:gravity="center|top">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/vision"
+                        android:textSize="16sp"
+                        android:textColor="@color/fadedWhite"
+                        android:gravity="start"
+                        android:textAlignment="viewStart"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_marginTop="30dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/logo"/>
 
         </LinearLayout>
 
