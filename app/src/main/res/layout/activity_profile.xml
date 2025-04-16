@@ -308,6 +308,7 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textStyle="bold" />
+
     </LinearLayout>
 
 </FrameLayout>

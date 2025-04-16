@@ -1,0 +1,32 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Outer Glow (Layer 1) -->
+    <item android:left="0dp" android:top="0dp" android:right="0dp" android:bottom="0dp">
+        <shape android:shape="oval">
+            <solid android:color="#22FF0000"/> <!-- Semi-transparent red glow -->
+            <size android:width="160dp" android:height="160dp"/> <!-- Outer glow size -->
+        </shape>
+    </item>
+
+    <!-- Middle Glow (Layer 2) -->
+    <item android:left="20dp" android:top="20dp" android:right="20dp" android:bottom="20dp">
+        <shape android:shape="oval">
+            <solid android:color="#44FF3333"/> <!-- Lighter red glow -->
+            <size android:width="120dp" android:height="120dp"/>
+        </shape>
+    </item>
+
+    <!-- Inner Glow (Layer 3) -->
+    <item android:left="40dp" android:top="40dp" android:right="40dp" android:bottom="40dp">
+        <shape android:shape="oval">
+            <solid android:color="#66FF6666"/> <!-- Even lighter red glow -->
+            <size android:width="80dp" android:height="80dp"/>
+        </shape>
+    </item>
+
+    <!-- Inner Circle (Solid Red) -->
+    <item android:left="50dp" android:top="50dp" android:right="50dp" android:bottom="50dp">
+        <shape android:shape="oval">
+            <solid android:color="#FFFF0000"/> <!-- Solid red circle -->
+        </shape>
+    </item>
+</layer-list>
