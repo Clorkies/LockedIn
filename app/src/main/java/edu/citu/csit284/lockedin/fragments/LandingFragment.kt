@@ -57,14 +57,7 @@ class LandingFragment : Fragment() {
     private val matches = mutableListOf<Match>()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
 
-    private val games = listOf(
-        1 to "valorant",
-        2 to "lol",
-        3 to "csgo",
-        4 to "dota2",
-        5 to "marvel-rivals",
-        6 to "overwatch"
-    )
+    private val games = listOf(1 to "valorant", 2 to "lol", 3 to "csgo", 4 to "dota2", 5 to "marvel-rivals", 6 to "overwatch")
     private val gameMap: Map<Int, String> = games.toMap()
     private lateinit var sharedPref: SharedPreferences
     private var userInfo: String? = null
@@ -122,7 +115,6 @@ class LandingFragment : Fragment() {
         val btnProfile = view.findViewById<ImageButton>(R.id.button_profile)
         btnProfile.setOnClickListener {
             startActivity(Intent(requireContext(), ProfileActivity::class.java))
-//            requireActivity().supportFragmentManager.popBackStack()
         }
         var pfp : Int
         users

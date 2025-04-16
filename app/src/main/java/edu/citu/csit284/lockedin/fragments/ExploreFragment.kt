@@ -1,6 +1,5 @@
 package edu.citu.csit284.lockedin.fragments
 
-import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Intent
@@ -77,7 +76,6 @@ class ExploreFragment : Fragment() {
         val btnProfile = view.findViewById<ImageButton>(R.id.button_profile)
         btnProfile.setOnClickListener {
             startActivity(Intent(requireContext(), ProfileActivity::class.java))
-//            requireActivity().supportFragmentManager.popBackStack()
         }
         val sharedPref = requireActivity().getSharedPreferences("User", Activity.MODE_PRIVATE)
         val userInfo = sharedPref.getString("username","")
