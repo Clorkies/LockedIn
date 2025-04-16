@@ -4,8 +4,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.AboutDevActivity"
-    >
+    tools:context=".activities.AboutDevActivity">
 
     <ImageView
         android:id="@+id/imgDev"
@@ -14,8 +13,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/imgdev1square"
         android:adjustViewBounds="true"
-        android:layout_marginBottom="200dp"
-       />
+        android:layout_marginBottom="200dp" />
 
     <View
         android:layout_width="match_parent"
@@ -36,8 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center_vertical"
-        >
+        android:gravity="center_vertical">
 
         <Space
             android:layout_width="match_parent"
@@ -48,15 +45,13 @@
             android:layout_height="300dp"
             android:orientation="vertical"
             android:background="@drawable/rectangle_rounded_bg_transparent"
-            android:translationY="850dp"
-            >
+            android:translationY="850dp">
 
             <LinearLayout
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
                 <TextView
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
@@ -66,8 +61,7 @@
                     android:textStyle="bold"
                     android:textSize="32sp"
                     android:fontFamily="@font/poppins_medium"
-                    android:layout_marginLeft="25dp"
-                    />
+                    android:layout_marginLeft="25dp" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -75,8 +69,7 @@
                     android:textColor="#f92d78"
                     android:textSize="32sp"
                     android:fontFamily="@font/poppins"
-                    android:layout_marginLeft="15dp"
-                    />
+                    android:layout_marginLeft="15dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -94,8 +87,7 @@
                     android:text="Program and Year"
                     android:textSize="14sp"
                     android:textColor="@color/white"
-                    android:fontFamily="@font/poppins"
-                    />
+                    android:fontFamily="@font/poppins" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -105,8 +97,7 @@
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:fontFamily="@font/poppins"
-                    />
+                    android:fontFamily="@font/poppins" />
             </LinearLayout>
 
             <LinearLayout
@@ -124,8 +115,7 @@
                     android:text="Hobbies"
                     android:textSize="14sp"
                     android:textColor="@color/white"
-                    android:fontFamily="@font/poppins"
-                    />
+                    android:fontFamily="@font/poppins" />
 
                 <TextView
                     android:id="@+id/hobby"
@@ -136,8 +126,7 @@
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:fontFamily="@font/poppins"
-                    />
+                    android:fontFamily="@font/poppins" />
             </LinearLayout>
 
             <LinearLayout
@@ -147,8 +136,7 @@
                 android:orientation="vertical"
                 android:layout_gravity="left"
                 android:paddingHorizontal="25dp"
-                android:layout_marginBottom="35dp"
-                >
+                android:layout_marginBottom="35dp">
 
                 <TextView
                     android:layout_marginBottom="-5dp"
@@ -157,8 +145,7 @@
                     android:text="Fun Fact"
                     android:textSize="14sp"
                     android:textColor="@color/white"
-                    android:fontFamily="@font/poppins"
-                    />
+                    android:fontFamily="@font/poppins" />
 
                 <TextView
                     android:id="@+id/fact"
@@ -197,9 +184,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="horizontal"
-                >
-
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -258,7 +243,6 @@
                             android:src="@drawable/img_dev2" />
                     </FrameLayout>
 
-
                     <TextView
                         android:id="@+id/jervName"
                         android:layout_width="wrap_content"
@@ -270,7 +254,6 @@
                         android:textColor="@color/white"
                         android:textSize="16sp" />
                 </LinearLayout>
-
             </LinearLayout>
 
             <LinearLayout
@@ -279,8 +262,7 @@
                 android:orientation="vertical"
                 android:paddingTop="70dp"
                 android:clipToOutline="false"
-                android:clipToPadding="false"
-                >
+                android:clipToPadding="false">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -289,8 +271,7 @@
                     android:gravity="center"
                     android:text="More information"
                     android:textColor="@color/white"
-                    android:textSize="15sp"
-                    />
+                    android:textSize="15sp" />
 
                 <ImageView
                     android:scaleY="-1"
@@ -302,7 +283,6 @@
                     android:paddingHorizontal="30dp"
                     android:src="@drawable/arrow_down"
                     android:layout_gravity="center"/>
-
             </LinearLayout>
 
             <LinearLayout
@@ -311,8 +291,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="top|center"
-                android:paddingHorizontal="20dp"
-                >
+                android:paddingHorizontal="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -321,8 +300,7 @@
                     android:text="Developer's Mission"
                     android:textColor="@color/white"
                     android:textStyle="bold"
-                    android:textSize="20sp"
-                    />
+                    android:textSize="20sp" />
 
                 <LinearLayout
                     android:layout_marginTop="15dp"
@@ -357,8 +335,7 @@
                             android:ellipsize="end"
                             android:textStyle="bold"
                             android:gravity="left"
-                            android:layout_marginBottom="5dp"
-                            />
+                            android:layout_marginBottom="5dp" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -369,7 +346,6 @@
                             android:gravity="start"
                             android:textAlignment="viewStart"/>
                     </LinearLayout>
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -405,8 +381,7 @@
                             android:ellipsize="end"
                             android:textStyle="bold"
                             android:gravity="left"
-                            android:layout_marginBottom="5dp"
-                            />
+                            android:layout_marginBottom="5dp" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -417,7 +392,6 @@
                             android:gravity="start"
                             android:textAlignment="viewStart"/>
                     </LinearLayout>
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -453,23 +427,19 @@
                             android:ellipsize="end"
                             android:textStyle="bold"
                             android:gravity="left"
-                            android:layout_marginBottom="5dp"
-                            />
+                            android:layout_marginBottom="5dp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Build a space where fans, players, and teams connect through shared passio"
+                            android:text="Build a space where fans, players, and teams connect through shared passion"
                             android:textSize="16sp"
                             android:textColor="@color/fadedWhite"
                             android:gravity="start"
                             android:textAlignment="viewStart"/>
                     </LinearLayout>
-
                 </LinearLayout>
-
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_marginTop="40dp"
@@ -477,8 +447,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="top|center"
-                android:paddingHorizontal="20dp"
-                >
+                android:paddingHorizontal="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -487,9 +456,7 @@
                     android:text="Developer's Vision"
                     android:textColor="@color/white"
                     android:textStyle="bold"
-                    android:textSize="20sp"
-                    />
-
+                    android:textSize="20sp" />
 
                 <LinearLayout
                     android:layout_marginTop="15dp"
@@ -501,7 +468,6 @@
                     android:elevation="6dp"
                     android:gravity="center|top">
 
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -510,9 +476,7 @@
                         android:textColor="@color/fadedWhite"
                         android:gravity="start"
                         android:textAlignment="viewStart"/>
-
                 </LinearLayout>
-
             </LinearLayout>
 
             <ImageView
@@ -520,12 +484,6 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/logo"/>
-
         </LinearLayout>
-
-
     </LinearLayout>
-
-
-
 </FrameLayout>
