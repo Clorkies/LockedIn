@@ -14,9 +14,9 @@
 
 ### Prerequisites
 
-- Android Studio (for Android development)
-- Kotlin (Primary language for development)
-- Firebase (if used for authentication or data storage)
+- Android Studio 
+- Kotlin 
+- Firebase 
 
 ### Steps to Run Locally
 
