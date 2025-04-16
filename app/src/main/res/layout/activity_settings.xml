@@ -278,14 +278,23 @@
                         android:theme="@style/privateSwitch" />
                 </RelativeLayout>
             </LinearLayout>
-
+            <TextView
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Other"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:gravity="center"/>
             <LinearLayout
                 android:background="@drawable/settings_background"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
                 android:orientation="vertical"
                 android:padding="15dp">
                 <RelativeLayout
