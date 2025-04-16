@@ -126,8 +126,9 @@ class GamesFragment : Fragment() {
         val btnProfile = view.findViewById<ImageButton>(R.id.button_profile)
         btnProfile.setOnClickListener {
             startActivity(Intent(requireContext(), ProfileActivity::class.java))
-            requireActivity().supportFragmentManager.popBackStack()
         }
+        val sharedPref = requireActivity().getSharedPreferences("User", Activity.MODE_PRIVATE)
+        val userInfo = sharedPref.getString("username","")
         var pfp : Int
         users
             .whereEqualTo("username",userInfo)
@@ -137,18 +138,10 @@ class GamesFragment : Fragment() {
                     val document = documents.documents[0]
                     pfp = document.getLong("pfpID")?.toInt() ?: 2
                     when (pfp) {
-                        1 -> {
-                            btnProfile.setImageResource(R.drawable.red_pfp)
-                        }
-                        2 -> {
-                            btnProfile.setImageResource(R.drawable.default_pfp)
-                        }
-                        3 -> {
-                            btnProfile.setImageResource(R.drawable.green_pfp)
-                        }
-                        4 -> {
-                            btnProfile.setImageResource(R.drawable.blue_pfp)
-                        }
+                        1 -> { btnProfile.setImageResource(R.drawable.red_pfp) }
+                        2 -> { btnProfile.setImageResource(R.drawable.default_pfp) }
+                        3 -> { btnProfile.setImageResource(R.drawable.green_pfp) }
+                        4 -> { btnProfile.setImageResource(R.drawable.blue_pfp) }
                     }
                 }
             }
@@ -158,9 +151,9 @@ class GamesFragment : Fragment() {
         btnBack.setOnClickListener {
             when (caller) {
                 "landing" -> findNavController().navigate(R.id.landingFragment)
-                "game" -> findNavController().navigate(R.id.gamesFragment)
+                "game" -> {}
                 "live" -> findNavController().navigate(R.id.liveFragment)
-                "explore" -> {}
+                "explore" -> findNavController().navigate(R.id.exploreFragment)
                 else -> requireActivity().onBackPressedDispatcher.onBackPressed()
             }
         }
@@ -174,18 +167,6 @@ class GamesFragment : Fragment() {
         LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
         LoadingAnimationUtil.setupLoadingViews(requireContext(), loadingView3, loadingView4)
         LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView3, loadingView4, true)
-
-        btnProfile.setOnClickListener {
-            val intent = Intent(requireContext(), ProfileActivity::class.java).apply {
-                putExtra("caller", "game")
-            }
-            startActivity(intent)
-            requireActivity().supportFragmentManager.popBackStack()
-        }
-
-        btnBack.setOnClickListener {
-            parentFragmentManager.popBackStack()
-        }
 
         btnGame1.setOnClickListener {
             if(currentCategory != "game1"){

@@ -60,7 +60,7 @@ class LandingFragment : Fragment() {
         val btnProfile = view.findViewById<ImageButton>(R.id.button_profile)
         btnProfile.setOnClickListener {
             startActivity(Intent(requireContext(), ProfileActivity::class.java))
-            requireActivity().supportFragmentManager.popBackStack()
+//            requireActivity().supportFragmentManager.popBackStack()
         }
         val sharedPref = requireActivity().getSharedPreferences("User", Activity.MODE_PRIVATE)
         val userInfo = sharedPref.getString("username","")
@@ -73,18 +73,10 @@ class LandingFragment : Fragment() {
                     val document = documents.documents[0]
                     pfp = document.getLong("pfpID")?.toInt() ?: 2
                     when (pfp) {
-                        1 -> {
-                            btnProfile.setImageResource(R.drawable.red_pfp)
-                        }
-                        2 -> {
-                            btnProfile.setImageResource(R.drawable.default_pfp)
-                        }
-                        3 -> {
-                            btnProfile.setImageResource(R.drawable.green_pfp)
-                        }
-                        4 -> {
-                            btnProfile.setImageResource(R.drawable.blue_pfp)
-                        }
+                        1 -> { btnProfile.setImageResource(R.drawable.red_pfp) }
+                        2 -> { btnProfile.setImageResource(R.drawable.default_pfp) }
+                        3 -> { btnProfile.setImageResource(R.drawable.green_pfp) }
+                        4 -> { btnProfile.setImageResource(R.drawable.blue_pfp) }
                     }
                 }
             }

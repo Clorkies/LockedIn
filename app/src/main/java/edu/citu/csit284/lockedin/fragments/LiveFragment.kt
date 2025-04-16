@@ -40,7 +40,7 @@ class LiveFragment : Fragment() {
         val btnProfile = view.findViewById<ImageButton>(R.id.button_profile)
         btnProfile.setOnClickListener {
             startActivity(Intent(requireContext(), ProfileActivity::class.java))
-            requireActivity().supportFragmentManager.popBackStack()
+//            requireActivity().supportFragmentManager.popBackStack()
         }
         val sharedPref = requireActivity().getSharedPreferences("User", Activity.MODE_PRIVATE)
         val userInfo = sharedPref.getString("username","")
@@ -53,34 +53,25 @@ class LiveFragment : Fragment() {
                     val document = documents.documents[0]
                     pfp = document.getLong("pfpID")?.toInt() ?: 2
                     when (pfp) {
-                        1 -> {
-                            btnProfile.setImageResource(R.drawable.red_pfp)
-                        }
-                        2 -> {
-                            btnProfile.setImageResource(R.drawable.default_pfp)
-                        }
-                        3 -> {
-                            btnProfile.setImageResource(R.drawable.green_pfp)
-                        }
-                        4 -> {
-                            btnProfile.setImageResource(R.drawable.blue_pfp)
-                        }
+                        1 -> { btnProfile.setImageResource(R.drawable.red_pfp) }
+                        2 -> { btnProfile.setImageResource(R.drawable.default_pfp) }
+                        3 -> { btnProfile.setImageResource(R.drawable.green_pfp) }
+                        4 -> { btnProfile.setImageResource(R.drawable.blue_pfp) }
                     }
                 }
             }
+
+
         val btnBack = view.findViewById<ImageButton>(R.id.button_back)
         btnBack.setOnClickListener {
             when (caller) {
                 "landing" -> findNavController().navigate(R.id.landingFragment)
                 "game" -> findNavController().navigate(R.id.gamesFragment)
-                "live" -> findNavController().navigate(R.id.liveFragment)
-                "explore" -> {}
+                "live" -> {}
+                "explore" -> findNavController().navigate(R.id.exploreFragment)
                 else -> requireActivity().onBackPressedDispatcher.onBackPressed()
             }
         }
-
-
-
 
         val lvTournaments = view.findViewById<ListView>(R.id.lvTournaments)
 
