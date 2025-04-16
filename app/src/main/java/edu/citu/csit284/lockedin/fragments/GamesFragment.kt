@@ -309,6 +309,7 @@ class GamesFragment : Fragment() {
             LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
             LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView3, loadingView4, false)
             recyclerView.visibility = View.VISIBLE
+            recyclerView.scrollToPosition(0)
             matches.clear()
             matches.addAll(upcomingMatches)
             adapter.notifyDataSetChanged()
