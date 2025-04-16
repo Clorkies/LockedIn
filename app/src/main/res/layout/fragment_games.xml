@@ -41,11 +41,20 @@
     <Space
         android:layout_width="match_parent"
         android:layout_height="10dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins"
+        android:text="Upcoming Matches"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         >
 
         <LinearLayout
@@ -109,28 +118,18 @@
         </LinearLayout>
     </LinearLayout>
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="20dp"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <LinearLayout
+        android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins"
-            android:text="Explore Matches"
-            android:textColor="@color/white"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvView"
@@ -138,5 +137,64 @@
             android:layout_height="match_parent"/>
 
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/noInternetBox"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_gravity="top"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/loading_background"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
 
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/icon_no_internet"
+            android:layout_marginBottom="20dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No internet connection"
+            android:textColor="@color/white"
+            android:textSize="15dp"/>
+
+    </LinearLayout>
+    <View
+        android:id="@+id/loadingView1"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_gravity="top"
+        android:background="@drawable/loading_background"
+       />
+
+    <View
+        android:layout_marginTop="25dp"
+        android:id="@+id/loadingView2"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_gravity="top"
+        android:background="@drawable/loading_background"
+        />
+    <View
+        android:layout_marginTop="25dp"
+        android:id="@+id/loadingView3"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_gravity="top"
+        android:background="@drawable/loading_background"
+        />
+    <View
+        android:layout_marginTop="25dp"
+        android:id="@+id/loadingView4"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_gravity="top"
+        android:background="@drawable/loading_background"
+        />
 </LinearLayout>

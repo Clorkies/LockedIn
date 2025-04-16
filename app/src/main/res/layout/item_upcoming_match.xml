@@ -24,7 +24,7 @@
                 android:id="@+id/tv_league_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="2dp"
+                android:layout_marginEnd="1dp"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:padding="3dp"
@@ -36,7 +36,7 @@
                 android:id="@+id/tv_serie_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="2dp"
+                android:layout_marginEnd="1dp"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:padding="3dp"
@@ -142,33 +142,16 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent">
 
-                    <TextView
-                        android:id="@+id/tv_team1_score"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2"
-                        android:textSize="18sp"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/tv_score_separator"
+                        android:id="@+id/tv_vs"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="3dp"
                         android:layout_marginEnd="3dp"
-                        android:text="-"
+                        android:text="VS"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/tv_team2_score"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textSize="18sp"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <LinearLayout

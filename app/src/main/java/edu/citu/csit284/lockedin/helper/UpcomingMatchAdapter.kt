@@ -10,8 +10,8 @@ import com.bumptech.glide.Glide
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.data.Match
 
-class MatchAdapter(private val listOfMatches : List<Match>):
-    RecyclerView.Adapter<MatchAdapter.ItemViewHolder>(){
+class UpcomingMatchAdapter(private val listOfMatches : List<Match>):
+    RecyclerView.Adapter<UpcomingMatchAdapter.ItemViewHolder>(){
     class ItemViewHolder(view : View) : RecyclerView.ViewHolder(view){
         val tvLeagueName = view.findViewById<TextView>(R.id.tv_league_name)
         val tvSerieName = view.findViewById<TextView>(R.id.tv_serie_name)
@@ -20,20 +20,18 @@ class MatchAdapter(private val listOfMatches : List<Match>):
         val tvTime = view.findViewById<TextView>(R.id.tv_time)
         val ivTeam1Logo = view.findViewById<ImageView>(R.id.iv_team1_logo)
         val tvTeam1Name = view.findViewById<TextView>(R.id.tv_team1_name)
-        val tvTeam1Score = view.findViewById<TextView>(R.id.tv_team1_score)
-        val tvTeam2Score = view.findViewById<TextView>(R.id.tv_team2_score)
         val ivTeam2Logo = view.findViewById<ImageView>(R.id.iv_team2_logo)
         val tvTeam2Name = view.findViewById<TextView>(R.id.tv_team2_name)
         val tvMatchType = view.findViewById<TextView>(R.id.tv_match_type)
         val tvStreamLink = view.findViewById<TextView>(R.id.tv_stream_link)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MatchAdapter.ItemViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_live_match, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UpcomingMatchAdapter.ItemViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_upcoming_match, parent, false)
         return ItemViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: MatchAdapter.ItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: UpcomingMatchAdapter.ItemViewHolder, position: Int) {
         val match = listOfMatches[position]
 
         holder.tvLeagueName.text = match.league.name
@@ -65,15 +63,7 @@ class MatchAdapter(private val listOfMatches : List<Match>):
             holder.tvTeam2Name.text = match.opponents.getOrNull(1)?.opponent?.name ?:"TBD"
 
             holder.ivTeam1Logo.setImageResource(R.drawable.default_pfp)
-            holder.ivTeam2Logo.setImageResource(R.drawable.default_pfp)
-        }
-
-        if (match.results.size >= 2) {
-            holder.tvTeam1Score.text = match.results[0].score.toString()
-            holder.tvTeam2Score.text = match.results[1].score.toString()
-        } else {
-            holder.tvTeam1Score.text = match.results.getOrNull(0)?.score?.toString() ?: "-"
-            holder.tvTeam2Score.text = match.results.getOrNull(1)?.score?.toString() ?: "-"
+            holder.ivTeam2Logo.setImageResource(R.drawable.red_pfp)
         }
 
         holder.tvMatchType.text = "BO${match.number_of_games}"

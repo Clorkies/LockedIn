@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.LinearLayout
@@ -23,7 +25,8 @@ import edu.citu.csit284.lockedin.MatchDetailsActivity
 import edu.citu.csit284.lockedin.ProfileActivity
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.data.Match
-import edu.citu.csit284.lockedin.helper.MatchAdapter
+import edu.citu.csit284.lockedin.helper.UpcomingMatchAdapter
+import edu.citu.csit284.lockedin.util.LoadingAnimationUtil
 import edu.citu.csit284.lockedin.util.MatchRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,8 +40,13 @@ class GamesFragment : Fragment() {
     private var caller: String? = null
     private val users = Firebase.firestore.collection("users")
     private val matchRepository = MatchRepository()
+    private lateinit var loadingView1: View
+    private lateinit var loadingView2: View
+    private lateinit var loadingView3: View
+    private lateinit var loadingView4: View
+    private lateinit var noInternetBox: LinearLayout
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: MatchAdapter
+    private lateinit var adapter: UpcomingMatchAdapter
     private val matches = mutableListOf<Match>()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
 
@@ -110,9 +118,10 @@ class GamesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         recyclerView = view.findViewById(R.id.rvView)
-        adapter = MatchAdapter(matches)
+        adapter = UpcomingMatchAdapter(matches)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.visibility = View.GONE
 
         val btnProfile = view.findViewById<ImageButton>(R.id.button_profile)
         btnProfile.setOnClickListener {
@@ -155,7 +164,16 @@ class GamesFragment : Fragment() {
                 else -> requireActivity().onBackPressedDispatcher.onBackPressed()
             }
         }
-
+        loadingView1 = view.findViewById(R.id.loadingView1)
+        loadingView2 = view.findViewById(R.id.loadingView2)
+        loadingView3 = view.findViewById(R.id.loadingView3)
+        loadingView4 = view.findViewById(R.id.loadingView4)
+        noInternetBox = view.findViewById(R.id.noInternetBox)
+        noInternetBox.visibility = View.GONE
+        LoadingAnimationUtil.setupLoadingViews(requireContext(), loadingView1, loadingView2)
+        LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
+        LoadingAnimationUtil.setupLoadingViews(requireContext(), loadingView3, loadingView4)
+        LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView3, loadingView4, true)
 
         btnProfile.setOnClickListener {
             val intent = Intent(requireContext(), ProfileActivity::class.java).apply {
@@ -173,26 +191,50 @@ class GamesFragment : Fragment() {
             if(currentCategory != "game1"){
                 updateButtonStyles("game1")
                 currentCategory = "game1"
-                loadMatches(prefNames.getOrNull(0) ?: "")
+                switchCategory(prefNames.getOrNull(0) ?: "", "game1")
             }
         }
         btnGame2.setOnClickListener {
             if(currentCategory != "game2"){
                 updateButtonStyles("game2")
                 currentCategory = "game2"
-                loadMatches(prefNames.getOrNull(1) ?: "")
+                switchCategory(prefNames.getOrNull(1) ?: "","game2")
             }
         }
         btnGame3.setOnClickListener {
             if(currentCategory != "game3"){
                 updateButtonStyles("game3")
                 currentCategory = "game3"
-                loadMatches(prefNames.getOrNull(2) ?: "")
+                switchCategory(prefNames.getOrNull(2) ?: "", "game3")
             }
         }
 
     }
 
+    private fun switchCategory(newGame: String, newCategory : String) {
+        recyclerView.animate()
+            .translationY(1770f)
+            .setDuration(300)
+            .setInterpolator(AccelerateInterpolator())
+            .withEndAction {
+                LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
+                LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView3, loadingView4, true)
+                currentCategory = newCategory
+
+                updateButtonStyles(newCategory)
+
+                loadMatches(newGame)
+
+                recyclerView.postDelayed({
+                    recyclerView.animate()
+                        .translationY(0f)
+                        .setDuration(300)
+                        .setInterpolator(DecelerateInterpolator())
+                        .start()
+                }, 200)
+            }
+            .start()
+    }
     private fun updateButtonStyles(activeCategory: String) {
         val inactiveBackground = ContextCompat.getDrawable(requireContext(), R.drawable.rectangle_rounded_bg)
         val inactiveTextColor = ContextCompat.getColor(requireContext(), R.color.white)
@@ -262,8 +304,11 @@ class GamesFragment : Fragment() {
                         emptyList()
                     }
                 }
-            }
 
+            }
+            LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
+            LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView3, loadingView4, false)
+            recyclerView.visibility = View.VISIBLE
             matches.clear()
             matches.addAll(upcomingMatches)
             adapter.notifyDataSetChanged()
@@ -273,5 +318,6 @@ class GamesFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         coroutineScope.cancel()
+        LoadingAnimationUtil.cancelAnimations()
     }
 }

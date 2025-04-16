@@ -49,7 +49,8 @@ data class Match(
     )
 
     val date: String
-        get() = scheduled_at.split("T")[0]
+        get() = scheduled_at.split("T")[0].substring(5).replace("-", "/")
+
 
     val time: String
         get() = scheduled_at.split("T").getOrNull(1)?.substring(0, 5) ?: ""
