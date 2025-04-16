@@ -48,7 +48,7 @@ This project is licensed under the [MIT License](LICENSE).
 For inquiries or support, feel free to reach out via:
 
 - GitHub Issues: [Repository Issues](https://github.com/Clorkies/LockedIn/issues)
-- Email: *(Add contact email if available)*
+- Email: clarkmodequillo434@gmail.com
 
 ---
 
