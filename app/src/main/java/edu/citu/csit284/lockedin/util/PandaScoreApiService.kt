@@ -5,7 +5,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface PandaScoreApiService {
-    @GET("matches/upcoming")
+    @GET("matches/running")
     suspend fun getLiveMatches(
         @Query("token") apiToken: String,
         @Query("per_page") perPage: Int = 10,

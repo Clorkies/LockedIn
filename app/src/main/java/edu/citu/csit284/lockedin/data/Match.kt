@@ -5,6 +5,7 @@ data class Match(
     val league: League,
     val serie: Serie,
     val tournament: Tournament,
+    val videogame : Videogame,
     val scheduled_at: String,
     val opponents: List<Opponent>,
     val results: List<Result>,
@@ -17,6 +18,9 @@ data class Match(
         val name: String,
         val image_url: String?,
         val videogame : String?
+    )
+    data class Videogame(
+        val name : String
     )
 
     data class Serie(
@@ -41,6 +45,7 @@ data class Match(
     )
 
     data class Result(
+        val teamId: Int,
         val score: Int
     )
 

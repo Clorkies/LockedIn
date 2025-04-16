@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="6dp"
-    app:cardCornerRadius="12dp"
+    app:cardCornerRadius="14dp"
     app:cardElevation="3dp">
 
     <LinearLayout
@@ -18,9 +18,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="20dp"
             android:orientation="horizontal">
-
+            <TextView
+                android:id="@+id/tv_game"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Best of"
+                android:textColor="@color/yellow"
+                android:layout_marginEnd="2dp"
+                android:textSize="12sp"
+                android:textStyle="bold"/>
             <TextView
                 android:id="@+id/tv_league_name"
                 android:layout_width="wrap_content"
@@ -30,7 +41,7 @@
                 android:maxLines="1"
                 android:padding="3dp"
                 android:text="VCT"
-                android:textColor="@color/yellow"
+                android:textColor="@color/white"
                 android:textSize="12sp" />
 
             <TextView
@@ -42,20 +53,9 @@
                 android:maxLines="1"
                 android:padding="3dp"
                 android:text="Americas 2025"
-                android:textColor="@color/yellow"
+                android:textColor="@color/white"
                 android:textSize="12sp" />
 
-            <TextView
-                android:id="@+id/tv_tournament_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="2dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:padding="3dp"
-                android:text="Group Stage"
-                android:textColor="@color/yellow"
-                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -76,13 +76,13 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="18dp"
+                android:layout_marginStart="20dp"
                 android:layout_weight="0.5"
                 >
 
                 <LinearLayout
                     android:id="@+id/team1_container"
-                    android:layout_width="wrap_content"
+                    android:layout_width="110dp"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
@@ -95,22 +95,23 @@
                     <ImageView
                         android:layout_marginTop="5dp"
                         android:id="@+id/iv_team1_logo"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:src="@drawable/default_pfp" />
 
                     <TextView
                         android:id="@+id/tv_team1_name"
-                        android:layout_width="80dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
                         android:layout_marginTop="2dp"
                         android:ellipsize="end"
                         android:maxLines="2"
+                        android:minLines="2"
                         android:padding="2dp"
                         android:text="Team1"
                         android:textColor="@color/white"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
                 </LinearLayout>
                 <LinearLayout
@@ -122,6 +123,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:gravity="center">
+
                     <TextView
                         android:id="@+id/tv_match_type"
                         android:layout_width="wrap_content"
@@ -129,10 +131,10 @@
                         android:layout_gravity="center_vertical"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:padding="3dp"
                         android:text="Best of"
                         android:textColor="@color/yellow"
-                        android:textSize="12sp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
                     <LinearLayout
                         android:id="@+id/score_container"
                         android:layout_width="wrap_content"
@@ -173,7 +175,7 @@
 
                 <LinearLayout
                     android:id="@+id/team2_container"
-                    android:layout_width="wrap_content"
+                    android:layout_width="110dp"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
@@ -181,28 +183,29 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="20dp"
                     android:layout_marginStart="-8dp">
 
                     <ImageView
                         android:layout_marginTop="5dp"
                         android:id="@+id/iv_team2_logo"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:src="@drawable/red_pfp" />
 
                     <TextView
                         android:id="@+id/tv_team2_name"
-                        android:layout_width="80dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
                         android:layout_marginTop="2dp"
                         android:ellipsize="end"
-                        android:maxLines="1"
+                        android:maxLines="2"
+                        android:minLines="2"
                         android:padding="2dp"
                         android:text="Team2"
                         android:textColor="@color/white"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -222,7 +225,21 @@
             android:padding="3dp"
             android:text="https://www.twitch.tv/sample"
             android:textColor="#89E6EA"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:visibility="gone"/>
+        <Button
+            android:id="@+id/overlayButton"
+            android:background="@drawable/rectangle_yellow_lessround"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:text="Watch Live"
+            app:backgroundTint="@color/yellow"
+            android:textColor="@color/white"
+            android:textStyle="bold"/>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
