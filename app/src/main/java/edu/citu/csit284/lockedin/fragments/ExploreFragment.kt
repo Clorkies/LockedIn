@@ -1,5 +1,7 @@
 package edu.citu.csit284.lockedin.fragments
 
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
@@ -53,7 +56,9 @@ class ExploreFragment : Fragment() {
 
     private lateinit var listView: ListView
 
-    private var currentCategory = "game1" // Default category
+    private var currentCategory = "game1"
+    private var previousCategory = "game1"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         caller = arguments?.getString("caller")
@@ -85,18 +90,10 @@ class ExploreFragment : Fragment() {
                     val document = documents.documents[0]
                     pfp = document.getLong("pfpID")?.toInt() ?: 2
                     when (pfp) {
-                        1 -> {
-                            btnProfile.setImageResource(R.drawable.red_pfp)
-                        }
-                        2 -> {
-                            btnProfile.setImageResource(R.drawable.default_pfp)
-                        }
-                        3 -> {
-                            btnProfile.setImageResource(R.drawable.green_pfp)
-                        }
-                        4 -> {
-                            btnProfile.setImageResource(R.drawable.blue_pfp)
-                        }
+                        1 -> { btnProfile.setImageResource(R.drawable.red_pfp) }
+                        2 -> { btnProfile.setImageResource(R.drawable.default_pfp) }
+                        3 -> { btnProfile.setImageResource(R.drawable.green_pfp) }
+                        4 -> { btnProfile.setImageResource(R.drawable.blue_pfp) }
                     }
                 }
             }
@@ -136,32 +133,12 @@ class ExploreFragment : Fragment() {
         game3ListButton = view.findViewById(R.id.game3List)
         game3ListButtonText = view.findViewById(R.id.game3ListText)
 
-        currentCategory = "game1"
         setupFavoriteGames()
 
-        bookmarkedListButton.setOnClickListener {
-            if (currentCategory != "bookmarked") {
-                switchCategory("bookmarked")
-            }
-        }
-
-        game1ListButton.setOnClickListener {
-            if (currentCategory != "game1") {
-                switchCategory("game1")
-            }
-        }
-
-        game2ListButton.setOnClickListener {
-            if (currentCategory != "game2") {
-                switchCategory("game2")
-            }
-        }
-
-        game3ListButton.setOnClickListener {
-            if (currentCategory != "game3") {
-                switchCategory("game3")
-            }
-        }
+        bookmarkedListButton.setOnClickListener { if (currentCategory != "bookmarked") { switchCategory("bookmarked") } }
+        game1ListButton.setOnClickListener { if (currentCategory != "game1") { switchCategory("game1") } }
+        game2ListButton.setOnClickListener { if (currentCategory != "game2") { switchCategory("game2") } }
+        game3ListButton.setOnClickListener { if (currentCategory != "game3") { switchCategory("game3") } }
     }
 
     private fun setupFavoriteGames() {
@@ -232,7 +209,6 @@ class ExploreFragment : Fragment() {
         val gameName = getGameNameById(gameId)
         Log.d("ExploreFragment", "Setting up button $buttonIndex with gameId: $gameId, name: $gameName")
 
-        val gameInitial = gameName.firstOrNull()?.uppercase() ?: ""
         button.setPadding(20)
 
         textView.tag = gameId
@@ -261,15 +237,9 @@ class ExploreFragment : Fragment() {
             logoView.setImageResource(logoResId)
         }
 
-        textView.text = gameInitial
-
         button.tag = gameName
 
-        button.setOnClickListener {
-            if (currentCategory != "game$buttonIndex") {
-                switchCategory("game$buttonIndex")
-            }
-        }
+        button.setOnClickListener { if (currentCategory != "game$buttonIndex") { switchCategory("game$buttonIndex") } }
     }
 
     private fun getGameIdForButton(buttonIndex: Int): Int {
@@ -285,18 +255,8 @@ class ExploreFragment : Fragment() {
         val gameId = when (tagValue) {
             is Int -> tagValue
             is Long -> tagValue.toInt()
-            is String -> tagValue.toIntOrNull() ?: when(buttonIndex) {
-                1 -> 1
-                2 -> 3
-                3 -> 6
-                else -> 1
-            }
-            else -> when(buttonIndex) {
-                1 -> 1
-                2 -> 3
-                3 -> 6
-                else -> 1
-            }
+            is String -> tagValue.toIntOrNull() ?: when(buttonIndex) {1 -> 1; 2 -> 3; 3 -> 6; else -> 1 }
+            else -> when(buttonIndex) { 1 -> 1; 2 -> 3; 3 -> 6; else -> 1 }
         }
 
         Log.d("ExploreFragment", "getGameIdForButton($buttonIndex) returning: $gameId")
@@ -328,100 +288,79 @@ class ExploreFragment : Fragment() {
     }
 
     private fun updateButtonStyles(activeCategory: String) {
+        resetButtonToInactive(previousCategory)
+        when (activeCategory) {
+            "bookmarked" -> setButtonActive(bookmarkedListButton, bookmarkedListImage, bookmarkedListText, null, null)
+            "game1" -> setButtonActive(game1ListButton, game1ListButton.findViewWithTag("gameLogoImage1"), game1ListButtonText, game1ListButtonText, game1ListButton.tag as? String)
+            "game2" -> setButtonActive(game2ListButton, game2ListButton.findViewWithTag("gameLogoImage2"), game2ListButtonText, game2ListButtonText, game2ListButton.tag as? String)
+            "game3" -> setButtonActive(game3ListButton, game3ListButton.findViewWithTag("gameLogoImage3"), game3ListButtonText, game3ListButtonText, game3ListButton.tag as? String)
+        }
+        previousCategory = activeCategory
+    }
+
+    private fun resetButtonToInactive(category: String) {
         val inactiveBackground = ContextCompat.getDrawable(requireContext(), R.drawable.rectangle_rounded_bg)
         val inactiveTextColor = ContextCompat.getColor(requireContext(), R.color.white)
 
-        bookmarkedListButton.background = inactiveBackground
-        bookmarkedListImage.setImageResource(R.drawable.icon_bookmark_checked)
-        bookmarkedListImage.visibility = View.VISIBLE
-        bookmarkedListText.visibility = View.GONE
-
-        game1ListButton.background = inactiveBackground
-        game2ListButton.background = inactiveBackground
-        game3ListButton.background = inactiveBackground
-
-        game1ListButtonText.setTextColor(inactiveTextColor)
-        game1ListButtonText.visibility = View.GONE
-        game2ListButtonText.setTextColor(inactiveTextColor)
-        game2ListButtonText.visibility = View.GONE
-        game3ListButtonText.setTextColor(inactiveTextColor)
-        game3ListButtonText.visibility = View.GONE
-
-        game1ListButton.findViewWithTag<ImageView>("gameLogoImage1")?.visibility = View.VISIBLE
-        game2ListButton.findViewWithTag<ImageView>("gameLogoImage2")?.visibility = View.VISIBLE
-        game3ListButton.findViewWithTag<ImageView>("gameLogoImage3")?.visibility = View.VISIBLE
-
-        var params = bookmarkedListButton.layoutParams
-        params.width = 150
-        bookmarkedListButton.layoutParams = params
-        params = game1ListButton.layoutParams
-        params.width = 150
-        game1ListButton.layoutParams = params
-        params = game2ListButton.layoutParams
-        params.width = 150
-        game2ListButton.layoutParams = params
-        params = game3ListButton.layoutParams
-        params.width = 150
-        game3ListButton.layoutParams = params
-
+        when (category) {
+            "bookmarked" -> {
+                bookmarkedListButton.background = inactiveBackground
+                bookmarkedListImage.setImageResource(R.drawable.icon_bookmark_checked)
+                bookmarkedListImage.visibility = View.VISIBLE
+                bookmarkedListText.visibility = View.GONE
+                animateButtonWidth(bookmarkedListButton, 150)
+            }
+            "game1" -> {
+                game1ListButton.background = inactiveBackground
+                game1ListButtonText.setTextColor(inactiveTextColor)
+                game1ListButtonText.visibility = View.GONE
+                game1ListButton.findViewWithTag<ImageView>("gameLogoImage1")?.visibility = View.VISIBLE
+                animateButtonWidth(game1ListButton, 150)
+            }
+            "game2" -> {
+                game2ListButton.background = inactiveBackground
+                game2ListButtonText.setTextColor(inactiveTextColor)
+                game2ListButtonText.visibility = View.GONE
+                game2ListButton.findViewWithTag<ImageView>("gameLogoImage2")?.visibility = View.VISIBLE
+                animateButtonWidth(game2ListButton, 150)
+            }
+            "game3" -> {
+                game3ListButton.background = inactiveBackground
+                game3ListButtonText.setTextColor(inactiveTextColor)
+                game3ListButtonText.visibility = View.GONE
+                game3ListButton.findViewWithTag<ImageView>("gameLogoImage3")?.visibility = View.VISIBLE
+                animateButtonWidth(game3ListButton, 150)
+            }
+        }
+    }
+    private fun setButtonActive(button: View, iconView: View?, textView: View, textViewForColor: TextView? = null, gameName: String? = null) {
         val activeBackground = ContextCompat.getDrawable(requireContext(), R.drawable.rectangle_rounded_titles_bg_selected)
         val activeTextColor = ContextCompat.getColor(requireContext(), R.color.bg)
 
-        when (activeCategory) {
-            "bookmarked" -> {
-                bookmarkedListButton.background = activeBackground
-                params = bookmarkedListButton.layoutParams
-                params.width = 350
-                bookmarkedListButton.layoutParams = params
-                bookmarkedListImage.visibility = View.GONE
-                bookmarkedListText.visibility = View.VISIBLE
+        animateButtonWidth(button, 350)
+
+        button.postDelayed({
+            button.background = activeBackground
+            iconView?.visibility = View.GONE
+            textView.visibility = View.VISIBLE
+            textViewForColor?.setTextColor(activeTextColor)
+
+            if (!gameName.isNullOrEmpty() && textViewForColor != null) {
+                textViewForColor.text = gameName.replaceFirstChar { it.uppercase() }
             }
-            "game1" -> {
-                game1ListButton.background = activeBackground
-                params = game1ListButton.layoutParams
-                params.width = 350
-                game1ListButton.layoutParams = params
+        }, 300)
+    }
 
-                game1ListButton.findViewWithTag<ImageView>("gameLogoImage1")?.visibility = View.GONE
-                game1ListButtonText.visibility = View.VISIBLE
-                game1ListButtonText.setTextColor(activeTextColor)
-
-                val gameName = game1ListButton.tag as? String
-                if (!gameName.isNullOrEmpty()) {
-                    game1ListButtonText.text = gameName.replaceFirstChar { it.uppercase() }
-                }
-            }
-            "game2" -> {
-                game2ListButton.background = activeBackground
-                params = game2ListButton.layoutParams
-                params.width = 350
-                game2ListButton.layoutParams = params
-
-                game2ListButton.findViewWithTag<ImageView>("gameLogoImage2")?.visibility = View.GONE
-                game2ListButtonText.visibility = View.VISIBLE
-                game2ListButtonText.setTextColor(activeTextColor)
-
-                val gameName = game2ListButton.tag as? String
-                if (!gameName.isNullOrEmpty()) {
-                    game2ListButtonText.text = gameName.replaceFirstChar { it.uppercase() }
-                }
-            }
-            "game3" -> {
-                game3ListButton.background = activeBackground
-                params = game3ListButton.layoutParams
-                params.width = 350
-                game3ListButton.layoutParams = params
-
-                game3ListButton.findViewWithTag<ImageView>("gameLogoImage3")?.visibility = View.GONE
-                game3ListButtonText.visibility = View.VISIBLE
-                game3ListButtonText.setTextColor(activeTextColor)
-
-                val gameName = game3ListButton.tag as? String
-                if (!gameName.isNullOrEmpty()) {
-                    game3ListButtonText.text = gameName.replaceFirstChar { it.uppercase() }
-                }
-            }
+    private fun animateButtonWidth(button: View, targetWidth: Int) {
+        val animator = ValueAnimator.ofInt(button.width, targetWidth)
+        animator.addUpdateListener { valueAnimator ->
+            val params = button.layoutParams
+            params.width = valueAnimator.animatedValue as Int
+            button.layoutParams = params
         }
+        animator.duration = 350
+        animator.interpolator = AccelerateDecelerateInterpolator()
+        animator.start()
     }
 
     private fun loadArticles(category: String) {

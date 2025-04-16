@@ -31,8 +31,9 @@
             android:id="@+id/button_profile"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:padding="0dp"
+            android:clipToOutline="true"
             android:scaleType="fitCenter"
+            android:background="@drawable/btn_profile"
             android:src="@drawable/default_pfp"/>
 
     </LinearLayout>
