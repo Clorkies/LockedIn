@@ -14,6 +14,8 @@ import edu.citu.csit284.lockedin.util.FilterUtil.getGameKeywords
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Calendar
+import java.util.Date
 
 private lateinit var bookmarks: List<Map<String, Any>>
 private lateinit var con: Context
@@ -51,7 +53,8 @@ fun fetchArticles(
                     context.startActivity(intent)
                 }
             } else {
-                Toast.makeText(context, "Failed to load articles", Toast.LENGTH_SHORT).show()
+                val message = getAPITimeRemaining(response)
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
             }
             onComplete(true)
         }
@@ -121,8 +124,8 @@ fun fetchArticlesSpecific(
                     context.startActivity(intent)
                 }
             } else {
-                Log.e("ArticleFetcher", "API error: ${response.code()} - ${response.errorBody()?.string()}")
-                Toast.makeText(context, "Failed to load articles", Toast.LENGTH_SHORT).show()
+                val message = getAPITimeRemaining(response)
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
             }
             onComplete(true)
         }
@@ -215,6 +218,98 @@ fun getGameNameById(id: Int): String {
         6 -> "overwatch"
         else -> ""
     }
+}
+
+fun getAPITimeRemaining(response: Response<NewsResponse>) : String {
+    val errorBody = response.errorBody()?.string() ?: ""
+    Log.e("ArticleFetcher", "API error: ${response.code()} - $errorBody")
+
+    val message = when {
+        response.code() == 429 -> {
+            val resetTime = response.headers().get("X-RateLimit-Reset")
+            val retryAfter = response.headers().get("Retry-After")
+
+            when {
+                resetTime != null -> {
+                    val resetTimeMillis = resetTime.toLongOrNull()?.times(1000) ?: 0L
+                    if (resetTimeMillis > 0) {
+                        val now = System.currentTimeMillis()
+                        val resetDate = Date(resetTimeMillis)
+                        val timeRemaining = (resetTimeMillis - now) / 60000
+
+                        if (timeRemaining > 60) {
+                            val hoursRemaining = timeRemaining / 60
+                            "API limit reached. Please try again in $hoursRemaining hour(s)."
+                        } else {
+                            "API limit reached. Please try again in $timeRemaining minute(s)."
+                        }
+                    } else {
+                        "API usage limit exceeded. Please try again at 12:00 PM."
+                    }
+                }
+                retryAfter != null -> {
+                    val secondsToWait = retryAfter.toIntOrNull() ?: 0
+                    if (secondsToWait > 60) {
+                        val minutesToWait = secondsToWait / 60
+                        "API limit reached. Please try again in $minutesToWait minute(s)."
+                    } else {
+                        "API limit reached. Please try again in $secondsToWait second(s)."
+                    }
+                }
+                else -> {
+                    val calendar = Calendar.getInstance()
+                    val now = calendar.timeInMillis
+
+                    calendar.set(Calendar.HOUR_OF_DAY, 12)
+                    calendar.set(Calendar.MINUTE, 0)
+                    calendar.set(Calendar.SECOND, 0)
+
+                    if (now > calendar.timeInMillis) {
+                        calendar.add(Calendar.DAY_OF_MONTH, 1)
+                    }
+
+                    val timeRemaining = (calendar.timeInMillis - now) / 60000
+                    val hoursRemaining = timeRemaining / 60
+                    val minutesRemaining = timeRemaining % 60
+
+                    if (hoursRemaining > 0) {
+                        "API limit reached. Please try again in $hoursRemaining hour(s) and $minutesRemaining minute(s)."
+                    } else {
+                        "API limit reached. Please try again in $minutesRemaining minute(s)."
+                    }
+                }
+            }
+        }
+        errorBody.contains("rate limit", ignoreCase = true) ||
+                errorBody.contains("quota exceeded", ignoreCase = true) ||
+                errorBody.contains("usage limit", ignoreCase = true) ||
+                errorBody.contains("too many requests", ignoreCase = true) -> {
+            val calendar = Calendar.getInstance()
+            val now = calendar.timeInMillis
+
+            calendar.set(Calendar.HOUR_OF_DAY, 12)
+            calendar.set(Calendar.MINUTE, 0)
+            calendar.set(Calendar.SECOND, 0)
+
+            if (now > calendar.timeInMillis) {
+                calendar.add(Calendar.DAY_OF_MONTH, 1)
+            }
+
+            val timeRemaining = (calendar.timeInMillis - now) / 60000
+            val hoursRemaining = timeRemaining / 60
+            val minutesRemaining = timeRemaining % 60
+
+            if (hoursRemaining > 0) {
+                "API limit reached. Please try again in $hoursRemaining hour(s) and $minutesRemaining minute(s)."
+            } else {
+                "API limit reached. Please try again in $minutesRemaining minute(s)."
+            }
+        }
+        response.code() == 401 || errorBody.contains("api key", ignoreCase = true) ->
+            "API authentication error. Please check your API key."
+        else -> "Failed to load articles. Error code: ${response.code()}"
+    }
+    return message
 }
 
 fun isSafeArticle(article: Article): Boolean {
