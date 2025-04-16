@@ -52,6 +52,7 @@ class LandingFragment : Fragment() {
     private lateinit var noInternetBox: LinearLayout
     private lateinit var header: LinearLayout
     private lateinit var recyclerView: RecyclerView
+    private lateinit var noMatches : TextView
     private lateinit var adapter: LiveMatchAdapter
     private val matches = mutableListOf<Match>()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
@@ -104,6 +105,7 @@ class LandingFragment : Fragment() {
         loadingView2 = view.findViewById(R.id.loadingView2)
         noInternetBox = view.findViewById(R.id.noInternetBox)
         noInternetBox.visibility = View.GONE
+        noMatches = view.findViewById(R.id.noLiveMatchesTextView)
         header = view.findViewById(R.id.header)
         recyclerView = view.findViewById(R.id.rvView)
         adapter = LiveMatchAdapter(matches)
@@ -197,11 +199,16 @@ class LandingFragment : Fragment() {
                 matchRepository.getLiveMatches(*games)
             }
 
-            recyclerView.visibility = View.VISIBLE
-            recyclerView.scrollToPosition(0)
-            matches.clear()
-            matches.addAll(liveMatches)
-            adapter.notifyDataSetChanged()
+            if(liveMatches.isEmpty()){
+                recyclerView.visibility = View.GONE
+                noMatches.visibility = View.GONE
+            }else{
+                recyclerView.visibility = View.VISIBLE
+                recyclerView.scrollToPosition(0)
+                matches.clear()
+                matches.addAll(liveMatches)
+                adapter.notifyDataSetChanged()
+            }
         }
     }
 

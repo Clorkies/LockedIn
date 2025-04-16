@@ -85,7 +85,6 @@ class LiveMatchAdapter(private val listOfMatches : List<Match>):
             if(holder.tvStreamLink.text != "No stream available"){
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(holder.tvStreamLink.text.toString()))
                 holder.btnWatch.context.startActivity(intent)
-                Toast.makeText(holder.btnWatch.context,"waw", Toast.LENGTH_SHORT).show()
             }else{
                 Toast.makeText(holder.btnWatch.context,"No stream avaialble", Toast.LENGTH_SHORT).show()
             }

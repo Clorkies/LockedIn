@@ -63,7 +63,17 @@
     <Space
         android:layout_width="match_parent"
         android:layout_height="5dp"/>
-
+    <TextView
+        android:id="@+id/noLiveMatchesTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Live Matches Available"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:layout_gravity="center"
+        android:visibility="gone"
+         />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvView"
         android:layout_width="match_parent"
