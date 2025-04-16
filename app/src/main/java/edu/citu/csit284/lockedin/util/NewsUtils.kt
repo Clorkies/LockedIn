@@ -48,6 +48,7 @@ fun fetchArticles(
                         putExtra("articleText", article.description)
                         putExtra("date", article.publishedAt)
                         putExtra("articleUrl", article.url)
+                        putExtra("articleAuthor", article.author)
                         putExtra("caller", caller)
                     }
                     context.startActivity(intent)
@@ -119,6 +120,7 @@ fun fetchArticlesSpecific(
                         putExtra("articleText", article.description)
                         putExtra("date", article.publishedAt)
                         putExtra("articleUrl", article.url)
+                        putExtra("articleAuthor", article.author)
                         putExtra("caller", caller)
                     }
                     context.startActivity(intent)
@@ -182,6 +184,7 @@ fun fetchBookmarkedArticles(
                     putExtra("articleText", article.description)
                     putExtra("date", article.publishedAt)
                     putExtra("articleUrl", article.url)
+                    putExtra("articleAuthor", article.author)
                     putExtra("caller", caller)
                 }
                 context.startActivity(intent)
@@ -202,7 +205,8 @@ fun getArticles(): List<Article> {
             description = bookmark["description"] as? String ?: "Untitled",
             url = bookmark["url"] as? String ?: "",
             urlToImage = bookmark["imageUrl"] as? String ?: "",
-            publishedAt = bookmark["date"] as? String ?: ""
+            publishedAt = bookmark["date"] as? String ?: "",
+            author = bookmark["author"] as? String?: ""
         )
     }
     return articles

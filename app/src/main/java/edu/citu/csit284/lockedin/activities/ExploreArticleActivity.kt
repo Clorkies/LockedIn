@@ -39,16 +39,18 @@ class ExploreArticleActivity : Activity() {
         val publishedDate = intent.getStringExtra("date") ?: "00/00/0000"
         val articleUrl = intent.getStringExtra("articleUrl")
         val articleText = intent.getStringExtra("articleText") ?: "No content available."
+        val author = intent.getStringExtra("articleAuthor") ?: "None"
 
         val imageView = findViewById<ImageView>(R.id.articleImageView)
         val titleView = findViewById<TextView>(R.id.articleTitleView)
         val textView = findViewById<TextView>(R.id.articleTextView)
         val dateView = findViewById<TextView>(R.id.articleDateView)
+        val authorView = findViewById<TextView>(R.id.articleAuthorView)
         val readMore = findViewById<LinearLayout>(R.id.readMore)
 
         val bookmark = findViewById<CheckBox>(R.id.bookmarkCheckbox)
 
-        setInitialBookmarkState(bookmark, title, articleUrl, imageUrl, articleText, publishedDate)
+        setInitialBookmarkState(bookmark, title, articleUrl, imageUrl, articleText, publishedDate, author)
 
         if (!articleUrl.isNullOrEmpty()) {
             readMore.setOnClickListener {
@@ -74,11 +76,11 @@ class ExploreArticleActivity : Activity() {
                 val outputFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault())
                 val date = inputFormat.parse(publishedDate)
                 date?.let {
-                    dateView.text = "Published on ${outputFormat.format(it)}"
+                    dateView.text = "${outputFormat.format(it)}"
                     dateView.visibility = View.VISIBLE
                 }
             } catch (e: Exception) {
-                dateView.text = "Published on $publishedDate"
+                dateView.text = "$publishedDate"
                 dateView.visibility = View.VISIBLE
             }
         } else {
@@ -104,6 +106,7 @@ class ExploreArticleActivity : Activity() {
 
         titleView.text = title
         textView.text = articleText
+        authorView.text = "By $author"
     }
 
     private fun setInitialBookmarkState(
@@ -112,7 +115,8 @@ class ExploreArticleActivity : Activity() {
         articleUrl: String?,
         imageUrl: String?,
         articleText: String,
-        publishedDate: String
+        publishedDate: String,
+        author: String
     ) {
         checkbox.setOnCheckedChangeListener(null)
 
@@ -122,7 +126,7 @@ class ExploreArticleActivity : Activity() {
         val username = sharedPref.getString("username", null)
 
         if (username == null || articleUrl == null) {
-            setCheckboxListener(checkbox, title, articleUrl, imageUrl, articleText, publishedDate)
+            setCheckboxListener(checkbox, title, articleUrl, imageUrl, articleText, publishedDate, author)
             return
         }
 
@@ -143,11 +147,11 @@ class ExploreArticleActivity : Activity() {
                     Log.d("Bookmarks", "Article is bookmarked: $isBookmarked")
                 }
 
-                setCheckboxListener(checkbox, title, articleUrl, imageUrl, articleText, publishedDate)
+                setCheckboxListener(checkbox, title, articleUrl, imageUrl, articleText, publishedDate, author)
             }
             .addOnFailureListener { e ->
                 Log.e("Firestore", "Error checking bookmark status", e)
-                setCheckboxListener(checkbox, title, articleUrl, imageUrl, articleText, publishedDate)
+                setCheckboxListener(checkbox, title, articleUrl, imageUrl, articleText, publishedDate, author)
             }
     }
 
@@ -157,7 +161,8 @@ class ExploreArticleActivity : Activity() {
         articleUrl: String?,
         imageUrl: String?,
         articleText: String,
-        publishedDate: String
+        publishedDate: String,
+        author: String
     ) {
         checkbox.setOnCheckedChangeListener { _, isChecked ->
             val sharedPref = getSharedPreferences("User", Context.MODE_PRIVATE)
@@ -174,7 +179,8 @@ class ExploreArticleActivity : Activity() {
                 "url" to articleUrl,
                 "imageUrl" to (imageUrl ?: ""),
                 "description" to articleText,
-                "date" to publishedDate
+                "date" to publishedDate,
+                "author" to author
             )
 
             users

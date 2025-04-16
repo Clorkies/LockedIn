@@ -45,12 +45,56 @@
         android:orientation="vertical"
         android:paddingTop="20dp"
         android:paddingHorizontal="20dp"
-        android:background="@color/articlebg"
+        android:background="@drawable/background_article"
         android:clipToPadding="false"
         >
+
+
+        <TextView
+            android:id="@+id/articleTitleView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:textColor="@color/white"
+            android:gravity="start"
+            android:textAlignment="viewStart"
+            android:text="Title"
+            />
+
+        <Space android:layout_width="match_parent" android:layout_height="25dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:orientation="vertical"
+            android:paddingVertical="15dp"
+            android:background="@drawable/rectangle_author_bg"
+            android:paddingHorizontal="20dp"
+            >
+            <TextView
+                android:id="@+id/articleAuthorView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:textColor="@color/white"
+                android:text="Author"
+                />
+
+            <TextView
+                android:id="@+id/articleDateView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textColor="@color/fadedWhite"
+                android:text="Date"
+                />
+        </LinearLayout>
+
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="570dp">
+            android:layout_height="400dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -58,32 +102,7 @@
                 android:orientation="vertical"
                 >
 
-                <TextView
-                    android:id="@+id/articleTitleView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textSize="25sp"
-                    android:textColor="@color/white"
-                    android:gravity="start"
-                    android:textAlignment="viewStart"
-                    />
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"/>
-
-                <TextView
-                    android:id="@+id/articleDateView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textColor="@color/fadedWhite"
-                    />
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"/>
+                <Space android:layout_width="match_parent" android:layout_height="25dp"/>
 
                 <ImageView
                     android:id="@+id/articleImageView"
@@ -94,9 +113,7 @@
                     android:scaleType="centerCrop"
                     />
 
-                <Space
-                    android:layout_height="30dp"
-                    android:layout_width="wrap_content"/>
+                <Space android:layout_height="30dp" android:layout_width="wrap_content"/>
 
                 <TextView
                     android:id="@+id/articleTextView"
@@ -104,6 +121,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="17sp"
                     android:textColor="@color/white"
+                    android:text="Content"
                     />
 
             </LinearLayout>

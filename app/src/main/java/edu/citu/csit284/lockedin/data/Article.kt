@@ -5,6 +5,6 @@ data class Article(
     val title: String?,
     val description: String?,
     val url: String?,
-    val publishedAt: String?
-    // val author: String? to be implemented
+    val publishedAt: String?,
+    val author: String?
 )
