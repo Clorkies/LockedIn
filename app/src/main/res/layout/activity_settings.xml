@@ -84,6 +84,7 @@
                         android:src="@drawable/logo_valorant" />
 
                     <TextView
+                        android:id="@+id/tv1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -96,7 +97,7 @@
                         android:textStyle="bold" />
 
                     <androidx.appcompat.widget.SwitchCompat
-                        android:id="@+id/switchActive"
+                        android:id="@+id/sw1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -118,6 +119,7 @@
                         android:src="@drawable/logo_league" />
 
                     <TextView
+                        android:id="@+id/tv2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -130,7 +132,7 @@
                         android:textStyle="bold" />
 
                     <androidx.appcompat.widget.SwitchCompat
-                        android:id="@+id/switchNoti"
+                        android:id="@+id/sw2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -152,6 +154,7 @@
                         android:src="@drawable/logo_csgo" />
 
                     <TextView
+                        android:id="@+id/tv3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -164,7 +167,7 @@
                         android:textStyle="bold" />
 
                     <androidx.appcompat.widget.SwitchCompat
-                        android:id="@+id/switchPriv"
+                        android:id="@+id/sw3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -185,6 +188,7 @@
                         android:src="@drawable/logo_dota" />
 
                     <TextView
+                        android:id="@+id/tv4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -197,7 +201,7 @@
                         android:textStyle="bold" />
 
                     <androidx.appcompat.widget.SwitchCompat
-                        android:id="@+id/switchDota"
+                        android:id="@+id/sw4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -218,6 +222,7 @@
                         android:src="@drawable/logo_rivals" />
 
                     <TextView
+                        android:id="@+id/tv5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -230,7 +235,7 @@
                         android:textStyle="bold" />
 
                     <androidx.appcompat.widget.SwitchCompat
-                        android:id="@+id/switchRivals"
+                        android:id="@+id/sw5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -251,6 +256,7 @@
                         android:src="@drawable/logo_overwatch" />
 
                     <TextView
+                        android:id="@+id/tv6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -263,7 +269,7 @@
                         android:textStyle="bold" />
 
                     <androidx.appcompat.widget.SwitchCompat
-                        android:id="@+id/switchOverwatch"
+                        android:id="@+id/sw6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
