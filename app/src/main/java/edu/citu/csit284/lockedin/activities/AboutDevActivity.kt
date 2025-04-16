@@ -17,10 +17,7 @@ class AboutDevActivity : Activity() {
         setContentView(R.layout.activity_about_dev)
 
         val btn_back = findViewById<ImageButton>(R.id.button_back)
-        btn_back.setOnClickListener {
-            startActivity(Intent(this, SettingsActivity::class.java))
-            finish()
-        }
+        btn_back.setOnClickListener { finish() }
 
         val imgDev = findViewById<ImageView>(R.id.imgDev)
         val name = findViewById<TextView>(R.id.name)

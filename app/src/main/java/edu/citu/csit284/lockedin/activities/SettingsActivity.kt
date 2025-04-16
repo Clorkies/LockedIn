@@ -17,9 +17,9 @@ class SettingsActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        findViewById<ImageView>(R.id.backBtn).setOnClickListener { startActivity(Intent(this, ProfileActivity::class.java)) ; finish()}
+        findViewById<ImageView>(R.id.backBtn).setOnClickListener { finish()}
 
-        findViewById<Button>(R.id.btnDeveloper).setOnClickListener { startActivity(Intent(this, AboutDevActivity::class.java)); finish() }
+        findViewById<Button>(R.id.btnDeveloper).setOnClickListener { startActivity(Intent(this, AboutDevActivity::class.java)) }
 
         val btnLogout = findViewById<Button>(R.id.btnLogout)
         btnLogout.setOnClickListener {
