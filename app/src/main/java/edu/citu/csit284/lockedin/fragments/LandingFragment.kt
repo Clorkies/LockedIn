@@ -6,6 +6,7 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -52,20 +53,47 @@ class LandingFragment : Fragment() {
     private lateinit var header: LinearLayout
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: LiveMatchAdapter
-    private lateinit var btnWatch : Button
-    private lateinit var tvStream : TextView
     private val matches = mutableListOf<Match>()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
+
+    private val games = listOf(
+        1 to "valorant",
+        2 to "lol",
+        3 to "csgo",
+        4 to "dota2",
+        5 to "marvel-rivals",
+        6 to "overwatch"
+    )
+    private val gameMap: Map<Int, String> = games.toMap()
+    private lateinit var sharedPref: SharedPreferences
+    private var userInfo: String? = null
+    private var prefNames: List<String> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         caller = arguments?.getString("caller")
+        sharedPref = requireActivity().getSharedPreferences("User", Activity.MODE_PRIVATE)
+        userInfo = sharedPref.getString("username", "")
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        users
+            .whereEqualTo("username", userInfo)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty()) {
+                    val document = documents.documents[0]
+                    val rawList = document.get("favGames") as? List<Long>
+                    prefNames = rawList
+                        ?.map { it.toInt() }
+                        ?.mapNotNull { gameMap[it] }
+                        ?: emptyList()
+                    loadMatches(prefNames.getOrNull(0)?:"valorant",prefNames.getOrNull(1)?:"valorant",prefNames.getOrNull(2)?:"valorant")
+                }
+            }
         return inflater.inflate(R.layout.fragment_landing, container, false)
     }
 
@@ -94,8 +122,6 @@ class LandingFragment : Fragment() {
             startActivity(Intent(requireContext(), ProfileActivity::class.java))
             requireActivity().supportFragmentManager.popBackStack()
         }
-        val sharedPref = requireActivity().getSharedPreferences("User", Activity.MODE_PRIVATE)
-        val userInfo = sharedPref.getString("username","")
         var pfp : Int
         users
             .whereEqualTo("username",userInfo)
@@ -165,17 +191,17 @@ class LandingFragment : Fragment() {
 
         pulseAnimator.start()
     }
-    private fun loadMatches() {
+    private fun loadMatches(vararg games: String) {
         coroutineScope.launch {
             val liveMatches = withContext(Dispatchers.IO) {
-                    matchRepository.getLiveMatches()
-                }
+                matchRepository.getLiveMatches(*games)
+            }
+
             recyclerView.visibility = View.VISIBLE
             recyclerView.scrollToPosition(0)
             matches.clear()
             matches.addAll(liveMatches)
             adapter.notifyDataSetChanged()
-
         }
     }
 

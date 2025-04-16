@@ -9,6 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.data.Match
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 class UpcomingMatchAdapter(private val listOfMatches : List<Match>):
     RecyclerView.Adapter<UpcomingMatchAdapter.ItemViewHolder>(){
@@ -37,8 +41,32 @@ class UpcomingMatchAdapter(private val listOfMatches : List<Match>):
         holder.tvLeagueName.text = match.league.name
         holder.tvSerieName.text = match.serie.full_name
         holder.tvTournamentName.text = match.tournament.name
-        holder.tvDate.text = match.date
-        holder.tvTime.text = match.time
+        val utcDateString = "${getCurrentYear()}/${match.date}"
+        val utcTimeString = match.time
+
+        val utcDateTimeString = "$utcDateString $utcTimeString"
+
+        val utcFormat = SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault())
+        utcFormat.timeZone = TimeZone.getTimeZone("UTC")
+
+        try {
+            val utcDate = utcFormat.parse(utcDateTimeString)
+
+            val phtDateFormat = SimpleDateFormat("MM/dd", Locale.getDefault())
+            phtDateFormat.timeZone = TimeZone.getTimeZone("Asia/Manila")
+            val philippineDateString = phtDateFormat.format(utcDate)
+            holder.tvDate.text = philippineDateString
+
+            val phtTimeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+            phtTimeFormat.timeZone = TimeZone.getTimeZone("Asia/Manila")
+            val philippineTimeString = phtTimeFormat.format(utcDate)
+            holder.tvTime.text = philippineTimeString
+
+        } catch (e: Exception) {
+            holder.tvDate.text = "Error"
+            holder.tvTime.text = "Error"
+            e.printStackTrace()
+        }
 
         if (match.opponents.size >= 2) {
             val team1 = match.opponents[0].opponent
@@ -75,6 +103,9 @@ class UpcomingMatchAdapter(private val listOfMatches : List<Match>):
         }
     }
 
+    private fun getCurrentYear(): String {
+        return SimpleDateFormat("yyyy", Locale.getDefault()).format(Date())
+    }
     override fun getItemCount(): Int = listOfMatches.size
 
 }

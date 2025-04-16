@@ -68,9 +68,37 @@ class MatchRepository {
         }
     }
 
-    suspend fun getLiveMatches(): List<Match> {
+    suspend fun getLiveMatches(vararg games: String): List<Match> {
         return try {
-            apiService.getLiveMatches(apiKey)
+            val matches = mutableListOf<Match>()
+
+            if (games.contains("valorant")) {
+                matches.addAll(apiService.getValorantLiveMatches(apiKey))
+            }
+
+            if (games.contains("lol")) {
+                matches.addAll(apiService.getLoLLiveMatches(apiKey))
+            }
+
+            if (games.contains("csgo")) {
+                matches.addAll(apiService.getCSGOLiveMatches(apiKey))
+            }
+
+            if (games.contains("dota2")) {
+                matches.addAll(apiService.getDotaLiveMatches(apiKey))
+            }
+            if (games.contains("marvel-rivals")) {
+                matches.addAll(apiService.getMarvelRivalsLiveMatches(apiKey))
+            }
+            if (games.contains("overwatch")) {
+                matches.addAll(apiService.getOverwatchLiveMatches(apiKey))
+            }
+
+            if (games.isEmpty()) {
+                matches.addAll(apiService.getUpcomingValorantMatches(apiKey))
+            }
+
+            matches
         } catch (e: Exception) {
             emptyList()
         }

@@ -10,7 +10,36 @@ interface PandaScoreApiService {
         @Query("token") apiToken: String,
         @Query("per_page") perPage: Int = 10,
     ): List<Match>
-
+    @GET("valorant/matches/running")
+    suspend fun getValorantLiveMatches(
+        @Query("token") apiToken: String,
+        @Query("per_page") perPage: Int = 10,
+    ): List<Match>
+    @GET("lol/matches/running")
+    suspend fun getLoLLiveMatches(
+        @Query("token") apiToken: String,
+        @Query("per_page") perPage: Int = 10,
+    ): List<Match>
+    @GET("csgo/matches/running")
+    suspend fun getCSGOLiveMatches(
+        @Query("token") apiToken: String,
+        @Query("per_page") perPage: Int = 10,
+    ): List<Match>
+    @GET("dota2/matches/running")
+    suspend fun getDotaLiveMatches(
+        @Query("token") apiToken: String,
+        @Query("per_page") perPage: Int = 10,
+    ): List<Match>
+    @GET("marvel-rivals/matches/running")
+    suspend fun getMarvelRivalsLiveMatches(
+        @Query("token") apiToken: String,
+        @Query("per_page") perPage: Int = 10,
+    ): List<Match>
+    @GET("overwatch/matches/running")
+    suspend fun getOverwatchLiveMatches(
+        @Query("token") apiToken: String,
+        @Query("per_page") perPage: Int = 10,
+    ): List<Match>
     @GET("valorant/matches/upcoming")
     suspend fun getUpcomingValorantMatches(
         @Query("token") apiToken: String,
