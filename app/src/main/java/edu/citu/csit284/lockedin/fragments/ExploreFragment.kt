@@ -262,6 +262,7 @@ class ExploreFragment : Fragment() {
         Log.d("ExploreFragment", "getGameIdForButton($buttonIndex) returning: $gameId")
         return gameId
     }
+
     private fun switchCategory(newCategory: String) {
         articlesContainer.animate()
             .translationY(1770f)
@@ -333,6 +334,7 @@ class ExploreFragment : Fragment() {
             }
         }
     }
+
     private fun setButtonActive(button: View, iconView: View?, textView: View, textViewForColor: TextView? = null, gameName: String? = null) {
         val activeBackground = ContextCompat.getDrawable(requireContext(), R.drawable.rectangle_rounded_titles_bg_selected)
         val activeTextColor = ContextCompat.getColor(requireContext(), R.color.bg)
@@ -387,6 +389,7 @@ class ExploreFragment : Fragment() {
             }
         }
     }
+
     override fun onDestroy() {
         super.onDestroy()
         LoadingAnimationUtil.cancelAnimations()
