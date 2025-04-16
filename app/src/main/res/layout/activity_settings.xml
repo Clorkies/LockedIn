@@ -9,26 +9,38 @@
     tools:context=".activities.SettingsActivity">
 
     <!-- First RelativeLayout (Header) -->
-    <RelativeLayout
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
-        <ImageView
-            android:id="@+id/backBtn"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/button_back"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:src="@drawable/btn_back"
-            android:layout_marginLeft="20dp"/>
+            android:background="@drawable/btn_back"
+            android:scaleType="centerCrop"
+            android:layout_marginEnd="10dp" />
+
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_marginRight="20dp"
             android:layout_height="wrap_content"
             android:text="Settings"
-            android:fontFamily="@font/poppins"
-            android:textSize="25sp"
-            android:textStyle="bold"
             android:textColor="@color/white"
-            android:layout_centerInParent="true" />
-    </RelativeLayout>
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:gravity="center"/>
+
+
+
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -39,39 +51,49 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="-15dp">
-
+            >
+            <TextView
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Games Preferred"
+                android:textColor="@color/yellow"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:gravity="center"/>
             <LinearLayout
-                android:background="@drawable/settings_background"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginTop="40dp"
+                android:background="@drawable/settings_background"
                 android:orientation="vertical"
                 android:padding="15dp">
-
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    >
+
                     <ImageView
+                        android:id="@+id/valIcon"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:id="@+id/activeIcon"
-                        android:src = "@drawable/active_icon"
-                        android:background="@drawable/circle_active"
-                        android:padding="5dp"/>
+                        android:padding="5dp"
+                        android:src="@drawable/logo_valorant" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toEndOf="@+id/activeIcon"
-                        android:text="Active Status"
+                        android:layout_marginLeft="25dp"
+                        android:layout_toEndOf="@+id/valIcon"
+                        android:fontFamily="@font/poppins"
+                        android:text="Valorant"
                         android:textColor="@color/white"
                         android:textSize="17sp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/poppins"
-                        android:layout_marginLeft="25dp"/>
+                        android:textStyle="bold" />
 
                     <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/switchActive"
@@ -87,24 +109,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp">
+
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:id="@+id/notiIcon"
-                        android:src = "@drawable/noti_icon"
-                        android:background="@drawable/circle_noti"
-                        android:padding="8dp"/>
+                        android:id="@+id/leagueIcon"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:padding="8dp"
+                        android:src="@drawable/logo_league" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toEndOf="@+id/notiIcon"
-                        android:text="Notifications"
+                        android:layout_marginLeft="25dp"
+                        android:layout_toEndOf="@+id/leagueIcon"
+                        android:fontFamily="@font/poppins"
+                        android:text="League of Legends"
                         android:textColor="@color/white"
                         android:textSize="17sp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/poppins"
-                        android:layout_marginLeft="25dp"/>
+                        android:textStyle="bold" />
+
                     <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/switchNoti"
                         android:layout_width="wrap_content"
@@ -112,31 +136,33 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:switchMinWidth="50dp"
-                        android:theme="@style/notiSwitch"/>
+                        android:theme="@style/notiSwitch" />
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp">
+
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:id="@+id/privateIcon"
-                        android:src = "@drawable/priv_icon"
-                        android:background="@drawable/circle_priv"
-                        android:padding="6dp"/>
+                        android:id="@+id/csgoIcon"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:padding="6dp"
+                        android:src="@drawable/logo_csgo" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toEndOf="@+id/privateIcon"
-                        android:text="Private Account"
+                        android:layout_marginLeft="25dp"
+                        android:layout_toEndOf="@+id/csgoIcon"
+                        android:fontFamily="@font/poppins"
+                        android:text="CS:GO"
                         android:textColor="@color/white"
                         android:textSize="17sp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/poppins"
-                        android:layout_marginLeft="25dp"/>
+                        android:textStyle="bold" />
+
                     <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/switchPriv"
                         android:layout_width="wrap_content"
@@ -144,9 +170,107 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:switchMinWidth="50dp"
-                        android:theme="@style/privateSwitch"/>
+                        android:theme="@style/privateSwitch" />
                 </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp">
 
+                    <ImageView
+                        android:id="@+id/dotaIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="6dp"
+                        android:src="@drawable/logo_dota" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="25dp"
+                        android:layout_toEndOf="@+id/dotaIcon"
+                        android:fontFamily="@font/poppins"
+                        android:text="Dota 2"
+                        android:textColor="@color/white"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchDota"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:switchMinWidth="50dp"
+                        android:theme="@style/privateSwitch" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp">
+
+                    <ImageView
+                        android:id="@+id/rivalsIcon"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:padding="6dp"
+                        android:src="@drawable/logo_rivals" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="25dp"
+                        android:layout_toEndOf="@+id/rivalsIcon"
+                        android:fontFamily="@font/poppins"
+                        android:text="Marvel Rivals"
+                        android:textColor="@color/white"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchRivals"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:switchMinWidth="50dp"
+                        android:theme="@style/privateSwitch" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp">
+
+                    <ImageView
+                        android:id="@+id/overwatchIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="6dp"
+                        android:src="@drawable/logo_overwatch" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="25dp"
+                        android:layout_toEndOf="@+id/overwatchIcon"
+                        android:fontFamily="@font/poppins"
+                        android:text="Overwatch"
+                        android:textColor="@color/white"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchOverwatch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:switchMinWidth="50dp"
+                        android:theme="@style/privateSwitch" />
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -159,7 +283,7 @@
                 android:orientation="vertical"
                 android:padding="15dp">
                 <RelativeLayout
-                    android:id="@+id/secpriv"
+                    android:id="@+id/terms"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clickable="true"
@@ -168,49 +292,15 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:id="@+id/securityIcon"
-                        android:src = "@drawable/security_icon"
-                        android:background="@drawable/circle_security"
-                        android:padding="8dp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_toEndOf="@+id/securityIcon"
-                        android:text="Security &amp; Privacy"
-                        android:textColor="@color/white"
-                        android:textSize="17sp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/poppins"
-                        android:layout_marginLeft="25dp"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src = "@drawable/right_arrow"
-                        android:layout_alignParentEnd ="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="10dp"/>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/access"
-                    android:layout_marginTop="30dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="true">
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:id="@+id/accessibilityIcon"
-                        android:src = "@drawable/acc_icon"
+                        android:src = "@drawable/terms_icon"
                         android:background="@drawable/circle_access"
                         android:padding="8dp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toEndOf="@+id/accessibilityIcon"
-                        android:text="Accessibility"
+                        android:layout_toEndOf="@+id/securityIcon"
+                        android:text="Terms &amp; Conditions"
                         android:textColor="@color/white"
                         android:textSize="17sp"
                         android:textStyle="bold"
@@ -226,7 +316,42 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/faq"
+                    android:id="@+id/privpolicy"
+                    android:layout_marginTop="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:id="@+id/privpolicyIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/circle_security"
+                        android:padding="8dp"
+                        android:src="@drawable/security_icon" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/privpolicyIcon"
+                        android:text="Privacy Policy"
+                        android:textColor="@color/white"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/poppins"
+                        android:layout_marginLeft="25dp"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src = "@drawable/right_arrow"
+                        android:layout_alignParentEnd ="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/question"
                     android:layout_marginTop="30dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -244,7 +369,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_toEndOf="@+id/faqIcon"
-                        android:text="FAQ &amp; About Us"
+                        android:text="Ask us a question!"
                         android:textColor="@color/white"
                         android:textSize="17sp"
                         android:textStyle="bold"
