@@ -11,6 +11,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
+import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -62,8 +63,8 @@ class SettingsActivity : Activity() {
                 val rawFavGames = document.get("favGames") as? List<Long>
                 games = rawFavGames?.map { it.toInt() } ?: emptyList()
                 gamesCount = games.size
+                setup(games)
             }
-
         val btnLogout = findViewById<Button>(R.id.btnLogout)
         btnLogout.setOnClickListener {
             val sheet = LayoutInflater.from(this).inflate(R.layout.logout_bottom_sheet, null)
@@ -87,5 +88,41 @@ class SettingsActivity : Activity() {
         }
 
 
+    }
+    private fun setup(games : List<Int>){
+        if (games.contains(1)) {
+            tv1.setTextColor(ContextCompat.getColor(this, android.R.color.holo_orange_light)) // Yellow color
+            sw1.isChecked = true
+        }
+
+        if (games.contains(1)) {
+            tv1.setTextColor(ContextCompat.getColor(this, R.color.yellow)) // Use your @color/yellow
+            sw1.isChecked = true
+        }
+
+        if (games.contains(2)) {
+            tv2.setTextColor(ContextCompat.getColor(this, R.color.yellow))
+            sw2.isChecked = true
+        }
+
+        if (games.contains(3)) {
+            tv3.setTextColor(ContextCompat.getColor(this, R.color.yellow))
+            sw3.isChecked = true
+        }
+
+        if (games.contains(4)) {
+            tv4.setTextColor(ContextCompat.getColor(this, R.color.yellow))
+            sw4.isChecked = true
+        }
+
+        if (games.contains(5)) {
+            tv5.setTextColor(ContextCompat.getColor(this, R.color.yellow))
+            sw5.isChecked = true
+        }
+
+        if (games.contains(6)) {
+            tv6.setTextColor(ContextCompat.getColor(this, R.color.yellow))
+            sw6.isChecked = true
+        }
     }
 }
