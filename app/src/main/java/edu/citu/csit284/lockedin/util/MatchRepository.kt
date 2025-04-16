@@ -68,9 +68,9 @@ class MatchRepository {
         }
     }
 
-    suspend fun getUpcomingMatches(): List<Match> {
+    suspend fun getLiveMatches(): List<Match> {
         return try {
-            apiService.getUpcomingMatches(apiKey)
+            apiService.getLiveMatches(apiKey)
         } catch (e: Exception) {
             emptyList()
         }

@@ -31,6 +31,7 @@ class LandingFragment : Fragment() {
     private lateinit var loadingView2: View
     private lateinit var noInternetBox: LinearLayout
     private lateinit var onGoingMatch: FrameLayout
+    private lateinit var header: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +53,9 @@ class LandingFragment : Fragment() {
         noInternetBox = view.findViewById(R.id.noInternetBox)
         noInternetBox.visibility = View.GONE
         onGoingMatch = view.findViewById(R.id.ongoingMatch)
+        header = view.findViewById(R.id.header)
         startPulsatingAnimation(onGoingMatch)
+        startPulsatingAnimation(header)
 
         LoadingAnimationUtil.setupLoadingViews(requireContext(), loadingView1, loadingView2)
         LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
