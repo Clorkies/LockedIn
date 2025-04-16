@@ -71,9 +71,30 @@ class ProfileActivity : Activity() {
         val tvRuleLength = findViewById<TextView>(R.id.tvRuleLength)
         val tvRuleUppercase = findViewById<TextView>(R.id.tvRuleUppercase)
         val tvRuleNumber = findViewById<TextView>(R.id.tvRuleNumber)
+        // setting up
         var origName = name.text.toString()
         var origBio = bio.text.toString()
         var origPass = pass.text.toString()
+        val userInfo = sharedPref.getString("username","")
+        users
+            .whereEqualTo("username",userInfo)
+            .get()
+            .addOnSuccessListener { documents ->
+                if(!documents.isEmpty){
+                    for (document in documents) {
+                        name.setText(document.getString("username"))
+                        pass.setText(document.getString("password"))
+                        email.setText(document.getString("email"))
+                        origName = name.text.toString()
+                        origPass = pass.text.toString()
+
+                        if(document.contains("bio")){
+                            bio.setText(document.getString("bio"))
+                            origBio = bio.text.toString()
+                        }
+                    }
+                }
+            }
         pass.addTextChangedListener(object : TextWatcher {
             @SuppressLint("ResourceAsColor", "SetTextI18n")
             override fun afterTextChanged(s: Editable?) {
@@ -136,8 +157,6 @@ class ProfileActivity : Activity() {
             }
         })
 
-
-        val userInfo = sharedPref.getString("username","")
         users
             .whereEqualTo("username",userInfo)
             .get()
@@ -161,26 +180,6 @@ class ProfileActivity : Activity() {
                         4 -> {
                             imgpfp.setImageResource(R.drawable.blue_pfp)
                             name.setTextColor(ContextCompat.getColor(this, R.color.pfpblue))
-                        }
-                    }
-                }
-            }
-
-        users
-            .whereEqualTo("username",userInfo)
-            .get()
-            .addOnSuccessListener { documents ->
-                if(!documents.isEmpty){
-                    for (document in documents) {
-                        name.setText(document.getString("username"))
-                        pass.setText(document.getString("password"))
-                        email.setText(document.getString("email"))
-                        origName = name.text.toString()
-                        origBio = bio.text.toString()
-                        origPass = pass.text.toString()
-
-                        if(document.contains("bio")){
-                            bio.setText(document.getString("bio"))
                         }
                     }
                 }

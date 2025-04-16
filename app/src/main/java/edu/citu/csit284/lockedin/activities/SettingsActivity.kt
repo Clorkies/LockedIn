@@ -37,6 +37,7 @@ class SettingsActivity : Activity() {
                 getSharedPreferences("User", MODE_PRIVATE).edit().clear().apply()
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
+                finish()
             }
 
             bottom.show()
