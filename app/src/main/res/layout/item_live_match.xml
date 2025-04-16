@@ -17,7 +17,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="left"
+            android:layout_marginLeft="15dp"
             android:orientation="horizontal">
 
             <TextView
@@ -70,26 +71,6 @@
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="24/04"
-                    android:textSize="14sp"
-                    android:textColor="@color/white"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="19:00"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -105,12 +86,14 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
+                    android:background="@drawable/rectangle_full_lightbg"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_chainStyle="packed">
 
                     <ImageView
+                        android:layout_marginTop="5dp"
                         android:id="@+id/iv_team1_logo"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
@@ -130,45 +113,62 @@
                         android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
-
                 <LinearLayout
-                    android:id="@+id/score_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     app:layout_constraintStart_toEndOf="@id/team1_container"
                     app:layout_constraintEnd_toStartOf="@id/team2_container"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent">
-
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:gravity="center">
                     <TextView
-                        android:id="@+id/tv_team1_score"
+                        android:id="@+id/tv_match_type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2"
-                        android:textSize="18sp"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_score_separator"
+                        android:layout_gravity="center_vertical"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:padding="3dp"
+                        android:text="Best of"
+                        android:textColor="@color/yellow"
+                        android:textSize="12sp" />
+                    <LinearLayout
+                        android:id="@+id/score_container"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
-                        android:layout_marginEnd="3dp"
-                        android:text="-"
-                        android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        >
 
-                    <TextView
-                        android:id="@+id/tv_team2_score"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textSize="18sp"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/tv_team1_score"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2"
+                            android:textColor="@color/white"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_score_separator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="3dp"
+                            android:layout_marginEnd="3dp"
+                            android:text="-"
+                            android:textColor="@color/white"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/tv_team2_score"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="24sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -177,6 +177,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
+                    android:background="@drawable/rectangle_full_lightbg"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -184,6 +185,7 @@
                     android:layout_marginStart="-8dp">
 
                     <ImageView
+                        android:layout_marginTop="5dp"
                         android:id="@+id/iv_team2_logo"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
@@ -205,18 +207,7 @@
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-            <TextView
-                android:id="@+id/tv_match_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="4dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:padding="3dp"
-                android:text="BO3"
-                android:textColor="@color/yellow"
-                android:textSize="12sp" />
+
         </LinearLayout>
 
         <TextView

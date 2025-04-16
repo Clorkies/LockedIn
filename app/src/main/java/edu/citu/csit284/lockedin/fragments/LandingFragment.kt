@@ -16,22 +16,39 @@ import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.ListView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.activities.MatchDetailsActivity
 import edu.citu.csit284.lockedin.activities.ProfileActivity
 import edu.citu.csit284.lockedin.R
+import edu.citu.csit284.lockedin.data.Match
+import edu.citu.csit284.lockedin.helper.LiveMatchAdapter
+import edu.citu.csit284.lockedin.helper.UpcomingMatchAdapter
 import edu.citu.csit284.lockedin.util.LoadingAnimationUtil
+import edu.citu.csit284.lockedin.util.MatchRepository
 import edu.citu.csit284.lockedin.util.fetchArticles
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LandingFragment : Fragment() {
     private val users = Firebase.firestore.collection("users")
     private var caller: String? = null
+    private val matchRepository = MatchRepository()
+
     private lateinit var loadingView1: View
     private lateinit var loadingView2: View
     private lateinit var noInternetBox: LinearLayout
-    private lateinit var onGoingMatch: FrameLayout
     private lateinit var header: LinearLayout
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: LiveMatchAdapter
+    private val matches = mutableListOf<Match>()
+    private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,10 +69,15 @@ class LandingFragment : Fragment() {
         loadingView2 = view.findViewById(R.id.loadingView2)
         noInternetBox = view.findViewById(R.id.noInternetBox)
         noInternetBox.visibility = View.GONE
-        onGoingMatch = view.findViewById(R.id.ongoingMatch)
         header = view.findViewById(R.id.header)
-        startPulsatingAnimation(onGoingMatch)
+        recyclerView = view.findViewById(R.id.rvView)
+        adapter = LiveMatchAdapter(matches)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.visibility = View.GONE
         startPulsatingAnimation(header)
+        startPulsatingAnimation(recyclerView)
+
 
         LoadingAnimationUtil.setupLoadingViews(requireContext(), loadingView1, loadingView2)
         LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
@@ -98,15 +120,13 @@ class LandingFragment : Fragment() {
             LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
             noInternetBox.visibility = if (!hasInternet) View.VISIBLE else View.GONE
         }
+        loadMatches()
 
-        val matchDetail = view.findViewById<FrameLayout>(R.id.ongoingMatch)
-        matchDetail.setOnClickListener {
-            startActivity(Intent(requireContext(), MatchDetailsActivity::class.java))
-        }
     }
     override fun onDestroy() {
         super.onDestroy()
         LoadingAnimationUtil.cancelAnimations()
+        coroutineScope.cancel()
     }
 
     private fun startPulsatingAnimation(view: View) {
@@ -137,6 +157,19 @@ class LandingFragment : Fragment() {
         }
 
         pulseAnimator.start()
+    }
+    private fun loadMatches() {
+        coroutineScope.launch {
+            val liveMatches = withContext(Dispatchers.IO) {
+                    matchRepository.getLiveMatches()
+                }
+            recyclerView.visibility = View.VISIBLE
+            recyclerView.scrollToPosition(0)
+            matches.clear()
+            matches.addAll(liveMatches)
+            adapter.notifyDataSetChanged()
+
+        }
     }
 
 }

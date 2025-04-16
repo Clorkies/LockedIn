@@ -64,75 +64,10 @@
         android:layout_width="match_parent"
         android:layout_height="5dp"/>
 
-    <FrameLayout
-        android:id="@+id/ongoingMatch"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="105dp"
-            android:src="@drawable/rectangle_rounded_red"
-            android:scaleType="fitXY"/>
-
-
-        <LinearLayout
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp"
-            android:layout_gravity="right|center"
-            android:layout_marginRight="8dp"
-            android:background="@drawable/rectangle_rounded"
-            android:gravity="center">
-
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/logo_sentinels"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:text="Sentinels"/>
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="VS"
-            android:textSize="30dp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:layout_gravity="center">
-        </TextView>
-
-        <LinearLayout
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp"
-            android:layout_gravity="left|center"
-            android:layout_marginLeft="8dp"
-            android:gravity="center"
-            android:background="@drawable/rectangle_rounded">
-
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/logo_fnatic"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:text="Fnatic"/>
-        </LinearLayout>
-
-    </FrameLayout>
+        android:layout_height="wrap_content"/>
 
     <Space
         android:layout_width="match_parent"
