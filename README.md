@@ -9,8 +9,6 @@
 - 🎮 **Game-Specific Feeds** – Follow updates for your favorite esports titles.
 - 📊 **Match Results & Standings** – Track tournament progress and team rankings.
 - 🔔 **Personalized Notifications** – Get instant alerts on breaking news and match updates.
-- 🎥 **Video Highlights** – Watch the best moments from major tournaments.
-- 🔎 **Player & Team Profiles** – Learn more about professional players and teams.
 
 ## Installation
 
@@ -33,19 +31,13 @@
 ## Tech Stack
 
 - **Language:** Kotlin
-- **Framework:** Android Jetpack
-- **Database:** Firebase/SQLite (if applicable)
-- **Networking:** Retrofit/Volley (if applicable)
+- **Framework:** Android Studio
+- **Database:** Firebase Cloud Firestore
+- **Networking:** Retrofit
 - **State Management:** ViewModel + LiveData
 
 ## Contribution
 
-We welcome contributions from the community! If you would like to contribute:
-
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
-3. Commit your changes and push to your fork.
-4. Create a pull request with a clear description of your changes.
 
 ## License
 
