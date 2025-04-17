@@ -129,7 +129,6 @@ class CreatePostActivity : Activity() {
 
 
         btnPost.isEnabled = false
-        btnPost.text = "Posting..."
 
         if (selectedImageUri != null) {
             val filePath = "$currentGameValue/posts/${UUID.randomUUID()}.jpg"
