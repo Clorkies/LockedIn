@@ -16,10 +16,10 @@
         android:label="fragment_games"
         tools:layout="@layout/fragment_games" />
     <fragment
-        android:id="@+id/liveFragment"
-        android:name="edu.citu.csit284.lockedin.fragments.LiveFragment"
-        android:label="fragment_live"
-        tools:layout="@layout/fragment_live" />
+        android:id="@+id/forumFragment"
+        android:name="edu.citu.csit284.lockedin.fragments.ForumFragment"
+        android:label="fragment_forum"
+        tools:layout="@layout/fragment_forum" />
     <fragment
         android:id="@+id/landingFragment"
         android:name="edu.citu.csit284.lockedin.fragments.LandingFragment"

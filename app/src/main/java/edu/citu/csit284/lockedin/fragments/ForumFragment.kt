@@ -18,7 +18,7 @@ import edu.citu.csit284.lockedin.activities.TournamentActivity
 import edu.citu.csit284.lockedin.data.Tournament
 import edu.citu.csit284.lockedin.helper.TournamentCustomListView
 
-class LiveFragment : Fragment() {
+class ForumFragment : Fragment() {
 
     private var caller: String? = null
     private val users = Firebase.firestore.collection("users")
@@ -31,7 +31,7 @@ class LiveFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_live, container, false)
+        return inflater.inflate(R.layout.fragment_forum, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,7 +67,7 @@ class LiveFragment : Fragment() {
             when (caller) {
                 "landing" -> findNavController().navigate(R.id.landingFragment)
                 "game" -> findNavController().navigate(R.id.gamesFragment)
-                "live" -> {}
+                "forum" -> {}
                 "explore" -> findNavController().navigate(R.id.exploreFragment)
                 else -> requireActivity().onBackPressedDispatcher.onBackPressed()
             }

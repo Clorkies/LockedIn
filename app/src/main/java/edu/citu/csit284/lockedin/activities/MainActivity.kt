@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.landingFragment -> item.setIcon(if (isSelected) R.drawable.btn_home_highlighted else R.drawable.btn_home)
                 R.id.gamesFragment -> item.setIcon(if (isSelected) R.drawable.btn_games_highlighted else R.drawable.btn_games)
-                R.id.liveFragment -> item.setIcon(if (isSelected) R.drawable.btn_live_highlighted else R.drawable.btn_live)
+                R.id.forumFragment -> item.setIcon(if (isSelected) R.drawable.btn_forum_highlighted else R.drawable.btn_forum)
                 R.id.exploreFragment -> item.setIcon(if (isSelected) R.drawable.btn_explore_highlighted else R.drawable.btn_explore)
                 else -> {}
             }
