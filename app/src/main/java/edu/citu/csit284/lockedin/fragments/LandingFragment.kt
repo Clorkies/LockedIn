@@ -34,6 +34,7 @@ import edu.citu.csit284.lockedin.helper.UpcomingMatchAdapter
 import edu.citu.csit284.lockedin.util.LoadingAnimationUtil
 import edu.citu.csit284.lockedin.util.MatchRepository
 import edu.citu.csit284.lockedin.util.fetchArticles
+import edu.citu.csit284.lockedin.util.setupHeaderScrollBehavior
 import edu.citu.csit284.lockedin.util.toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -47,6 +48,7 @@ class LandingFragment : Fragment() {
     private var caller: String? = null
     private val matchRepository = MatchRepository()
 
+    private lateinit var listView: ListView
     private lateinit var loadingView1: View
     private lateinit var loadingView2: View
     private lateinit var noInternetBox: LinearLayout
@@ -54,6 +56,7 @@ class LandingFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var noMatches : TextView
     private lateinit var adapter: LiveMatchAdapter
+    private lateinit var headerContainer: LinearLayout
     private val matches = mutableListOf<Match>()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
 
@@ -102,12 +105,13 @@ class LandingFragment : Fragment() {
         header = view.findViewById(R.id.header)
         recyclerView = view.findViewById(R.id.rvView)
         adapter = LiveMatchAdapter(matches)
+        listView = view.findViewById(R.id.articleListView)
+        headerContainer = view.findViewById(R.id.headerContainer)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL, false)
         recyclerView.visibility = View.GONE
         startPulsatingAnimation(header)
         startPulsatingAnimation(recyclerView)
-
 
         LoadingAnimationUtil.setupLoadingViews(requireContext(), loadingView1, loadingView2)
         LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
@@ -133,7 +137,6 @@ class LandingFragment : Fragment() {
                 }
             }
 
-        val listView = view.findViewById<ListView>(R.id.articleListView)
 
         fetchArticles(requireContext(), listView, caller = "landing") { hasInternet ->
             LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
@@ -141,6 +144,7 @@ class LandingFragment : Fragment() {
         }
         loadMatches()
 
+        setupHeaderScrollBehavior(headerContainer, listView)
     }
     override fun onDestroy() {
         super.onDestroy()
