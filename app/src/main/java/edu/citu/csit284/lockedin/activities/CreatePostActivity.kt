@@ -16,14 +16,16 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.R
 
 import edu.citu.csit284.lockedin.util.toast
 import java.io.IOException
 
-
 private const val REQUEST_IMAGE_PICK = 100
 class CreatePostActivity : Activity() {
+    private val users = Firebase.firestore.collection("users")
     private lateinit var etTitle: EditText
     private lateinit var etBody: EditText
     private lateinit var btnPost: Button
@@ -32,11 +34,7 @@ class CreatePostActivity : Activity() {
     private lateinit var btnDelete : ImageView
     private lateinit var footer : LinearLayout
     private var selectedImageUri: Uri? = null
-
-    private val supabaseUrl = "https://oavtpdjjoqaohnjfkpqg.supabase.co"
-    private val apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9hdnRwZGpqb3Fhb2huamZrcHFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5MDQyNTYsImV4cCI6MjA2MDQ4MDI1Nn0.QteLVrEy_0Dmogot15PErXsILXLKHRLKjNpYeIUUWrk"
-    private val bucketName = "posts"
-
+    private val currentGame = intent.getStringExtra("currentGame")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_post)
@@ -67,6 +65,10 @@ class CreatePostActivity : Activity() {
         }
 
         val sharedPref = getSharedPreferences("User", MODE_PRIVATE)
+        val username = sharedPref.getString("username", "")
+        val title = etTitle.text.toString()
+        val body = etBody.text.toString()
+        val imageUri = selectedImageUri
 
         btnPost.setOnClickListener {
             toast("wauz")
