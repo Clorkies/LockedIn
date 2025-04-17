@@ -56,7 +56,6 @@ class GamesFragment : Fragment() {
     private lateinit var adapter: UpcomingMatchAdapter
     private val matches = mutableListOf<Match>()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
-
     private val games = listOf(
         1 to "valorant",
         2 to "lol",

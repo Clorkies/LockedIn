@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="top">
+        android:gravity="center">
 
         <ImageButton
             android:id="@+id/button_back"
@@ -27,16 +27,29 @@
             android:layout_width="0dp"
             android:layout_height="20dp"
             android:layout_weight="1"/>
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:text="Explore Articles"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_weight="1"/>
 
         <ImageButton
             android:id="@+id/button_profile"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:clipToOutline="true"
             android:scaleType="fitCenter"
             android:background="@drawable/btn_profile"
-            android:clipToOutline="true"
             android:src="@drawable/default_pfp"/>
-
     </LinearLayout>
 
     <LinearLayout
