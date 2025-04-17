@@ -185,7 +185,7 @@ class LandingFragment : Fragment() {
 
             if(liveMatches.isEmpty()){
                 recyclerView.visibility = View.GONE
-                noMatches.visibility = View.GONE
+                noMatches.visibility = View.VISIBLE
             }else{
                 recyclerView.visibility = View.VISIBLE
                 recyclerView.scrollToPosition(0)
