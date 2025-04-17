@@ -1,10 +1,12 @@
 package edu.citu.csit284.lockedin.fragments
 
+import PostAdapter
 import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,18 +20,27 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.Query
 import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.activities.ProfileActivity
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.activities.CreatePostActivity
+import com.google.firebase.firestore.ktx.firestore
+import edu.citu.csit284.lockedin.data.Post
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.TimeZone
 
-class ForumFragment : Fragment() {
+class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
 
     private var caller: String? = null
     private val users = Firebase.firestore.collection("users")
+    private val forums = Firebase.firestore.collection("forums")
     private lateinit var btnGame1: LinearLayout
     private lateinit var btnGame1Text: TextView
     private lateinit var btnGame2: LinearLayout
@@ -49,7 +60,10 @@ class ForumFragment : Fragment() {
         5 to "marvel-rivals",
         6 to "overwatch"
     )
-    private lateinit var fabCreate : MaterialButton
+    private lateinit var fabCreate: MaterialButton
+    private lateinit var rvView: RecyclerView // Declare RecyclerView
+    private lateinit var postAdapter: PostAdapter // Declare the adapter
+    private val postList = mutableListOf<Post>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,7 +112,13 @@ class ForumFragment : Fragment() {
             startActivity(intent)
         }
 
+        rvView = view.findViewById(R.id.rvView)
+        rvView.layoutManager = LinearLayoutManager(requireContext())
+        postAdapter = PostAdapter(postList, this)
+        rvView.adapter = postAdapter
+
         loadFavoriteGames()
+        loadPostsForCategory(currentCategory)
     }
 
     private fun loadFavoriteGames() {
@@ -123,21 +143,33 @@ class ForumFragment : Fragment() {
     private fun setupFavoriteGamesButtons() {
         if (prefNames.size >= 1) {
             setupGameButton(btnGame1, btnGame1Text, prefNames[0], 1)
-            btnGame1.setOnClickListener { if (currentCategory != "game1") { switchCategory("game1", prefNames[0]) } }
+            btnGame1.setOnClickListener {
+                if (currentCategory != "game1") {
+                    switchCategory("game1", prefNames[0])
+                }
+            }
         } else {
             btnGame1.visibility = View.GONE
         }
 
         if (prefNames.size >= 2) {
             setupGameButton(btnGame2, btnGame2Text, prefNames[1], 2)
-            btnGame2.setOnClickListener { if (currentCategory != "game2") { switchCategory("game2", prefNames[1]) } }
+            btnGame2.setOnClickListener {
+                if (currentCategory != "game2") {
+                    switchCategory("game2", prefNames[1])
+                }
+            }
         } else {
             btnGame2.visibility = View.GONE
         }
 
         if (prefNames.size >= 3) {
             setupGameButton(btnGame3, btnGame3Text, prefNames[2], 3)
-            btnGame3.setOnClickListener { if (currentCategory != "game3") { switchCategory("game3", prefNames[2]) } }
+            btnGame3.setOnClickListener {
+                if (currentCategory != "game3") {
+                    switchCategory("game3", prefNames[2])
+                }
+            }
         } else {
             btnGame3.visibility = View.GONE
         }
@@ -189,6 +221,7 @@ class ForumFragment : Fragment() {
         resetButtonToInactive(previousCategory)
         currentCategory = newCategory
         updateButtonStyles(newCategory)
+        loadPostsForCategory(newCategory) // Load posts for the new category
     }
 
     private fun updateButtonStyles(activeCategory: String) {
@@ -255,6 +288,7 @@ class ForumFragment : Fragment() {
         animator.interpolator = AccelerateDecelerateInterpolator()
         animator.start()
     }
+
     private fun getCurrentGame(): String? {
         return when (currentCategory) {
             "game1" -> prefNames.getOrNull(0)
@@ -263,4 +297,80 @@ class ForumFragment : Fragment() {
             else -> null
         }
     }
+
+    private fun loadPostsForCategory(categoryName: String) {
+        val gameName = when (categoryName) {
+            "game1" -> prefNames.getOrNull(0) ?: "valorant"
+            "game2" -> prefNames.getOrNull(1) ?: "lol"
+            "game3" -> prefNames.getOrNull(2) ?: "csgo"
+            else -> "valorant"
+        }
+
+        forums.firestore.collection("forums/$gameName/posts")
+            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .limit(20)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                val newPosts = querySnapshot.documents.map { document ->
+                    mapDocumentToPost(document)
+                }
+                postList.clear()
+                postList.addAll(newPosts)
+                postAdapter.notifyDataSetChanged()
+
+            }
+    }
+
+    private fun mapDocumentToPost(document: DocumentSnapshot): Post {
+        val timestamp = document.get("timestamp")
+        val timestampLong = if (timestamp is Timestamp) {
+            timestamp.toDate().time
+        } else {
+            0
+        }
+        return Post(
+            authorUsername = document.getString("authorUsername"),
+            title = document.getString("title"),
+            description = document.getString("description"),
+            imageUrl = document.getString("imageUrl"),
+            upvotes = document.getLong("upvotes")?.toInt() ?: 0,
+            downvotes = document.getLong("downvotes")?.toInt() ?: 0,
+            timestamp = timestampLong,
+            profilePictureUrl = document.getString("profilePictureUrl")
+        )
+    }
+
+    override fun onUpvoteClick(position: Int) {
+        val post = postList[position]
+        val gameName = getCurrentGame() ?: "valorant"
+
+        forums.firestore.collection("forums").document("game").collection(gameName)
+            .document(post.timestamp.toString())
+            .update(
+                "upvotes", post.upvotes + 1
+            )
+            .addOnSuccessListener {
+                postList[position] = post.copy(downvotes = post.upvotes + 1)
+                postAdapter.notifyItemChanged(position)
+            }
+    }
+
+    override fun onDownvoteClick(position: Int) {
+        val post = postList[position]
+        val gameName = getCurrentGame() ?: "valorant"
+
+        forums.firestore.collection("forums").document("game").collection(gameName)
+            .document(post.timestamp.toString())
+            .update(
+                "downvotes", post.downvotes + 1
+            )
+            .addOnSuccessListener {
+                postList[position] = post.copy(downvotes = post.downvotes + 1)
+                postAdapter.notifyItemChanged(position)
+            }
+    }
+
+    override fun onItemClick(position: Int) {
+    }
 }
+
