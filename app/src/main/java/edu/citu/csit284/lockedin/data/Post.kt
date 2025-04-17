@@ -8,5 +8,6 @@ data class Post(
     val upvotes: Int = 0,
     val downvotes: Int = 0,
     val timestamp: Long = 0,
-    val votedBy: List<String> = emptyList()
+    val upvotedBy: List<String> = emptyList(),
+    val downvotedBy: List<String> = emptyList()
 )

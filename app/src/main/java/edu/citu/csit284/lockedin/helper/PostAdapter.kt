@@ -1,3 +1,6 @@
+import android.app.Activity
+import android.content.Context
+import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +17,11 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class PostAdapter(private val listOfPosts: List<Post>, private val itemClickListener: OnItemClickListener) :
-    RecyclerView.Adapter<PostAdapter.ItemViewHolder>() {  // Changed ViewHolder name
+class PostAdapter(private val listOfPosts: List<Post>, private val itemClickListener: OnItemClickListener, private val context: Context) :
+    RecyclerView.Adapter<PostAdapter.ItemViewHolder>() {
     private val users = Firebase.firestore.collection("users")
+    private val sharedPref = context.getSharedPreferences("User", Context.MODE_PRIVATE)
+    private val userInfo = sharedPref.getString("username", "")
     interface OnItemClickListener {
         fun onUpvoteClick(position: Int)
         fun onDownvoteClick(position: Int)
@@ -73,6 +78,21 @@ class PostAdapter(private val listOfPosts: List<Post>, private val itemClickList
 
         holder.tvUpvoteCount.text = post.upvotes.toString()
         holder.tvDownvoteCount.text = post.downvotes.toString()
+        if (post.upvotedBy.contains(userInfo)) {
+            holder.tvUpvoteCount.setTextColor(context.getColor(R.color.up))
+            holder.btnUpvote.setImageResource(R.drawable.upvote_icon_active)
+        } else {
+            holder.tvUpvoteCount.setTextColor(context.getColor(R.color.white))
+            holder.btnUpvote.setImageResource(R.drawable.upvote_icon_inactive)
+        }
+
+        if (post.downvotedBy.contains(userInfo)) {
+            holder.tvDownvoteCount.setTextColor(context.getColor(R.color.down))
+            holder.btnDownvote.setImageResource(R.drawable.downvote_icon_active)
+        } else {
+            holder.tvDownvoteCount.setTextColor(context.getColor(R.color.white))
+            holder.btnDownvote.setImageResource(R.drawable.downvote_icon_inactive)
+        }
 
         holder.btnUpvote.setOnClickListener {
             itemClickListener.onUpvoteClick(position)

@@ -62,6 +62,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
     private lateinit var rvView: RecyclerView
     private lateinit var postAdapter: PostAdapter
     private val postList = mutableListOf<Post>()
+    private var voter : Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,7 +113,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
 
         rvView = view.findViewById(R.id.rvView)
         rvView.layoutManager = LinearLayoutManager(requireContext())
-        postAdapter = PostAdapter(postList, this)
+        postAdapter = PostAdapter(postList, this, requireContext())
         rvView.adapter = postAdapter
 
         setupPfp()
@@ -304,7 +305,6 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
             "game3" -> prefNames.getOrNull(2) ?: "csgo"
             else -> "valorant"
         }
-
         forums.firestore.collection("forums/$gameName/posts")
             .orderBy("timestamp", Query.Direction.DESCENDING)
             .limit(20)
@@ -316,7 +316,6 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
                 postList.clear()
                 postList.addAll(newPosts)
                 postAdapter.notifyDataSetChanged()
-
             }
     }
 
@@ -327,6 +326,11 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
         } else {
             0
         }
+        val upvotedBy = document.get("upvotedBy") as? List<String> ?: emptyList()
+        val downvotedBy = document.get("downvotedBy") as? List<String> ?: emptyList()
+        if(upvotedBy.contains(userInfo) || downvotedBy.contains(userInfo)){
+            voter = true
+        }
         return Post(
             authorUsername = document.getString("authorUsername"),
             title = document.getString("title"),
@@ -335,6 +339,8 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
             upvotes = document.getLong("upvotes")?.toInt() ?: 0,
             downvotes = document.getLong("downvotes")?.toInt() ?: 0,
             timestamp = timestampLong,
+            upvotedBy = upvotedBy,
+            downvotedBy = downvotedBy
         )
     }
 
