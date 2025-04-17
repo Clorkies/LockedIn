@@ -115,6 +115,10 @@
                 />
         </LinearLayout>
     </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
     <com.google.android.material.button.MaterialButton
         android:id="@+id/fabCreate"
         style="@style/Widget.MaterialComponents.FloatingActionButton"
