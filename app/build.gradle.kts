@@ -78,6 +78,7 @@ dependencies {
     // News API
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
 
     // Logging
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
@@ -89,14 +90,6 @@ dependencies {
     // Article Web View
     implementation("androidx.browser:browser:1.5.0")
 
-    //supabase
-    implementation("io.supabase:supabase-kt:1.12.0")
-    implementation("io.ktor:ktor-client-okhttp:$ktor_version")
-    implementation("io.ktor:ktor-client-core:$ktor_version")
-    implementation("io.ktor:ktor-client-json:$ktor_version")
-    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
 
 
     implementation(libs.androidx.core.ktx)
