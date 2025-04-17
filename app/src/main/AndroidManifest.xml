@@ -16,6 +16,9 @@
         android:theme="@style/Theme.LockedIn"
         tools:targetApi="31">
         <activity
+            android:name=".activities.CreatePostActivity"
+            android:exported="false" />
+        <activity
             android:name=".splash.LoginSplashScreen"
             android:exported="false" />
         <activity

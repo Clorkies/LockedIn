@@ -18,10 +18,12 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.activities.ProfileActivity
 import edu.citu.csit284.lockedin.R
+import edu.citu.csit284.lockedin.activities.CreatePostActivity
 
 class ForumFragment : Fragment() {
 
@@ -46,6 +48,7 @@ class ForumFragment : Fragment() {
         5 to "marvel-rivals",
         6 to "overwatch"
     )
+    private lateinit var fabCreate : FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,6 +89,13 @@ class ForumFragment : Fragment() {
         btnGame2Text = view.findViewById(R.id.game2)
         btnGame3 = view.findViewById(R.id.game3Btn)
         btnGame3Text = view.findViewById(R.id.game3)
+        fabCreate = view.findViewById(R.id.fabCreate)
+        fabCreate.setOnClickListener {
+            val intent = Intent(requireContext(), CreatePostActivity::class.java)
+            val currentGame = getCurrentGame()
+            intent.putExtra("currentGame", currentGame)
+            startActivity(intent)
+        }
 
         loadFavoriteGames()
     }
@@ -243,5 +253,13 @@ class ForumFragment : Fragment() {
         animator.duration = 350
         animator.interpolator = AccelerateDecelerateInterpolator()
         animator.start()
+    }
+    private fun getCurrentGame(): String? {
+        return when (currentCategory) {
+            "game1" -> prefNames.getOrNull(0)
+            "game2" -> prefNames.getOrNull(1)
+            "game3" -> prefNames.getOrNull(2)
+            else -> null
+        }
     }
 }

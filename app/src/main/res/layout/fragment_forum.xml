@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -113,6 +114,22 @@
                 />
         </LinearLayout>
     </LinearLayout>
-
-
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/fabCreate"
+        style="@style/Widget.MaterialComponents.FloatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="Create"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:gravity="center"
+        app:icon="@android:drawable/ic_input_add"
+        app:iconGravity="end"
+        app:backgroundTint="@color/yellow"
+        app:iconTint="@color/white" />
 </LinearLayout>
