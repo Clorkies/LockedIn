@@ -1,6 +1,7 @@
 package edu.citu.csit284.lockedin.activities
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -9,6 +10,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -16,16 +18,20 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import edu.citu.csit284.lockedin.R
-
 import edu.citu.csit284.lockedin.util.toast
 import java.io.IOException
+import java.util.UUID
 
 private const val REQUEST_IMAGE_PICK = 100
 class CreatePostActivity : Activity() {
-    private val users = Firebase.firestore.collection("users")
+    private val firestore = Firebase.firestore
+    private val storage = Firebase.storage
+    private val storageRef = storage.reference
     private lateinit var etTitle: EditText
     private lateinit var etBody: EditText
     private lateinit var btnPost: Button
@@ -34,7 +40,8 @@ class CreatePostActivity : Activity() {
     private lateinit var btnDelete : ImageView
     private lateinit var footer : LinearLayout
     private var selectedImageUri: Uri? = null
-    private val currentGame = intent.getStringExtra("currentGame")
+    private val currentGame: String? by lazy { intent.getStringExtra("currentGame") }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_post)
@@ -64,14 +71,8 @@ class CreatePostActivity : Activity() {
             getImage()
         }
 
-        val sharedPref = getSharedPreferences("User", MODE_PRIVATE)
-        val username = sharedPref.getString("username", "")
-        val title = etTitle.text.toString()
-        val body = etBody.text.toString()
-        val imageUri = selectedImageUri
-
         btnPost.setOnClickListener {
-            toast("wauz")
+            savePost()
         }
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -117,5 +118,65 @@ class CreatePostActivity : Activity() {
             btnPost.setTextColor(ContextCompat.getColor(this, R.color.white))
             btnPost.backgroundTintList = ContextCompat.getColorStateList(this, R.color.settingsbg)
         }
+    }
+
+    private fun savePost() {
+        val sharedPref = getSharedPreferences("User", MODE_PRIVATE)
+        val username = sharedPref.getString("username", "") ?: ""
+        val title = etTitle.text.toString().trim()
+        val body = etBody.text.toString().trim()
+        val currentGameValue = currentGame
+
+
+        btnPost.isEnabled = false
+        btnPost.text = "Posting..."
+
+        if (selectedImageUri != null) {
+            val filePath = "$currentGameValue/posts/${UUID.randomUUID()}.jpg"
+            uploadImageToFirebaseStorage(this, selectedImageUri!!, filePath) { imageUrl ->
+                if (currentGameValue != null) {
+                    savePostData(title, body, imageUrl, username, currentGameValue)
+                }
+            }
+        } else {
+            if (currentGameValue != null) {
+                savePostData(title, body, null, username, currentGameValue)
+            }
+        }
+    }
+
+    private fun uploadImageToFirebaseStorage(context: Context, fileUri: Uri, filePathInStorage: String, onComplete: (String?) -> Unit) {
+        val imageRef = storageRef.child(filePathInStorage)
+        val uploadTask = imageRef.putFile(fileUri)
+
+        uploadTask.addOnSuccessListener { taskSnapshot ->
+            imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                val imageUrl = downloadUri.toString()
+                onComplete(imageUrl)
+            }
+        }
+    }
+
+    private fun savePostData(title: String, body: String, imageUrl: String?, username: String, currentGame: String) {
+        val post = hashMapOf(
+            "authorUsername" to username,
+            "title" to title,
+            "description" to body,
+            "imageUrl" to imageUrl,
+            "timestamp" to FieldValue.serverTimestamp(),
+            "comments" to emptyList<Map<String, Any>>(),
+            "votes" to emptyMap<String, String>()
+        )
+
+
+        firestore.collection("forums")
+            .document(currentGame)
+            .collection("posts")
+            .add(post)
+            .addOnSuccessListener { documentReference ->
+                btnPost.isEnabled = true
+                btnPost.text = "Post"
+                finish()
+            }
     }
 }
