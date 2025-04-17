@@ -148,7 +148,7 @@ fun fetchBookmarkedArticles(
     context: Context,
     listView: ListView,
     caller: String = "explore",
-    onComplete: (hasArticles: Boolean) -> Unit = {}
+    onComplete: (articlesIsEmpty: Boolean) -> Unit = {}
 ) {
     con = context
     listV = listView
@@ -156,7 +156,7 @@ fun fetchBookmarkedArticles(
 
     val sharedPref = context.getSharedPreferences("User", Context.MODE_PRIVATE)
     val username = sharedPref.getString("username", null)
-
+    var bookmarks: List<Map<String, Any>> = listOf()
     val users = Firebase.firestore.collection("users")
 
     users.whereEqualTo("username", username)
@@ -165,7 +165,6 @@ fun fetchBookmarkedArticles(
         .addOnSuccessListener { userDocs ->
             if (userDocs.documents.isEmpty()) {
                 listView.adapter = ArticleAdapter(context, emptyList())
-                onComplete(false)
                 return@addOnSuccessListener
             }
 
@@ -174,7 +173,7 @@ fun fetchBookmarkedArticles(
 
             if (bookmarks.isEmpty()) {
                 listView.adapter = ArticleAdapter(context, emptyList())
-                onComplete(false)
+                onComplete(true)
                 return@addOnSuccessListener
             }
 
@@ -196,11 +195,11 @@ fun fetchBookmarkedArticles(
                 context.startActivity(intent)
             }
 
-            onComplete(true)
+            onComplete(false)
         }
         .addOnFailureListener { _ ->
             Toast.makeText(context, "Failed to load bookmarks", Toast.LENGTH_SHORT).show()
-            onComplete(false)
+            onComplete(true)
         }
 }
 fun fetchArticlesSearch(

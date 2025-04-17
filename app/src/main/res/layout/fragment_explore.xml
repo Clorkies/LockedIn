@@ -193,7 +193,7 @@
             android:gravity="center"
             android:visibility="visible"
             android:orientation="vertical"
-            android:background="@drawable/loading_background"
+            android:background="@drawable/rectangle_no_article_bg"
             >
             <TextView
                 android:layout_width="wrap_content"
@@ -209,11 +209,12 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:gravity="center"
-            android:visibility="visible"
+            android:visibility="gone"
             android:orientation="vertical"
-            android:background="@drawable/loading_background"
+            android:background="@drawable/rectangle_no_article_bg"
             >
             <TextView
+                android:id="@+id/noArticlesBoxText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No articles found."

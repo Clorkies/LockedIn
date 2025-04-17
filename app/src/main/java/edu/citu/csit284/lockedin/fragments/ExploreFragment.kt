@@ -49,6 +49,7 @@ class ExploreFragment : Fragment() {
     private lateinit var articlesContainer: FrameLayout
     private lateinit var noBookmarkBox: LinearLayout
     private lateinit var noArticlesBox: LinearLayout
+    private lateinit var noArticlesBoxText: TextView
 
     private lateinit var categoriesContainer: LinearLayout
     private lateinit var searchView: SearchView
@@ -125,6 +126,7 @@ class ExploreFragment : Fragment() {
         noBookmarkBox.visibility = View.GONE
         noArticlesBox = view.findViewById(R.id.noArticlesBox)
         noArticlesBox.visibility = View.GONE
+        noArticlesBoxText = view.findViewById(R.id.noArticlesBoxText)
 
         categoriesContainer = view.findViewById(R.id.categoriesContainer)
         searchView = view.findViewById(R.id.searchView)
@@ -380,14 +382,16 @@ class ExploreFragment : Fragment() {
     }
 
     private fun loadArticles(category: String) {
+        noInternetBox.visibility = View.GONE
+        noArticlesBox.visibility = View.GONE
+        noBookmarkBox.visibility = View.GONE
         when (category) {
             "bookmarked" -> {
-                fetchBookmarkedArticles(requireContext(), listView, caller = "explore") { _ ->
-                    if (listView.adapter.count == 0) {
+                fetchBookmarkedArticles(requireContext(), listView, caller = "explore") { articlesIsEmpty ->
+                    if (articlesIsEmpty) {
                         noBookmarkBox.visibility = View.VISIBLE
                     }
                     LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
-                    noInternetBox.visibility = View.GONE
                 }
             }
             "game1", "game2", "game3" -> {
@@ -396,7 +400,10 @@ class ExploreFragment : Fragment() {
                 val gameName = FilterUtil.getGameNameById(gameId)
 
                 fetchArticlesSpecific(requireContext(), listView, caller = "explore", gameName = gameName) { hasInternet ->
-                    noBookmarkBox.visibility = View.GONE
+                    if (listView.adapter.count == 0) {
+                        noArticlesBox.visibility = View.VISIBLE
+                        noArticlesBoxText.text = "No articles found for \"${gameName}\"."
+                    }
                     LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
                     noInternetBox.visibility = if (!hasInternet) View.VISIBLE else View.GONE
                 }
@@ -431,13 +438,17 @@ class ExploreFragment : Fragment() {
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
+                noArticlesBox.visibility = View.GONE
                 if (!query.isNullOrEmpty()) {
                     categoriesContainer.visibility = View.GONE
 
                     LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
 
                     fetchArticlesSearch(requireContext(), listView, query, caller = "explore") { hasInternet ->
-                        noBookmarkBox.visibility = View.GONE
+                        if (listView.adapter.count == 0) {
+                            noArticlesBox.visibility = View.VISIBLE
+                            noArticlesBoxText.text = "No articles found for \"${query}\"."
+                        }
                         LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
                         noInternetBox.visibility = if (!hasInternet) View.VISIBLE else View.GONE
                     }
@@ -466,7 +477,6 @@ class ExploreFragment : Fragment() {
             false
         }
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
