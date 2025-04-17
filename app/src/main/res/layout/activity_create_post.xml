@@ -38,9 +38,11 @@
             android:text="Post"
             android:textSize="16sp"
             android:textColor="@color/white"
-            android:background="@drawable/settings_background"
+            android:background="@drawable/rectangle_rounded_yellow"
+            app:backgroundTint="@color/settingsbg"
             android:layout_gravity="center_vertical"
-            android:layout_marginEnd="16dp" />
+            android:layout_marginEnd="16dp"
+            android:enabled="false"/>
 
     </LinearLayout>
 
@@ -60,6 +62,7 @@
             android:textColor="@color/white"
             android:textColorHint="@color/fadedWhite"
             android:textSize="28sp"
+            android:textStyle="bold"
             android:background="@null"
             android:paddingBottom="8dp"
             android:layout_marginBottom="16dp"
@@ -71,7 +74,8 @@
             android:hint="body text"
             android:gravity="top|start"
             android:inputType="textMultiLine"
-            android:minHeight="150dp" android:textColor="@color/white"
+            android:minHeight="150dp"
+            android:textColor="@color/white"
             android:textColorHint="@color/fadedWhite"
             android:textSize="20sp"
             android:background="@null"
