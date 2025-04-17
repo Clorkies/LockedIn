@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("com.google.gms.google-services")
 }
+val ktor_version = "2.3.8"
 
 android {
     namespace = "edu.citu.csit284.lockedin"
@@ -87,6 +88,15 @@ dependencies {
 
     // Article Web View
     implementation("androidx.browser:browser:1.5.0")
+
+    //supabase
+    implementation("io.supabase:supabase-kt:1.12.0")
+    implementation("io.ktor:ktor-client-okhttp:$ktor_version")
+    implementation("io.ktor:ktor-client-core:$ktor_version")
+    implementation("io.ktor:ktor-client-json:$ktor_version")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
 
 
     implementation(libs.androidx.core.ktx)

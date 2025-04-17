@@ -59,6 +59,13 @@ class CreatePostActivity : Activity() {
         footer.setOnClickListener {
             getImage()
         }
+
+        val sharedPref = getSharedPreferences("User", MODE_PRIVATE)
+        val username = sharedPref.getString("username", "")
+        val title = etTitle.text.toString()
+        val body = etBody.text.toString()
+        val imageUri = selectedImageUri
+
         btnPost.setOnClickListener {
             toast("wauz")
         }
