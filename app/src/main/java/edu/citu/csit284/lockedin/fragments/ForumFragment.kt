@@ -6,7 +6,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -25,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
 import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.activities.ProfileActivity
@@ -113,7 +113,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
 
         rvView = view.findViewById(R.id.rvView)
         rvView.layoutManager = LinearLayoutManager(requireContext())
-        postAdapter = PostAdapter(postList, this, requireContext())
+        postAdapter = userInfo?.let { PostAdapter(postList, this, requireContext(), it) }!!
         rvView.adapter = postAdapter
 
         setupPfp()
@@ -332,6 +332,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
             voter = true
         }
         return Post(
+            id = document.id,
             authorUsername = document.getString("authorUsername"),
             title = document.getString("title"),
             description = document.getString("description"),
@@ -339,40 +340,131 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
             upvotes = document.getLong("upvotes")?.toInt() ?: 0,
             downvotes = document.getLong("downvotes")?.toInt() ?: 0,
             timestamp = timestampLong,
-            upvotedBy = upvotedBy,
-            downvotedBy = downvotedBy
+            upvotedBy = upvotedBy.toMutableList(),
+            downvotedBy = downvotedBy.toMutableList()
         )
     }
 
-    override fun onUpvoteClick(position: Int) {
+    override fun onUpvoteClick(
+        position: Int,
+        currentUpvotes: Int,
+        currentDownvotes: Int,
+        alreadyUpvoted: Boolean,
+        alreadyDownvoted: Boolean
+    ) {
         val post = postList[position]
         val gameName = getCurrentGame() ?: "valorant"
+        val postRef = forums.firestore.collection("forums/$gameName/posts")
+            .document(post.id)
 
-        forums.firestore.collection("forums").document("game").collection(gameName)
-            .document(post.timestamp.toString())
-            .update(
-                "upvotes", post.upvotes + 1
-            )
-            .addOnSuccessListener {
-                postList[position] = post.copy(downvotes = post.upvotes + 1)
-                postAdapter.notifyItemChanged(position)
+        if (alreadyUpvoted) {
+            postRef.update(
+                "upvotes", currentUpvotes - 1,
+                "upvotedBy", FieldValue.arrayRemove(userInfo)
+            ).addOnSuccessListener {
+                val updatedUpvotedBy = post.upvotedBy.filter { it != userInfo }.toMutableList()
+                postList[position] =
+                    post.copy(upvotes = currentUpvotes - 1, upvotedBy = updatedUpvotedBy)
+                postAdapter.updateUpvoteCount(position, currentUpvotes - 1)
+                postAdapter.updateUpvotedBy(position, updatedUpvotedBy)
             }
-    }
+        } else if (alreadyDownvoted) {
+            postRef.update(
+                "upvotes", currentUpvotes + 1,
+                "downvotes", currentDownvotes - 1,
+                "upvotedBy", FieldValue.arrayUnion(userInfo),
+                "downvotedBy", FieldValue.arrayRemove(userInfo)
+            ).addOnSuccessListener {
+                val updatedUpvotedBy = post.upvotedBy.toMutableList()
+                userInfo?.let { it1 -> updatedUpvotedBy.add(it1) }
 
-    override fun onDownvoteClick(position: Int) {
+                val updatedDownvotedBy = post.downvotedBy.filter { it != userInfo }.toMutableList()
+
+                postList[position] = post.copy(
+                    upvotes = currentUpvotes + 1,
+                    downvotes = currentDownvotes - 1,
+                    upvotedBy = updatedUpvotedBy,
+                    downvotedBy = updatedDownvotedBy
+                )
+                postAdapter.updateUpvoteCount(position, currentUpvotes + 1)
+                postAdapter.updateDownvoteCount(position, currentDownvotes - 1)
+                postAdapter.updateUpvotedBy(position, updatedUpvotedBy)
+                postAdapter.updateDownvotedBy(position, updatedDownvotedBy)
+            }
+        } else {
+            postRef.update(
+                "upvotes", currentUpvotes + 1,
+                "upvotedBy", FieldValue.arrayUnion(userInfo)
+            ).addOnSuccessListener {
+                val updatedUpvotedBy = post.upvotedBy.toMutableList()
+                userInfo?.let { it1 -> updatedUpvotedBy.add(it1) }
+
+                postList[position] =
+                    post.copy(upvotes = currentUpvotes + 1, upvotedBy = updatedUpvotedBy)
+                postAdapter.updateUpvoteCount(position, currentUpvotes + 1)
+                postAdapter.updateUpvotedBy(position, updatedUpvotedBy)
+            }
+        }
+    }
+    override fun onDownvoteClick(
+        position: Int,
+        currentUpvotes: Int,
+        currentDownvotes: Int,
+        alreadyUpvoted: Boolean,
+        alreadyDownvoted: Boolean
+    ) {
         val post = postList[position]
         val gameName = getCurrentGame() ?: "valorant"
+        val postRef = forums.firestore.collection("forums/$gameName/posts")
+            .document(post.id)
 
-        forums.firestore.collection("forums").document("game").collection(gameName)
-            .document(post.timestamp.toString())
-            .update(
-                "downvotes", post.downvotes + 1
-            )
-            .addOnSuccessListener {
-                postList[position] = post.copy(downvotes = post.downvotes + 1)
-                postAdapter.notifyItemChanged(position)
+        if (alreadyDownvoted) {
+            postRef.update(
+                "downvotes", currentDownvotes - 1,
+                "downvotedBy", FieldValue.arrayRemove(userInfo)
+            ).addOnSuccessListener {
+                val updatedDownvotedBy = post.downvotedBy.filter { it != userInfo }.toMutableList()
+                postList[position] = post.copy(downvotes = currentDownvotes - 1, downvotedBy = updatedDownvotedBy)
+                postAdapter.updateDownvoteCount(position, currentDownvotes - 1)
+                postAdapter.updateDownvotedBy(position, updatedDownvotedBy)
             }
+        } else if (alreadyUpvoted) {
+            postRef.update(
+                "upvotes", currentUpvotes - 1,
+                "downvotes", currentDownvotes + 1,
+                "upvotedBy", FieldValue.arrayRemove(userInfo),
+                "downvotedBy", FieldValue.arrayUnion(userInfo)
+            ).addOnSuccessListener {
+                val updatedUpvotedBy = post.upvotedBy.filter { it != userInfo }.toMutableList()
+                val updatedDownvotedBy = post.downvotedBy.toMutableList()
+                userInfo?.let { it1 -> updatedDownvotedBy.add(it1) }
+
+                postList[position] = post.copy(
+                    upvotes = currentUpvotes - 1,
+                    downvotes = currentDownvotes + 1,
+                    upvotedBy = updatedUpvotedBy,
+                    downvotedBy = updatedDownvotedBy
+                )
+                postAdapter.updateUpvoteCount(position, currentUpvotes - 1)
+                postAdapter.updateDownvoteCount(position, currentDownvotes + 1)
+                postAdapter.updateUpvotedBy(position, updatedUpvotedBy)
+                postAdapter.updateDownvotedBy(position, updatedDownvotedBy)
+            }
+        } else {
+            postRef.update(
+                "downvotes", currentDownvotes + 1,
+                "downvotedBy", FieldValue.arrayUnion(userInfo)
+            ).addOnSuccessListener {
+                val updatedDownvotedBy = post.downvotedBy.toMutableList()
+                userInfo?.let { it1 -> updatedDownvotedBy.add(it1) }
+
+                postList[position] = post.copy(downvotes = currentDownvotes + 1, downvotedBy = updatedDownvotedBy)
+                postAdapter.updateDownvoteCount(position, currentDownvotes + 1)
+                postAdapter.updateDownvotedBy(position, updatedDownvotedBy)
+            }
+        }
     }
+
     private fun setupPfp() {
         var pfp: Int
         users

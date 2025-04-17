@@ -17,14 +17,17 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class PostAdapter(private val listOfPosts: List<Post>, private val itemClickListener: OnItemClickListener, private val context: Context) :
+class PostAdapter(private val listOfPosts: MutableList<Post>,
+                  private val itemClickListener: OnItemClickListener,
+                  private val context: Context,
+                  private val currentUser: String) :
     RecyclerView.Adapter<PostAdapter.ItemViewHolder>() {
     private val users = Firebase.firestore.collection("users")
     private val sharedPref = context.getSharedPreferences("User", Context.MODE_PRIVATE)
     private val userInfo = sharedPref.getString("username", "")
     interface OnItemClickListener {
-        fun onUpvoteClick(position: Int)
-        fun onDownvoteClick(position: Int)
+        fun onUpvoteClick(position: Int, currentUpvotes: Int, currentDownvotes: Int, alreadyUpvoted: Boolean, alreadyDownvoted: Boolean)
+        fun onDownvoteClick(position: Int, currentUpvotes: Int, currentDownvotes: Int, alreadyUpvoted: Boolean, alreadyDownvoted: Boolean)
         fun onItemClick(position: Int)
     }
 
@@ -95,10 +98,14 @@ class PostAdapter(private val listOfPosts: List<Post>, private val itemClickList
         }
 
         holder.btnUpvote.setOnClickListener {
-            itemClickListener.onUpvoteClick(position)
+            val alreadyUpvoted = post.upvotedBy.contains(currentUser)
+            val alreadyDownvoted = post.downvotedBy.contains(currentUser)
+            itemClickListener.onUpvoteClick(position, post.upvotes, post.downvotes, alreadyUpvoted, alreadyDownvoted)
         }
         holder.btnDownvote.setOnClickListener {
-            itemClickListener.onDownvoteClick(position)
+            val alreadyUpvoted = post.upvotedBy.contains(currentUser)
+            val alreadyDownvoted = post.downvotedBy.contains(currentUser)
+            itemClickListener.onDownvoteClick(position, post.upvotes, post.downvotes, alreadyUpvoted, alreadyDownvoted)
         }
     }
     private fun setProfilePicture(username: String, imgProfilePicture: ImageView) {
@@ -126,5 +133,30 @@ class PostAdapter(private val listOfPosts: List<Post>, private val itemClickList
     override fun getItemCount(): Int {
         return listOfPosts.size
     }
+    fun updateUpvoteCount(position: Int, newCount: Int) {
+        if (position < listOfPosts.size) {
+            listOfPosts[position].upvotes = newCount
+            notifyItemChanged(position)
+        }
+    }
+    fun updateDownvoteCount(position: Int, newCount: Int) {
+        if (position < listOfPosts.size) {
+            listOfPosts[position].downvotes = newCount
+            notifyItemChanged(position)
+        }
+    }
+    fun updateUpvotedBy(position: Int, users: MutableList<String>){
+        if(position < listOfPosts.size){
+            listOfPosts[position].upvotedBy = users
+            notifyItemChanged(position)
+        }
+    }
+    fun updateDownvotedBy(position: Int, users: MutableList<String>){
+        if(position < listOfPosts.size){
+            listOfPosts[position].downvotedBy = users
+            notifyItemChanged(position)
+        }
+    }
+
 }
 
