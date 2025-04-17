@@ -6,6 +6,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.R // Import your R file
 import edu.citu.csit284.lockedin.data.Post
 import java.text.SimpleDateFormat
@@ -14,7 +16,7 @@ import java.util.Locale
 
 class PostAdapter(private val listOfPosts: List<Post>, private val itemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<PostAdapter.ItemViewHolder>() {  // Changed ViewHolder name
-
+    private val users = Firebase.firestore.collection("users")
     interface OnItemClickListener {
         fun onUpvoteClick(position: Int)
         fun onDownvoteClick(position: Int)
@@ -53,6 +55,7 @@ class PostAdapter(private val listOfPosts: List<Post>, private val itemClickList
         holder.tvPostTitle.text = post.title
         holder.tvPostBody.text = post.description
         holder.tvUserName.text = post.authorUsername
+        post.authorUsername?.let { setProfilePicture(it, holder.imgProfilePicture) }
 
         val formattedTimestamp = SimpleDateFormat("MMM dd, hh:mm a", Locale.getDefault()).format(Date(post.timestamp))
         holder.tvTimestamp.text = formattedTimestamp
@@ -67,14 +70,6 @@ class PostAdapter(private val listOfPosts: List<Post>, private val itemClickList
             holder.imgPostImage.visibility = View.GONE
         }
 
-        if (post.profilePictureUrl != null && post.profilePictureUrl.isNotEmpty()) {
-            Glide.with(holder.itemView.context)
-                .load(post.profilePictureUrl)
-                .apply(RequestOptions().circleCrop())
-                .into(holder.imgProfilePicture)
-        } else {
-            holder.imgProfilePicture.setImageResource(R.drawable.default_pfp)
-        }
 
         holder.tvUpvoteCount.text = post.upvotes.toString()
         holder.tvDownvoteCount.text = post.downvotes.toString()
@@ -85,6 +80,27 @@ class PostAdapter(private val listOfPosts: List<Post>, private val itemClickList
         holder.btnDownvote.setOnClickListener {
             itemClickListener.onDownvoteClick(position)
         }
+    }
+    private fun setProfilePicture(username: String, imgProfilePicture: ImageView) {
+        users.whereEqualTo("username", username)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    val document = documents.documents[0]
+                    val pfpId = document.getLong("pfpID")?.toInt() ?: 2
+
+                    val drawableResId = when (pfpId) {
+                        1 -> R.drawable.red_pfp
+                        2 -> R.drawable.default_pfp
+                        3 -> R.drawable.green_pfp
+                        4 -> R.drawable.blue_pfp
+                        else -> R.drawable.default_pfp
+                    }
+                    imgProfilePicture.setImageResource(drawableResId)
+                } else {
+                    imgProfilePicture.setImageResource(R.drawable.default_pfp)
+                }
+            }
     }
 
     override fun getItemCount(): Int {

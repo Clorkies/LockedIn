@@ -32,9 +32,6 @@ import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.activities.CreatePostActivity
 import com.google.firebase.firestore.ktx.firestore
 import edu.citu.csit284.lockedin.data.Post
-import java.text.SimpleDateFormat
-import java.util.Locale
-import java.util.TimeZone
 
 class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
 
@@ -52,6 +49,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
     private var userInfo: String? = null
     private var currentCategory = "game1"
     private var previousCategory = "game1"
+    private lateinit var btnProfile : ImageButton
     private val gamesMap = mapOf(
         1 to "valorant",
         2 to "lol",
@@ -82,7 +80,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val btnProfile = view.findViewById<ImageButton>(R.id.button_profile)
+        btnProfile = view.findViewById<ImageButton>(R.id.button_profile)
         btnProfile.setOnClickListener {
             startActivity(Intent(requireContext(), ProfileActivity::class.java))
         }
@@ -117,6 +115,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
         postAdapter = PostAdapter(postList, this)
         rvView.adapter = postAdapter
 
+        setupPfp()
         loadFavoriteGames()
         loadPostsForCategory(currentCategory)
     }
@@ -336,7 +335,6 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
             upvotes = document.getLong("upvotes")?.toInt() ?: 0,
             downvotes = document.getLong("downvotes")?.toInt() ?: 0,
             timestamp = timestampLong,
-            profilePictureUrl = document.getString("profilePictureUrl")
         )
     }
 
@@ -369,7 +367,35 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
                 postAdapter.notifyItemChanged(position)
             }
     }
+    private fun setupPfp() {
+        var pfp: Int
+        users
+            .whereEqualTo("username", userInfo)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    val document = documents.documents[0]
+                    pfp = document.getLong("pfpID")?.toInt() ?: 2
+                    when (pfp) {
+                        1 -> {
+                            btnProfile.setImageResource(R.drawable.red_pfp)
+                        }
 
+                        2 -> {
+                            btnProfile.setImageResource(R.drawable.default_pfp)
+                        }
+
+                        3 -> {
+                            btnProfile.setImageResource(R.drawable.green_pfp)
+                        }
+
+                        4 -> {
+                            btnProfile.setImageResource(R.drawable.blue_pfp)
+                        }
+                    }
+                }
+            }
+    }
     override fun onItemClick(position: Int) {
     }
 }
