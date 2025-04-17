@@ -164,6 +164,7 @@ class CreatePostActivity : Activity() {
             "imageUrl" to imageUrl,
             "timestamp" to FieldValue.serverTimestamp(),
             "comments" to emptyList<Map<String, Any>>(),
+            "votes" to emptyMap<String, String>(),
             "votes" to emptyMap<String, String>()
         )
 
