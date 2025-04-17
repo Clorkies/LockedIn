@@ -17,9 +17,64 @@ object FilterUtil {
                 gameKeywords.any { keyword -> description.contains(keyword) }
             } ?: false
 
-
             titleMatches || descriptionMatches
         }
+    }
+
+    fun improvedFilterArticlesByGame(articles: List<Article>, gameName: String): List<Article> {
+        if (gameName.isEmpty()) return articles
+
+        val gameKeywords = getGameKeywords(gameName.lowercase())
+        val esportsKeywords = listOf(
+            "tournament", "championship", "esports", "competitive",
+            "pro player", "team", "match", "gameplay", "patch", "update",
+            "meta", "pro scene", "league", "rank", "ranked", "professional"
+        )
+
+        val scoredArticles = articles.map { article ->
+            val title = article.title?.lowercase() ?: ""
+            val description = article.description?.lowercase() ?: ""
+
+            var score = 0
+
+            gameKeywords.forEach { keyword ->
+                if (title.contains(keyword.lowercase())) {
+                    score += 10
+                }
+            }
+
+            esportsKeywords.forEach { keyword ->
+                if (title.contains(keyword.lowercase())) {
+                    score += 5
+                }
+            }
+
+            gameKeywords.forEach { keyword ->
+                if (description.contains(keyword.lowercase())) {
+                    score += 3
+                }
+            }
+
+            esportsKeywords.forEach { keyword ->
+                if (description.contains(keyword.lowercase())) {
+                    score += 2
+                }
+            }
+
+            val nonEnglishIndicators = listOf("ä", "ö", "ü", "é", "è", "ê", "à", "á", "â", "ñ", "ç")
+            val hasMultipleNonEnglishChars = nonEnglishIndicators.count { title.contains(it) } > 2
+
+            if (hasMultipleNonEnglishChars) {
+                score -= 50
+            }
+
+            Pair(article, score)
+        }
+
+        return scoredArticles
+            .filter { (_, score) -> score >= 10 }
+            .sortedByDescending { (_, score) -> score }
+            .map { (article, _) -> article }
     }
 
     fun getGameKeywords(gameName: String): List<String> {

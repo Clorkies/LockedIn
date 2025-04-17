@@ -34,7 +34,7 @@ fun fetchArticles(
             if (response.isSuccessful) {
                 val allArticles = response.body()?.articles ?: emptyList()
 
-                val displayArticles = allArticles.filter { isSafeArticle(it) }.shuffled()
+                val displayArticles = allArticles.filter { isSafeArticle(it) } //.shuffled()
 
                 Log.d("NSFW_Filter", "Filtered out ${allArticles.size - displayArticles.size} NSFW articles.")
 
@@ -77,8 +77,10 @@ fun fetchArticlesSpecific(
     val apiService = RetrofitClient.newsApiService
 
     val keywords = getGameKeywords(gameName)
-    val queryBuilder = StringBuilder("(")
 
+    val queryBuilder = StringBuilder()
+
+    queryBuilder.append("(")
     keywords.forEachIndexed { index, keyword ->
         val formattedKeyword = if (keyword.contains(" ")) "\"$keyword\"" else keyword
         queryBuilder.append(formattedKeyword)
@@ -87,8 +89,11 @@ fun fetchArticlesSpecific(
             queryBuilder.append(" OR ")
         }
     }
+    queryBuilder.append(")")
 
-    queryBuilder.append(") -football -soccer -basketball -baseball -cricket -tennis -NFL -NBA -MLB")
+    queryBuilder.append(" AND (esports OR tournament OR championship OR competitive OR \"pro player\" OR \"professional gaming\" OR match OR gameplay)")
+
+    queryBuilder.append(" -football -soccer -basketball -baseball -cricket -tennis -NFL -NBA -MLB")
 
     val finalQuery = queryBuilder.toString()
     Log.d("ArticleFetcher", "Game query for $gameName: $finalQuery")
@@ -98,16 +103,16 @@ fun fetchArticlesSpecific(
             if (response.isSuccessful) {
                 val allArticles = response.body()?.articles ?: emptyList()
 
-                val displayArticles = if (caller == "explore" && gameName.isNotEmpty()) {
-                    val filtered = FilterUtil.filterArticlesByGame(allArticles, gameName)
+                val relevantArticles = FilterUtil.improvedFilterArticlesByGame(allArticles, gameName)
 
-                    if (filtered.isEmpty()) {
-                        Toast.makeText(context, "No articles found for $gameName", Toast.LENGTH_SHORT).show()
-                    }
-
-                    filtered.shuffled()
+                val displayArticles = if (relevantArticles.isNotEmpty()) {
+                    relevantArticles
                 } else {
-                    allArticles.shuffled()
+                    FilterUtil.filterArticlesByGame(allArticles, gameName)
+                }
+
+                if (displayArticles.isEmpty()) {
+                    Toast.makeText(context, "No articles found for $gameName", Toast.LENGTH_SHORT).show()
                 }
 
                 listView.adapter = ArticleAdapter(context, displayArticles)
@@ -138,6 +143,7 @@ fun fetchArticlesSpecific(
         }
     })
 }
+
 fun fetchBookmarkedArticles(
     context: Context,
     listView: ListView,

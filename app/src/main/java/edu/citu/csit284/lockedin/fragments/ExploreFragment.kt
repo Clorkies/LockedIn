@@ -28,7 +28,6 @@ import edu.citu.csit284.lockedin.activities.ProfileActivity
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.util.FilterUtil
 import edu.citu.csit284.lockedin.util.LoadingAnimationUtil
-import edu.citu.csit284.lockedin.util.fetchArticles
 import edu.citu.csit284.lockedin.util.fetchArticlesSpecific
 import edu.citu.csit284.lockedin.util.fetchBookmarkedArticles
 import edu.citu.csit284.lockedin.util.getGameNameById
@@ -366,7 +365,7 @@ class ExploreFragment : Fragment() {
     private fun loadArticles(category: String) {
         when (category) {
             "bookmarked" -> {
-                fetchBookmarkedArticles(requireContext(), listView, caller = "explore") { hasArticles ->
+                fetchBookmarkedArticles(requireContext(), listView, caller = "explore") { _ ->
                     if (listView.adapter.count == 0) {
                         noBookmarkBox.visibility = View.VISIBLE
                     }

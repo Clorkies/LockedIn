@@ -12,8 +12,9 @@ interface NewsApiService {
         @Query("q") query: String = "(esports OR \"competitive gaming\" OR \"video games\" OR gaming) -football -soccer -basketball -baseball -cricket -rugby -NHL -NFL -NBA -MLB -golf -tennis -olympics",
         @Query("excludeDomains") excludeDomains: String = "espn.com,sports.yahoo.com,cbssports.com,nbcsports.com,bbc.com,businessinsider.com,npr.org",
         @Query("apiKey") apiKey: String = BuildConfig.NEWS_API_KEY,
-        @Query("language") language: String = "en"
-//        @Query("sortBy") sortBy: String = "publishedAt"
+        @Query("language") language: String = "en",
+        @Query("sortBy") sortBy: String = "publishedAt",
+        @Query("pageSize") pageSize: Int = 100
     ): Call<NewsResponse>
 
     @GET("v2/everything")
@@ -22,8 +23,9 @@ interface NewsApiService {
         @Query("excludeDomains") excludeDomains: String = "espn.com,sports.yahoo.com,cbssports.com,nbcsports.com,bbc.com,businessinsider.com,npr.org",
         @Query("apiKey") apiKey: String = BuildConfig.NEWS_API_KEY,
         @Query("language") language: String = "en",
-//        @Query("sortBy") sortBy: String = "publishedAt",
-        @Query("pageSize") pageSize: Int = 50
+        @Query("sortBy") sortBy: String = "relevancy",
+        @Query("searchIn") searchIn: String = "title,description",
+        @Query("pageSize") pageSize: Int = 100
     ): Call<NewsResponse>
 
     @GET("v2/everything")
