@@ -22,6 +22,9 @@ class LiveFragment : Fragment() {
 
     private var caller: String? = null
     private val users = Firebase.firestore.collection("users")
+
+    private lateinit var listView: ListView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         caller = arguments?.getString("caller")
@@ -40,7 +43,6 @@ class LiveFragment : Fragment() {
         val btnProfile = view.findViewById<ImageButton>(R.id.button_profile)
         btnProfile.setOnClickListener {
             startActivity(Intent(requireContext(), ProfileActivity::class.java))
-//            requireActivity().supportFragmentManager.popBackStack()
         }
         val sharedPref = requireActivity().getSharedPreferences("User", Activity.MODE_PRIVATE)
         val userInfo = sharedPref.getString("username","")

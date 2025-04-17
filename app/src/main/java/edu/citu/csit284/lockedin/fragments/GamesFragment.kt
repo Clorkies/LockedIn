@@ -35,6 +35,7 @@ import edu.citu.csit284.lockedin.util.FilterUtil
 import edu.citu.csit284.lockedin.util.LoadingAnimationUtil
 import edu.citu.csit284.lockedin.util.MatchRepository
 import edu.citu.csit284.lockedin.util.getGameNameById
+import edu.citu.csit284.lockedin.util.setupHeaderScrollBehavior
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -47,6 +48,7 @@ class GamesFragment : Fragment() {
     private var caller: String? = null
     private val users = Firebase.firestore.collection("users")
     private val matchRepository = MatchRepository()
+    private lateinit var headerContainer: LinearLayout
     private lateinit var loadingView1: View
     private lateinit var loadingView2: View
     private lateinit var loadingView3: View
@@ -162,6 +164,7 @@ class GamesFragment : Fragment() {
                 else -> requireActivity().onBackPressedDispatcher.onBackPressed()
             }
         }
+        headerContainer = view.findViewById(R.id.headerContainer)
         loadingView1 = view.findViewById(R.id.loadingView1)
         loadingView2 = view.findViewById(R.id.loadingView2)
         loadingView3 = view.findViewById(R.id.loadingView3)
@@ -172,7 +175,6 @@ class GamesFragment : Fragment() {
         LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
         LoadingAnimationUtil.setupLoadingViews(requireContext(), loadingView3, loadingView4)
         LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView3, loadingView4, true)
-
     }
 
     private fun setupFavoriteGames() {
