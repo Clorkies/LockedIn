@@ -18,6 +18,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -48,7 +49,7 @@ class ForumFragment : Fragment() {
         5 to "marvel-rivals",
         6 to "overwatch"
     )
-    private lateinit var fabCreate : FloatingActionButton
+    private lateinit var fabCreate : MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
