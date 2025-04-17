@@ -59,8 +59,8 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
         6 to "overwatch"
     )
     private lateinit var fabCreate: MaterialButton
-    private lateinit var rvView: RecyclerView // Declare RecyclerView
-    private lateinit var postAdapter: PostAdapter // Declare the adapter
+    private lateinit var rvView: RecyclerView
+    private lateinit var postAdapter: PostAdapter
     private val postList = mutableListOf<Post>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -220,7 +220,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
         resetButtonToInactive(previousCategory)
         currentCategory = newCategory
         updateButtonStyles(newCategory)
-        loadPostsForCategory(newCategory) // Load posts for the new category
+        loadPostsForCategory(newCategory)
     }
 
     private fun updateButtonStyles(activeCategory: String) {
