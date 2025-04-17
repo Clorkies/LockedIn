@@ -46,46 +46,77 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <EditText
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Title"
-            android:inputType="textMultiLine"
-            android:textColor="@color/white"
-            android:textColorHint="@color/fadedWhite"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:background="@null"
-            android:paddingBottom="8dp"
-            android:layout_marginBottom="16dp"
-            android:textCursorDrawable="@null" />
-        <EditText
-            android:id="@+id/body"
+        android:layout_weight="1">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="body text"
-            android:gravity="top|start"
-            android:inputType="textMultiLine"
-            android:minHeight="150dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/fadedWhite"
-            android:textSize="20sp"
-            android:background="@null"
-            android:paddingTop="16dp"
-            android:textCursorDrawable="@null" />
-    </LinearLayout>
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <EditText
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Title"
+                android:inputType="textMultiLine"
+                android:textColor="@color/white"
+                android:textColorHint="@color/fadedWhite"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:background="@null"
+                android:paddingBottom="8dp"
+                android:layout_marginBottom="16dp"
+                android:textCursorDrawable="@null" />
+            <FrameLayout
+                android:id="@+id/imageContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"
+                >
+                <ImageView
+                    android:id="@+id/imagePreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    tools:src="@drawable/ic_image" />
+
+                <ImageView
+                    android:id="@+id/buttonDelete"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="top|end"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/ic_close_circle"
+                    app:tint="@android:color/darker_gray" />
+
+            </FrameLayout>
+            <EditText
+                android:id="@+id/body"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="body text"
+                android:gravity="top|start"
+                android:inputType="textMultiLine"
+                android:minHeight="150dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/fadedWhite"
+                android:textSize="20sp"
+                android:background="@null"
+                android:paddingTop="16dp"
+                android:textCursorDrawable="@null" />
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/footer"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="16dp">
