@@ -203,6 +203,47 @@ fun fetchBookmarkedArticles(
             onComplete(false)
         }
 }
+fun fetchArticlesSearch(
+    context: Context,
+    listView: ListView,
+    searchQuery: String,
+    caller: String = "explore",
+    onComplete: (hasInternet: Boolean) -> Unit = {}
+) {
+    val apiService = RetrofitClient.newsApiService
+    apiService.searchArticles(searchQuery).enqueue(object : Callback<NewsResponse> {
+        override fun onResponse(call: Call<NewsResponse>, response: Response<NewsResponse>) {
+            if (response.isSuccessful) {
+                val allArticles = response.body()?.articles ?: emptyList()
+                val displayArticles = allArticles.filter { isSafeArticle(it) }
+
+                listView.adapter = ArticleAdapter(context, displayArticles)
+
+                listView.setOnItemClickListener { _, _, position, _ ->
+                    val article = displayArticles[position]
+                    val intent = Intent(context, ExploreArticleActivity::class.java).apply {
+                        putExtra("imageUrl", article.urlToImage)
+                        putExtra("title", article.title)
+                        putExtra("articleText", article.description)
+                        putExtra("date", article.publishedAt)
+                        putExtra("articleUrl", article.url)
+                        putExtra("articleAuthor", article.author)
+                        putExtra("caller", caller)
+                    }
+                    context.startActivity(intent)
+                }
+            } else {
+                val message = getAPITimeRemaining(response)
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            }
+            onComplete(true)
+        }
+
+        override fun onFailure(call: Call<NewsResponse>, t: Throwable) {
+            onComplete(false)
+        }
+    })
+}
 
 fun getArticles(): List<Article> {
     val articles = bookmarks.map { bookmark ->

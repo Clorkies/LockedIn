@@ -2,7 +2,10 @@ package edu.citu.csit284.lockedin.fragments
 
 import android.animation.ValueAnimator
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -13,11 +16,14 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ListView
+import android.widget.SearchView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
@@ -30,6 +36,7 @@ import edu.citu.csit284.lockedin.util.FilterUtil
 import edu.citu.csit284.lockedin.util.LoadingAnimationUtil
 import edu.citu.csit284.lockedin.util.fetchArticlesSpecific
 import edu.citu.csit284.lockedin.util.fetchBookmarkedArticles
+import edu.citu.csit284.lockedin.util.fetchArticlesSearch
 import edu.citu.csit284.lockedin.util.getGameNameById
 
 class ExploreFragment : Fragment() {
@@ -41,6 +48,10 @@ class ExploreFragment : Fragment() {
     private lateinit var noInternetBox: LinearLayout
     private lateinit var articlesContainer: FrameLayout
     private lateinit var noBookmarkBox: LinearLayout
+    private lateinit var noArticlesBox: LinearLayout
+
+    private lateinit var categoriesContainer: LinearLayout
+    private lateinit var searchView: SearchView
 
     private lateinit var bookmarkedListButton: LinearLayout
     private lateinit var bookmarkedListImage: ImageView
@@ -112,6 +123,12 @@ class ExploreFragment : Fragment() {
         articlesContainer = view.findViewById(R.id.articlesList)
         noBookmarkBox = view.findViewById(R.id.noBookmarksBox)
         noBookmarkBox.visibility = View.GONE
+        noArticlesBox = view.findViewById(R.id.noArticlesBox)
+        noArticlesBox.visibility = View.GONE
+
+        categoriesContainer = view.findViewById(R.id.categoriesContainer)
+        searchView = view.findViewById(R.id.searchView)
+        setupSearchView(view)
 
         LoadingAnimationUtil.setupLoadingViews(requireContext(), loadingView1, loadingView2)
         LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
@@ -386,6 +403,70 @@ class ExploreFragment : Fragment() {
             }
         }
     }
+
+    private fun setupSearchView(view: View) {
+        val searchHints = listOf(
+            "Explore game titles...",
+            "Discover games, teams, events...",
+            "Find gaming content..."
+        )
+        searchView.queryHint = searchHints.random()
+        searchView.post {
+            val searchIcon = searchView.findViewById<ImageView>(
+                androidx.appcompat.R.id.search_mag_icon
+            )
+            searchIcon?.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN)
+
+            val closeButton = searchView.findViewById<ImageView>(
+                androidx.appcompat.R.id.search_close_btn
+            )
+            closeButton?.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN)
+
+            val searchEditText = searchView.findViewById<EditText>(
+                androidx.appcompat.R.id.search_src_text
+            )
+            searchEditText?.setTextColor(Color.WHITE)
+            searchEditText?.setHintTextColor(Color.LTGRAY)
+        }
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (!query.isNullOrEmpty()) {
+                    categoriesContainer.visibility = View.GONE
+
+                    LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
+
+                    fetchArticlesSearch(requireContext(), listView, query, caller = "explore") { hasInternet ->
+                        noBookmarkBox.visibility = View.GONE
+                        LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
+                        noInternetBox.visibility = if (!hasInternet) View.VISIBLE else View.GONE
+                    }
+
+                    val inputManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    inputManager.hideSoftInputFromWindow(view.windowToken, 0)
+
+                    return true
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
+
+        searchView.setOnCloseListener {
+            if (categoriesContainer.visibility != View.VISIBLE) {
+                categoriesContainer.visibility = View.VISIBLE
+                currentCategory = "game1"
+                updateButtonStyles("game1")
+                LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
+                loadArticles("game1")
+            }
+            false
+        }
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()

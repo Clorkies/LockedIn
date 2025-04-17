@@ -23,10 +23,17 @@
             android:scaleType="centerCrop"
             android:layout_gravity="center"/>
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_weight="1"/>
+        <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="220dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/rectangle_rounded_search"
+            android:queryHint=""
+            />
+
+        <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
 
         <ImageButton
             android:id="@+id/button_profile"
@@ -40,10 +47,11 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/categoriesContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginVertical="20dp"
+        android:layout_marginTop="20dp"
         >
 
         <LinearLayout
@@ -138,7 +146,8 @@
         android:translationY="0dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_marginTop="20dp">
 
         <ListView
             android:id="@+id/articleListView"
@@ -176,6 +185,7 @@
                 android:textSize="15dp"/>
 
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/noBookmarksBox"
             android:layout_width="match_parent"
@@ -193,6 +203,25 @@
                 android:layout_gravity="center"
                 android:textSize="15dp"/>
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/noArticlesBox"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:gravity="center"
+            android:visibility="visible"
+            android:orientation="vertical"
+            android:background="@drawable/loading_background"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No articles found."
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:textSize="15dp"/>
+        </LinearLayout>
+
         <View
             android:id="@+id/loadingView1"
             android:layout_width="match_parent"

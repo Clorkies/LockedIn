@@ -29,18 +29,11 @@ interface NewsApiService {
     ): Call<NewsResponse>
 
     @GET("v2/everything")
-    fun getTournamentArticles(
-        @Query("q") query: String = "(tournament OR championship OR league) AND (esports OR gaming)",
+    fun searchArticles(
+        @Query("q") query: String,
         @Query("apiKey") apiKey: String = BuildConfig.NEWS_API_KEY,
         @Query("language") language: String = "en",
-        @Query("sortBy") sortBy: String = "publishedAt"
-    ): Call<NewsResponse>
-
-    @GET("v2/top-headlines")
-    fun getGamingHeadlines(
-        @Query("category") category: String = "technology",
-        @Query("q") query: String = "gaming OR videogames",
-        @Query("apiKey") apiKey: String = BuildConfig.NEWS_API_KEY,
-        @Query("language") language: String = "en"
+        @Query("sortBy") sortBy: String = "relevancy",
+        @Query("pageSize") pageSize: Int = 100
     ): Call<NewsResponse>
 }
