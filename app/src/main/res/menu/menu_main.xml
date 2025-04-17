@@ -11,9 +11,9 @@
         android:title="Games"
         />
     <item
-        android:id="@+id/liveFragment"
-        android:icon="@drawable/btn_live"
-        android:title="Live"
+        android:id="@+id/forumFragment"
+        android:icon="@drawable/btn_forum"
+        android:title="Forums"
         />
     <item
         android:id="@+id/exploreFragment"

@@ -20,21 +20,17 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import edu.citu.csit284.lockedin.activities.MatchDetailsActivity
 import edu.citu.csit284.lockedin.activities.ProfileActivity
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.data.Match
 import edu.citu.csit284.lockedin.helper.LiveMatchAdapter
-import edu.citu.csit284.lockedin.helper.UpcomingMatchAdapter
 import edu.citu.csit284.lockedin.util.LoadingAnimationUtil
 import edu.citu.csit284.lockedin.util.MatchRepository
 import edu.citu.csit284.lockedin.util.fetchArticles
-import edu.citu.csit284.lockedin.util.toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -49,6 +45,7 @@ class LandingFragment : Fragment() {
 
     private lateinit var loadingView1: View
     private lateinit var loadingView2: View
+
     private lateinit var noInternetBox: LinearLayout
     private lateinit var header: LinearLayout
     private lateinit var recyclerView: RecyclerView
@@ -56,6 +53,7 @@ class LandingFragment : Fragment() {
     private lateinit var adapter: LiveMatchAdapter
     private val matches = mutableListOf<Match>()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
+    private lateinit var listView : ListView
 
     private val games = listOf(1 to "valorant", 2 to "lol", 3 to "csgo", 4 to "dota2", 5 to "marvel-rivals", 6 to "overwatch")
     private val gameMap: Map<Int, String> = games.toMap()
@@ -93,7 +91,6 @@ class LandingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         loadingView1 = view.findViewById(R.id.loadingView1)
         loadingView2 = view.findViewById(R.id.loadingView2)
         noInternetBox = view.findViewById(R.id.noInternetBox)
@@ -107,7 +104,6 @@ class LandingFragment : Fragment() {
         recyclerView.visibility = View.GONE
         startPulsatingAnimation(header)
         startPulsatingAnimation(recyclerView)
-
 
         LoadingAnimationUtil.setupLoadingViews(requireContext(), loadingView1, loadingView2)
         LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
@@ -133,12 +129,8 @@ class LandingFragment : Fragment() {
                 }
             }
 
-        val listView = view.findViewById<ListView>(R.id.articleListView)
+        listView = view.findViewById<ListView>(R.id.articleListView)
 
-        fetchArticles(requireContext(), listView, caller = "landing") { hasInternet ->
-            LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
-            noInternetBox.visibility = if (!hasInternet) View.VISIBLE else View.GONE
-        }
         loadMatches()
 
     }
@@ -185,13 +177,17 @@ class LandingFragment : Fragment() {
 
             if(liveMatches.isEmpty()){
                 recyclerView.visibility = View.GONE
-                noMatches.visibility = View.GONE
+                noMatches.visibility = View.VISIBLE
             }else{
                 recyclerView.visibility = View.VISIBLE
                 recyclerView.scrollToPosition(0)
                 matches.clear()
                 matches.addAll(liveMatches)
                 adapter.notifyDataSetChanged()
+            }
+            fetchArticles(requireContext(), listView, caller = "landing") { hasInternet ->
+                LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
+                noInternetBox.visibility = if (!hasInternet) View.VISIBLE else View.GONE
             }
         }
     }

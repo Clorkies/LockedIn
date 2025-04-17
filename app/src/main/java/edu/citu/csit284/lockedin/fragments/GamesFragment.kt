@@ -56,7 +56,6 @@ class GamesFragment : Fragment() {
     private lateinit var adapter: UpcomingMatchAdapter
     private val matches = mutableListOf<Match>()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
-
     private val games = listOf(
         1 to "valorant",
         2 to "lol",
@@ -157,7 +156,7 @@ class GamesFragment : Fragment() {
             when (caller) {
                 "landing" -> findNavController().navigate(R.id.landingFragment)
                 "game" -> {}
-                "live" -> findNavController().navigate(R.id.liveFragment)
+                "forum" -> findNavController().navigate(R.id.forumFragment)
                 "explore" -> findNavController().navigate(R.id.exploreFragment)
                 else -> requireActivity().onBackPressedDispatcher.onBackPressed()
             }

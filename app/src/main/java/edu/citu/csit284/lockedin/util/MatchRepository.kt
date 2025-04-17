@@ -95,7 +95,7 @@ class MatchRepository {
             }
 
             if (games.isEmpty()) {
-                matches.addAll(apiService.getUpcomingValorantMatches(apiKey))
+                matches.addAll(apiService.getLiveMatches(apiKey))
             }
 
             matches
