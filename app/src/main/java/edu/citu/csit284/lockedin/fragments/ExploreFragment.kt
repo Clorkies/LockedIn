@@ -113,7 +113,7 @@ class ExploreFragment : Fragment() {
             when (caller) {
                 "landing" -> findNavController().navigate(R.id.landingFragment)
                 "game" -> findNavController().navigate(R.id.gamesFragment)
-                "live" -> findNavController().navigate(R.id.liveFragment)
+                "forum" -> findNavController().navigate(R.id.forumFragment)
                 "explore" -> {}
                 else -> requireActivity().onBackPressedDispatcher.onBackPressed()
             }

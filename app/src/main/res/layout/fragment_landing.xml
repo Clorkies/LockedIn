@@ -69,7 +69,7 @@
         android:id="@+id/noLiveMatchesTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No Live Matches Available"
+        android:text="No Live Matches Ongoing"
         android:textStyle="bold"
         android:textSize="18sp"
         android:textColor="@color/white"

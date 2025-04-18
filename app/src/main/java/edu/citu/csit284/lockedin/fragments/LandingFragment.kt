@@ -137,11 +137,8 @@ class LandingFragment : Fragment() {
                 }
             }
 
+        listView = view.findViewById<ListView>(R.id.articleListView)
 
-        fetchArticles(requireContext(), listView, caller = "landing") { hasInternet ->
-            LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
-            noInternetBox.visibility = if (!hasInternet) View.VISIBLE else View.GONE
-        }
         loadMatches()
 
         setupHeaderScrollBehavior(headerContainer, listView)
@@ -189,13 +186,17 @@ class LandingFragment : Fragment() {
 
             if(liveMatches.isEmpty()){
                 recyclerView.visibility = View.GONE
-                noMatches.visibility = View.GONE
+                noMatches.visibility = View.VISIBLE
             }else{
                 recyclerView.visibility = View.VISIBLE
                 recyclerView.scrollToPosition(0)
                 matches.clear()
                 matches.addAll(liveMatches)
                 adapter.notifyDataSetChanged()
+            }
+            fetchArticles(requireContext(), listView, caller = "landing") { hasInternet ->
+                LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
+                noInternetBox.visibility = if (!hasInternet) View.VISIBLE else View.GONE
             }
         }
     }
