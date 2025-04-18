@@ -184,10 +184,8 @@ class GamesFragment : Fragment() {
 
         setupHeaderScrollBehavior(headerContainer, recyclerView)
 
-        LoadingAnimationUtil.setupLoadingViews(requireContext(), loadingView1, loadingView2)
-        LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
-        LoadingAnimationUtil.setupLoadingViews(requireContext(), loadingView3, loadingView4)
-        LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView3, loadingView4, true)
+        LoadingAnimationUtil.showLoading(requireContext(), loadingView1, loadingView2, true)
+        LoadingAnimationUtil.showLoading(requireContext(), loadingView3, loadingView4, true)
     }
 
     private fun setupFavoriteGames() {
@@ -251,8 +249,8 @@ class GamesFragment : Fragment() {
             .setDuration(300)
             .setInterpolator(AccelerateInterpolator())
             .withEndAction {
-                LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
-                LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView3, loadingView4, true)
+                LoadingAnimationUtil.showLoading(requireContext(), loadingView1, loadingView2, true)
+                LoadingAnimationUtil.showLoading(requireContext(), loadingView3, loadingView4, true)
                 currentCategory = newCategory
                 updateButtonStyles(newCategory)
                 loadMatches(newGame)
@@ -345,8 +343,8 @@ class GamesFragment : Fragment() {
                     else -> emptyList()
                 }
             }
-            LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
-            LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView3, loadingView4, false)
+            LoadingAnimationUtil.showLoading(requireContext(), loadingView1, loadingView2, false)
+            LoadingAnimationUtil.showLoading(requireContext(), loadingView3, loadingView4, false)
             recyclerView.visibility = View.VISIBLE
             recyclerView.scrollToPosition(0)
             matches.clear()

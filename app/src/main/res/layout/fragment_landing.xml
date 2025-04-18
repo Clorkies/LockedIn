@@ -83,6 +83,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <include
+        android:id="@+id/loadingView1"
+        android:layout_marginTop="20dp"
+        layout="@layout/view_loading_animation"
+        android:layout_width="match_parent"
+        android:layout_height="360dp" />
+
+    <include
+        android:id="@+id/loadingView2"
+        android:layout_marginTop="20dp"
+        layout="@layout/view_loading_animation"
+        android:layout_width="match_parent"
+        android:layout_height="360dp" />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -126,22 +140,5 @@
 
         </LinearLayout>
     </FrameLayout>
-
-    <View
-        android:id="@+id/loadingView1"
-        android:layout_width="match_parent"
-        android:layout_height="360dp"
-        android:layout_gravity="top"
-        android:background="@drawable/loading_background"
-        android:visibility="gone"/>
-
-    <View
-        android:layout_marginTop="25dp"
-        android:id="@+id/loadingView2"
-        android:layout_width="match_parent"
-        android:layout_height="360dp"
-        android:layout_gravity="top"
-        android:background="@drawable/loading_background"
-        android:visibility="gone"/>
 
 </LinearLayout>

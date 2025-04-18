@@ -119,6 +119,36 @@
         </LinearLayout>
     </LinearLayout>
 
+
+
+    <include
+        android:id="@+id/loadingView1"
+        android:layout_marginTop="20dp"
+        layout="@layout/view_loading_animation"
+        android:layout_width="match_parent"
+        android:layout_height="150dp" />
+
+    <include
+        android:id="@+id/loadingView2"
+        android:layout_marginTop="20dp"
+        layout="@layout/view_loading_animation"
+        android:layout_width="match_parent"
+        android:layout_height="150dp" />
+
+    <include
+        android:id="@+id/loadingView3"
+        android:layout_marginTop="20dp"
+        layout="@layout/view_loading_animation"
+        android:layout_width="match_parent"
+        android:layout_height="150dp" />
+
+    <include
+        android:id="@+id/loadingView4"
+        android:layout_marginTop="20dp"
+        layout="@layout/view_loading_animation"
+        android:layout_width="match_parent"
+        android:layout_height="150dp" />
+
     <LinearLayout
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
@@ -160,36 +190,4 @@
             android:textSize="15dp"/>
 
     </LinearLayout>
-    <View
-        android:id="@+id/loadingView1"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_gravity="top"
-        android:background="@drawable/loading_background"
-       />
-
-    <View
-        android:layout_marginTop="25dp"
-        android:id="@+id/loadingView2"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_gravity="top"
-        android:background="@drawable/loading_background"
-        />
-    <View
-        android:layout_marginTop="25dp"
-        android:id="@+id/loadingView3"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_gravity="top"
-        android:background="@drawable/loading_background"
-        />
-    <View
-        android:layout_marginTop="25dp"
-        android:id="@+id/loadingView4"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_gravity="top"
-        android:background="@drawable/loading_background"
-        />
 </LinearLayout>
