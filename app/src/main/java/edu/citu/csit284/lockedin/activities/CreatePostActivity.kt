@@ -167,7 +167,6 @@ class CreatePostActivity : Activity() {
             "downvotes" to 0,
             "upvotedBy" to emptyList<String>(),
             "downvotedBy" to emptyList<String>(),
-            "comments" to emptyList<Map<String, Any>>()
         )
 
 
