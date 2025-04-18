@@ -13,9 +13,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.data.Match
+import edu.citu.csit284.lockedin.activities.MatchDetailsActivity
+import com.google.gson.Gson
 
 class LiveMatchAdapter(private val listOfMatches : List<Match>):
     RecyclerView.Adapter<LiveMatchAdapter.ItemViewHolder>(){
+
+    companion object {
+        const val EXTRA_MATCH = "extra_match"
+    }
+
     class ItemViewHolder(view : View) : RecyclerView.ViewHolder(view){
         val tvLeagueName = view.findViewById<TextView>(R.id.tv_league_name)
         val tvSerieName = view.findViewById<TextView>(R.id.tv_serie_name)
@@ -37,8 +44,9 @@ class LiveMatchAdapter(private val listOfMatches : List<Match>):
     }
 
 
-    override fun onBindViewHolder(holder: LiveMatchAdapter.ItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val match = listOfMatches[position]
+        val context = holder.itemView.context
 
         holder.tvLeagueName.text = match.league.name
         holder.tvSerieName.text = match.serie.full_name
@@ -50,13 +58,13 @@ class LiveMatchAdapter(private val listOfMatches : List<Match>):
             holder.tvTeam1Name.text = team1.name
             holder.tvTeam2Name.text = team2.name
 
-            Glide.with(holder.itemView.context)
+            Glide.with(context)
                 .load(team1.image_url)
                 .placeholder(R.drawable.default_pfp)
                 .error(R.drawable.default_pfp)
                 .into(holder.ivTeam1Logo)
 
-            Glide.with(holder.itemView.context)
+            Glide.with(context)
                 .load(team2.image_url)
                 .placeholder(R.drawable.default_pfp)
                 .error(R.drawable.default_pfp)
@@ -81,15 +89,23 @@ class LiveMatchAdapter(private val listOfMatches : List<Match>):
         } else {
             holder.tvStreamLink.text = "No stream available"
         }
+
         holder.btnWatch.setOnClickListener {
             if(holder.tvStreamLink.text != "No stream available"){
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(holder.tvStreamLink.text.toString()))
-                holder.btnWatch.context.startActivity(intent)
+                context.startActivity(intent)
             }else{
-                Toast.makeText(holder.btnWatch.context,"No stream avaialble", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,"No stream available", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, MatchDetailsActivity::class.java)
+            val gson = Gson()
+            val matchJson = gson.toJson(match)
+            intent.putExtra(EXTRA_MATCH, matchJson)
+            context.startActivity(intent)
         }
     }
     override fun getItemCount(): Int = listOfMatches.size
-
 }

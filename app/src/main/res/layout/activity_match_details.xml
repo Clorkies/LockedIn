@@ -30,14 +30,6 @@
             android:layout_weight="1"
             android:layout_height="0dp"/>
 
-        <CheckBox
-            android:id="@+id/bookmarkCheckbox"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:button="@drawable/checkbox_bookmark"
-            android:buttonTint="@color/white"
-            />
-
     </LinearLayout>
 
     <LinearLayout
@@ -132,10 +124,9 @@
                         android:layout_width="105dp"
                         android:layout_height="105dp"
                         android:layout_marginLeft="15dp"
-                        android:background="@drawable/logo_sentinels"
                         android:clipToOutline="true"
                         android:layout_gravity="left"
-                        android:scaleType="centerCrop"
+                        android:scaleType="fitCenter"
                         />
                     <TextView
                         android:id="@+id/team1"
@@ -193,10 +184,9 @@
                     android:layout_width="105dp"
                     android:layout_height="105dp"
                     android:layout_marginLeft="15dp"
-                    android:background="@drawable/logo_sentinels"
                     android:clipToOutline="true"
                     android:layout_gravity="left"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitCenter"
                     />
                 <TextView
                     android:id="@+id/team2"
@@ -226,7 +216,7 @@
 
         <Space android:layout_height="30dp" android:layout_width="wrap_content"/>
         <LinearLayout
-            android:id="@+id/sheetReadMore"
+            android:id="@+id/watchButton"
             android:layout_width="500dp"
             android:layout_height="60dp"
             android:orientation="horizontal"
@@ -236,7 +226,6 @@
             >
 
             <LinearLayout
-                android:id="@+id/watch"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginVertical="5dp"
@@ -264,7 +253,8 @@
                     android:layout_height="25dp"
                     android:src="@drawable/icon_link"
                     android:layout_gravity="center_vertical"
-                    app:tint="@color/white" />
+                    android:tint="@color/white"
+                    tools:ignore="UseAppTint" />
 
             </LinearLayout>
 

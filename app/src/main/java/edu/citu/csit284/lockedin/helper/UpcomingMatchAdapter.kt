@@ -1,5 +1,6 @@
 package edu.citu.csit284.lockedin.helper
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,7 +8,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import edu.citu.csit284.lockedin.R
+import edu.citu.csit284.lockedin.activities.MatchDetailsActivity
 import edu.citu.csit284.lockedin.data.Match
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -16,6 +19,9 @@ import java.util.TimeZone
 
 class UpcomingMatchAdapter(private val listOfMatches : List<Match>):
     RecyclerView.Adapter<UpcomingMatchAdapter.ItemViewHolder>(){
+    companion object {
+        const val EXTRA_MATCH = "extra_match"
+    }
     class ItemViewHolder(view : View) : RecyclerView.ViewHolder(view){
         val tvLeagueName = view.findViewById<TextView>(R.id.tv_league_name)
         val tvSerieName = view.findViewById<TextView>(R.id.tv_serie_name)
@@ -37,6 +43,7 @@ class UpcomingMatchAdapter(private val listOfMatches : List<Match>):
 
     override fun onBindViewHolder(holder: UpcomingMatchAdapter.ItemViewHolder, position: Int) {
         val match = listOfMatches[position]
+        val context = holder.itemView.context
 
         holder.tvLeagueName.text = match.league.name
         holder.tvSerieName.text = match.serie.full_name
@@ -100,6 +107,13 @@ class UpcomingMatchAdapter(private val listOfMatches : List<Match>):
             holder.tvStreamLink.text = match.streams_list[0].raw_url
         } else {
             holder.tvStreamLink.text = "No stream available"
+        }
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, MatchDetailsActivity::class.java)
+            val gson = Gson()
+            val matchJson = gson.toJson(match)
+            intent.putExtra(LiveMatchAdapter.EXTRA_MATCH, matchJson)
+            context.startActivity(intent)
         }
     }
 
