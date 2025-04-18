@@ -1,114 +1,274 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MatchDetailsActivity"
+    tools:context=".activities.ProfileActivity"
     android:background="@color/blue"
-    android:padding="20dp"
+    android:clipToPadding="false"
     >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="20dp"
         android:gravity="center_vertical">
         <ImageButton
             android:id="@+id/button_back"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@drawable/btn_back"
             android:scaleType="centerCrop"
-            android:layout_marginEnd="10dp" />
-    </LinearLayout>
+            />
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="0dp"/>
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="30dp"/>
+        <CheckBox
+            android:id="@+id/bookmarkCheckbox"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:button="@drawable/checkbox_bookmark"
+            android:buttonTint="@color/white"
+            />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="20dp"
+        android:paddingHorizontal="20dp"
+        android:background="@drawable/background_article"
+        android:clipToPadding="false"
+        >
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
-
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/logoGame"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/logo_valorant"
+                android:layout_gravity="center_vertical"
+                app:tint="@color/white"
+                android:layout_marginEnd="15dp"/>
             <TextView
-                android:id="@+id/articleTitleView"
+                android:id="@+id/gameName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textSize="25sp"
                 android:textColor="@color/white"
-                android:text="Match Details"
-                android:gravity="center"
+                android:gravity="start"
+                android:textAlignment="viewStart"
+                android:text="Valorant"
                 />
+        </LinearLayout>
 
+        <Space android:layout_width="match_parent" android:layout_height="25dp"/>
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="30dp"/>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="230dp"
-                android:src="@drawable/img_sample"
-                android:background="@drawable/rounded_image"
-                android:clipToOutline="true"
-                android:scaleType="centerCrop"
-                />
-
-            <Space
-                android:layout_height="20dp"
-                android:layout_width="wrap_content"/>
-
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:orientation="vertical"
+            android:paddingVertical="15dp"
+            android:background="@drawable/rectangle_author_bg"
+            android:paddingHorizontal="20dp"
+            >
             <TextView
-                android:id="@+id/articleTextView"
+                android:id="@+id/league"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="17sp"
+                android:textStyle="bold"
+                android:textSize="24sp"
+                android:textColor="@color/yellow"
+                android:text="VCT"
+                />
+            <TextView
+                android:id="@+id/serie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="22sp"
                 android:textColor="@color/white"
-                android:text="Player list"
-                android:layout_marginBottom="20dp"
+                android:text="Masters Reykavik"
                 />
-
-            <ListView
-                android:id="@+id/listView"
+            <TextView
+                android:id="@+id/tournament"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:textColor="@color/yellow"
+                android:text="Playoffs"
                 />
+        </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="135dp"
+                android:orientation="vertical"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rectangle_author_bg"
+                >
+                <LinearLayout
+                    android:layout_marginTop="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+                    <ImageView
+                        android:id="@+id/imgTeam1"
+                        android:layout_width="105dp"
+                        android:layout_height="105dp"
+                        android:layout_marginLeft="15dp"
+                        android:background="@drawable/logo_sentinels"
+                        android:clipToOutline="true"
+                        android:layout_gravity="left"
+                        android:scaleType="centerCrop"
+                        />
+                    <TextView
+                        android:id="@+id/team1"
+                        android:layout_width="180dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:textStyle="bold"
+                        android:textSize="24sp"
+                        android:textColor="@color/white"
+                        android:text="Sentinels"
+                        android:maxLines="2"
+                        />
+                    <TextView
+                        android:id="@+id/team1Score"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:textStyle="bold"
+                        android:textSize="24sp"
+                        android:textColor="@color/yellow"
+                        android:text="2"
+                        android:maxLines="1"
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        <Space android:layout_height="15dp" android:layout_width="wrap_content"/>
+        <TextView
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:textColor="@color/white"
+            android:text="VS"
+            android:maxLines="2"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="135dp"
+            android:orientation="vertical"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/rectangle_author_bg"
+            >
+            <LinearLayout
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <ImageView
+                    android:id="@+id/imgTeam2"
+                    android:layout_width="105dp"
+                    android:layout_height="105dp"
+                    android:layout_marginLeft="15dp"
+                    android:background="@drawable/logo_sentinels"
+                    android:clipToOutline="true"
+                    android:layout_gravity="left"
+                    android:scaleType="centerCrop"
+                    />
+                <TextView
+                    android:id="@+id/team2"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:textStyle="bold"
+                    android:textSize="24sp"
+                    android:textColor="@color/white"
+                    android:text="Sentinels"
+                    android:maxLines="2"
+                    />
+                <TextView
+                    android:id="@+id/team2Score"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:textStyle="bold"
+                    android:textSize="24sp"
+                    android:textColor="@color/yellow"
+                    android:text="2"
+                    android:maxLines="1"
+                    />
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginVertical="20dp"
-        >
-
-        <Button
-            android:id="@+id/buttonWatchLive"
-            android:layout_width="200dp"
-            android:layout_height="55dp"
+        <Space android:layout_height="30dp" android:layout_width="wrap_content"/>
+        <LinearLayout
+            android:id="@+id/sheetReadMore"
+            android:layout_width="500dp"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
             android:background="@drawable/rectangle_rounded_yellow"
-            android:text="Watch Live"
-            android:textStyle="bold"
-            android:textSize="18dp"
-            />
+            android:translationX="90dp"
+            >
 
+            <LinearLayout
+                android:id="@+id/watch"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="5dp"
+                android:paddingVertical="10dp"
+                android:paddingHorizontal="20dp"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Watch Live"
+                    android:fontFamily="@font/poppins"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textAllCaps="false"
+                    />
+
+                <ImageView
+                    android:layout_marginLeft="70dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/icon_link"
+                    android:layout_gravity="center_vertical"
+                    app:tint="@color/white" />
+
+            </LinearLayout>
+
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
