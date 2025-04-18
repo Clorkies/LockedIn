@@ -49,11 +49,11 @@ class LandingFragment : Fragment() {
     private lateinit var noInternetBox: LinearLayout
     private lateinit var header: LinearLayout
     private lateinit var recyclerView: RecyclerView
-    private lateinit var noMatches : TextView
+    private lateinit var noMatches: TextView
     private lateinit var adapter: LiveMatchAdapter
     private val matches = mutableListOf<Match>()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
-    private lateinit var listView : ListView
+    private lateinit var listView: ListView
 
     private val games = listOf(1 to "valorant", 2 to "lol", 3 to "csgo", 4 to "dota2", 5 to "marvel-rivals", 6 to "overwatch")
     private val gameMap: Map<Int, String> = games.toMap()
@@ -83,7 +83,9 @@ class LandingFragment : Fragment() {
                         ?.map { it.toInt() }
                         ?.mapNotNull { gameMap[it] }
                         ?: emptyList()
-                    loadMatches(prefNames.getOrNull(0)?:"valorant",prefNames.getOrNull(1)?:"valorant",prefNames.getOrNull(2)?:"valorant")
+                    loadMatches() // Load matches here, after getting preferred games
+                } else {
+                    loadMatches()
                 }
             }
         return inflater.inflate(R.layout.fragment_landing, container, false)
@@ -100,7 +102,7 @@ class LandingFragment : Fragment() {
         recyclerView = view.findViewById(R.id.rvView)
         adapter = LiveMatchAdapter(matches)
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.visibility = View.GONE
         startPulsatingAnimation(header)
         startPulsatingAnimation(recyclerView)
@@ -112,28 +114,44 @@ class LandingFragment : Fragment() {
         btnProfile.setOnClickListener {
             startActivity(Intent(requireContext(), ProfileActivity::class.java))
         }
-        var pfp : Int
+        var pfp: Int
         users
-            .whereEqualTo("username",userInfo)
+            .whereEqualTo("username", userInfo)
             .get()
-            .addOnSuccessListener {documents ->
-                if(!documents.isEmpty){
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty()) {
                     val document = documents.documents[0]
                     pfp = document.getLong("pfpID")?.toInt() ?: 2
                     when (pfp) {
-                        1 -> { btnProfile.setImageResource(R.drawable.red_pfp) }
-                        2 -> { btnProfile.setImageResource(R.drawable.default_pfp) }
-                        3 -> { btnProfile.setImageResource(R.drawable.green_pfp) }
-                        4 -> { btnProfile.setImageResource(R.drawable.blue_pfp) }
+                        1 -> {
+                            btnProfile.setImageResource(R.drawable.red_pfp)
+                        }
+
+                        2 -> {
+                            btnProfile.setImageResource(R.drawable.default_pfp)
+                        }
+
+                        3 -> {
+                            btnProfile.setImageResource(R.drawable.green_pfp)
+                        }
+
+                        4 -> {
+                            btnProfile.setImageResource(R.drawable.blue_pfp)
+                        }
                     }
                 }
             }
 
         listView = view.findViewById<ListView>(R.id.articleListView)
 
-        loadMatches()
+        fetchArticles(requireContext(), listView, caller = "landing") { hasInternet ->
+            LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
+            noInternetBox.visibility = if (!hasInternet) View.VISIBLE else View.GONE
+            updateUI(hasInternet)
+        }
 
     }
+
     override fun onDestroy() {
         super.onDestroy()
         LoadingAnimationUtil.cancelAnimations()
@@ -169,27 +187,35 @@ class LandingFragment : Fragment() {
 
         pulseAnimator.start()
     }
-    private fun loadMatches(vararg games: String) {
+
+    private fun loadMatches() {
         coroutineScope.launch {
             val liveMatches = withContext(Dispatchers.IO) {
-                matchRepository.getLiveMatches(*games)
+                matchRepository.getLiveMatches(*prefNames.toTypedArray())
             }
 
-            if(liveMatches.isEmpty()){
-                recyclerView.visibility = View.GONE
-                noMatches.visibility = View.VISIBLE
-            }else{
-                recyclerView.visibility = View.VISIBLE
-                recyclerView.scrollToPosition(0)
+            withContext(Dispatchers.Main) {
                 matches.clear()
                 matches.addAll(liveMatches)
-                adapter.notifyDataSetChanged()
-            }
-            fetchArticles(requireContext(), listView, caller = "landing") { hasInternet ->
-                LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
-                noInternetBox.visibility = if (!hasInternet) View.VISIBLE else View.GONE
+                updateUI(true)
             }
         }
     }
 
+    private fun updateUI(isInternetAvailable: Boolean) {
+        if (!isInternetAvailable) {
+            recyclerView.visibility = View.GONE
+            noMatches.visibility = View.GONE
+        } else {
+            if (matches.isEmpty()) {
+                recyclerView.visibility = View.GONE
+                noMatches.visibility = View.VISIBLE
+            } else {
+                recyclerView.visibility = View.VISIBLE
+                noMatches.visibility = View.GONE
+                recyclerView.scrollToPosition(0)
+                adapter.notifyDataSetChanged()
+            }
+        }
+    }
 }
