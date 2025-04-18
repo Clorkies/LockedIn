@@ -11,13 +11,13 @@
     <!-- First RelativeLayout (Header) -->
 
     <LinearLayout
-        android:layout_marginTop="20dp"
+        android:layout_marginVertical="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:gravity="center_vertical">
+        android:gravity="center">
 
         <ImageButton
             android:id="@+id/button_back"
@@ -27,10 +27,12 @@
             android:scaleType="centerCrop"
             android:layout_marginEnd="10dp" />
 
+        <View
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+
+
         <TextView
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_marginRight="20dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="Settings"
             android:textColor="@color/white"
@@ -38,7 +40,14 @@
             android:textSize="15sp"
             android:gravity="center"/>
 
+        <View
+            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
 
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:scaleType="centerCrop"
+            android:layout_marginEnd="10dp" />
 
     </LinearLayout>
 
@@ -53,12 +62,11 @@
             android:orientation="vertical"
             >
             <TextView
-                android:layout_marginTop="15dp"
                 android:layout_marginLeft="25dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Games Preferred"
-                android:textColor="@color/yellow"
+                android:textColor="@color/white"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:gravity="center"/>
@@ -298,7 +306,7 @@
                 android:orientation="vertical"
                 android:padding="15dp">
                 <RelativeLayout
-                    android:id="@+id/terms"
+                    android:id="@+id/question"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clickable="true"
@@ -306,16 +314,16 @@
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:id="@+id/securityIcon"
-                        android:src = "@drawable/terms_icon"
-                        android:background="@drawable/circle_access"
-                        android:padding="8dp"/>
+                        android:id="@+id/faqIcon"
+                        android:src = "@drawable/about_icon"
+                        android:background="@drawable/circle_faq"
+                        android:padding="7dp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toEndOf="@+id/securityIcon"
-                        android:text="Terms &amp; Conditions"
+                        android:layout_toEndOf="@+id/faqIcon"
+                        android:text="Ask us a question!"
                         android:textColor="@color/white"
                         android:textSize="17sp"
                         android:textStyle="bold"
@@ -366,25 +374,26 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/question"
+                    android:id="@+id/terms"
                     android:layout_marginTop="30dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:focusable="true">
+
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:id="@+id/faqIcon"
-                        android:src = "@drawable/about_icon"
-                        android:background="@drawable/circle_faq"
-                        android:padding="7dp"/>
+                        android:id="@+id/securityIcon"
+                        android:src = "@drawable/terms_icon"
+                        android:background="@drawable/circle_access"
+                        android:padding="8dp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toEndOf="@+id/faqIcon"
-                        android:text="Ask us a question!"
+                        android:layout_toEndOf="@+id/securityIcon"
+                        android:text="Terms &amp; Conditions"
                         android:textColor="@color/white"
                         android:textSize="17sp"
                         android:textStyle="bold"

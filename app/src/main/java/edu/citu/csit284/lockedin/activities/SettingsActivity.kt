@@ -2,15 +2,20 @@ package edu.citu.csit284.lockedin.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.firestore.FieldValue
@@ -37,6 +42,11 @@ class SettingsActivity : Activity() {
     private lateinit var sw6: SwitchCompat
     private var username: String? = null
 
+    private lateinit var questionContainer: RelativeLayout
+    private lateinit var privacyContainer: RelativeLayout
+    private lateinit var termsContainer: RelativeLayout
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -52,6 +62,47 @@ class SettingsActivity : Activity() {
         sw4 = findViewById(R.id.sw4)
         sw5 = findViewById(R.id.sw5)
         sw6 = findViewById(R.id.sw6)
+
+
+        privacyContainer = findViewById(R.id.privpolicy)
+        privacyContainer.setOnClickListener {
+            val sheet = LayoutInflater.from(this).inflate(R.layout.privacy_policy_bottom_sheet, null)
+            val bottom = BottomSheetDialog(this, R.style.BottomSheetDialogTheme)
+            bottom.setContentView(sheet)
+
+            val privacyPolicyTextView = sheet.findViewById<TextView>(R.id.privacyPolicyText)
+            val privacyPolicyHtml = Html.fromHtml(getString(R.string.privacy_policy), Html.FROM_HTML_MODE_LEGACY)
+            privacyPolicyTextView?.text = privacyPolicyHtml
+
+            sheet.findViewById<ImageButton>(R.id.button_back)?.setOnClickListener { bottom.dismiss() }
+            bottom.show()
+        }
+
+        termsContainer = findViewById(R.id.terms)
+        termsContainer.setOnClickListener {
+            val sheet = LayoutInflater.from(this).inflate(R.layout.terms_bottom_sheet, null)
+            val bottom = BottomSheetDialog(this, R.style.BottomSheetDialogTheme)
+            bottom.setContentView(sheet)
+
+            val termsTextView = sheet.findViewById<TextView>(R.id.termsAndConditionsText)
+            val termsHtml = Html.fromHtml(getString(R.string.terms_and_conditions), Html.FROM_HTML_MODE_LEGACY)
+            termsTextView?.text = termsHtml
+
+            sheet.findViewById<ImageButton>(R.id.button_back)?.setOnClickListener { bottom.dismiss() }
+            bottom.show()
+        }
+
+        questionContainer = findViewById(R.id.question)
+        questionContainer.setOnClickListener {
+            val customTabsIntent = CustomTabsIntent.Builder()
+                .setShowTitle(true)
+                .setToolbarColor(ContextCompat.getColor(this, R.color.blue))
+                .setStartAnimations(this, R.anim.slide_in_up, R.anim.slide_out_down)
+                .setExitAnimations(this, R.anim.slide_in_down, R.anim.slide_out_up)
+                .build()
+
+            customTabsIntent.launchUrl(this, Uri.parse(getString(R.string.form_url)))
+        }
 
         findViewById<ImageView>(R.id.button_back).setOnClickListener { finish() }
 
