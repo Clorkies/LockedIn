@@ -6,6 +6,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -32,12 +33,15 @@ import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.activities.CreatePostActivity
 import com.google.firebase.firestore.ktx.firestore
 import edu.citu.csit284.lockedin.data.Post
+import edu.citu.csit284.lockedin.helper.BottomSpace
+import edu.citu.csit284.lockedin.util.setupHeaderScrollBehavior
 
 class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
 
     private var caller: String? = null
     private val users = Firebase.firestore.collection("users")
     private val forums = Firebase.firestore.collection("forums")
+    private lateinit var headerContainer: LinearLayout
     private lateinit var btnGame1: LinearLayout
     private lateinit var btnGame1Text: TextView
     private lateinit var btnGame2: LinearLayout
@@ -81,7 +85,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btnProfile = view.findViewById<ImageButton>(R.id.button_profile)
+        btnProfile = view.findViewById(R.id.button_profile)
         btnProfile.setOnClickListener {
             startActivity(Intent(requireContext(), ProfileActivity::class.java))
         }
@@ -97,6 +101,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
             }
         }
 
+        headerContainer = view.findViewById(R.id.headerContainer)
         btnGame1 = view.findViewById(R.id.game1Btn)
         btnGame1Text = view.findViewById(R.id.game1)
         btnGame2 = view.findViewById(R.id.game2Btn)
@@ -115,6 +120,17 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
         rvView.layoutManager = LinearLayoutManager(requireContext())
         postAdapter = userInfo?.let { PostAdapter(postList, this, requireContext(), it) }!!
         rvView.adapter = postAdapter
+
+        // Para di matago behind the navbar ang last item sa scroll/listview
+        val bottomSpace = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            110f,
+            resources.displayMetrics
+        ).toInt()
+        rvView.addItemDecoration(BottomSpace(bottomSpace))
+        ////
+
+        setupHeaderScrollBehavior(headerContainer, rvView)
 
         setupPfp()
         loadFavoriteGames()

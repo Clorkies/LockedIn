@@ -1,7 +1,10 @@
 package edu.citu.csit284.lockedin.util
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import android.util.TypedValue
+import android.view.View
 import android.widget.ListView
 import android.widget.Toast
 import com.google.firebase.firestore.ktx.firestore
@@ -16,9 +19,11 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.Calendar
 import java.util.Date
+import android.widget.AbsListView
 
-private lateinit var bookmarks: List<Map<String, Any>>
+@SuppressLint("StaticFieldLeak")
 private lateinit var con: Context
+@SuppressLint("StaticFieldLeak")
 private lateinit var listV: ListView
 private lateinit var onComp: (hasArticles: Boolean) -> Unit
 
@@ -38,6 +43,18 @@ fun fetchArticles(
 
                 Log.d("NSFW_Filter", "Filtered out ${allArticles.size - displayArticles.size} NSFW articles.")
 
+                val footerView = View(context)
+                val params = AbsListView.LayoutParams(
+                    AbsListView.LayoutParams.MATCH_PARENT,
+                    TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP,
+                        100f,
+                        context.resources.displayMetrics
+                    ).toInt()
+                )
+                footerView.layoutParams = params
+
+                listView.addFooterView(footerView, null, false)
                 listView.adapter = ArticleAdapter(context, displayArticles)
 
                 listView.setOnItemClickListener { _, _, position, _ ->
@@ -115,6 +132,18 @@ fun fetchArticlesSpecific(
                     Toast.makeText(context, "No articles found for $gameName", Toast.LENGTH_SHORT).show()
                 }
 
+                val footerView = View(context)
+                val params = AbsListView.LayoutParams(
+                    AbsListView.LayoutParams.MATCH_PARENT,
+                    TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP,
+                        100f,
+                        context.resources.displayMetrics
+                    ).toInt()
+                )
+                footerView.layoutParams = params
+
+                listView.addFooterView(footerView, null, false)
                 listView.adapter = ArticleAdapter(context, displayArticles)
 
                 listView.setOnItemClickListener { _, _, position, _ ->
@@ -156,8 +185,8 @@ fun fetchBookmarkedArticles(
 
     val sharedPref = context.getSharedPreferences("User", Context.MODE_PRIVATE)
     val username = sharedPref.getString("username", null)
-    var bookmarks: List<Map<String, Any>> = listOf()
     val users = Firebase.firestore.collection("users")
+    var bookmarks: List<Map<String, Any>>
 
     users.whereEqualTo("username", username)
         .limit(1)
@@ -177,8 +206,20 @@ fun fetchBookmarkedArticles(
                 return@addOnSuccessListener
             }
 
-            var articles = getArticles()
+            val articles = getArticles(bookmarks)
 
+            val footerView = View(context)
+            val params = AbsListView.LayoutParams(
+                AbsListView.LayoutParams.MATCH_PARENT,
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    100f,
+                    context.resources.displayMetrics
+                ).toInt()
+            )
+            footerView.layoutParams = params
+
+            listView.addFooterView(footerView, null, false)
             listView.adapter = ArticleAdapter(context, articles)
 
             listView.setOnItemClickListener { _, _, position, _ ->
@@ -244,7 +285,7 @@ fun fetchArticlesSearch(
     })
 }
 
-fun getArticles(): List<Article> {
+fun getArticles(bookmarks: List<Map<String, Any>>): List<Article> {
     val articles = bookmarks.map { bookmark ->
         Article(
             title = bookmark["title"] as? String ?: "Untitled",

@@ -38,11 +38,13 @@ import edu.citu.csit284.lockedin.util.fetchArticlesSpecific
 import edu.citu.csit284.lockedin.util.fetchBookmarkedArticles
 import edu.citu.csit284.lockedin.util.fetchArticlesSearch
 import edu.citu.csit284.lockedin.util.getGameNameById
+import edu.citu.csit284.lockedin.util.setupHeaderScrollBehavior
 
 class ExploreFragment : Fragment() {
 
     private var caller: String? = null
     private val users = Firebase.firestore.collection("users")
+    private lateinit var headerContainer: LinearLayout
     private lateinit var loadingView1: View
     private lateinit var loadingView2: View
     private lateinit var noInternetBox: LinearLayout
@@ -117,6 +119,7 @@ class ExploreFragment : Fragment() {
             }
         }
 
+        headerContainer = view.findViewById(R.id.headerContainer)
         loadingView1 = view.findViewById(R.id.loadingView1)
         loadingView2 = view.findViewById(R.id.loadingView2)
         noInternetBox = view.findViewById(R.id.noInternetBox)
@@ -151,10 +154,13 @@ class ExploreFragment : Fragment() {
 
         setupFavoriteGames()
 
+
         bookmarkedListButton.setOnClickListener { if (currentCategory != "bookmarked") { switchCategory("bookmarked") } }
         game1ListButton.setOnClickListener { if (currentCategory != "game1") { switchCategory("game1") } }
         game2ListButton.setOnClickListener { if (currentCategory != "game2") { switchCategory("game2") } }
         game3ListButton.setOnClickListener { if (currentCategory != "game3") { switchCategory("game3") } }
+
+        setupHeaderScrollBehavior(headerContainer, listView)
     }
 
     private fun setupFavoriteGames() {

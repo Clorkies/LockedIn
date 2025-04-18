@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -30,11 +31,13 @@ import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.activities.ProfileActivity
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.data.Match
+import edu.citu.csit284.lockedin.helper.BottomSpace
 import edu.citu.csit284.lockedin.helper.UpcomingMatchAdapter
 import edu.citu.csit284.lockedin.util.FilterUtil
 import edu.citu.csit284.lockedin.util.LoadingAnimationUtil
 import edu.citu.csit284.lockedin.util.MatchRepository
 import edu.citu.csit284.lockedin.util.getGameNameById
+import edu.citu.csit284.lockedin.util.setupHeaderScrollBehavior
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -47,6 +50,7 @@ class GamesFragment : Fragment() {
     private var caller: String? = null
     private val users = Firebase.firestore.collection("users")
     private val matchRepository = MatchRepository()
+    private lateinit var headerContainer: LinearLayout
     private lateinit var loadingView1: View
     private lateinit var loadingView2: View
     private lateinit var loadingView3: View
@@ -100,6 +104,15 @@ class GamesFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.visibility = View.GONE
+
+        // Para di matago behind the navbar ang last item sa scroll/listview
+        val bottomSpace = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            110f,
+            resources.displayMetrics
+        ).toInt()
+        recyclerView.addItemDecoration(BottomSpace(bottomSpace))
+        ////
 
         val btnProfile = view.findViewById<ImageButton>(R.id.button_profile)
         btnProfile.setOnClickListener {
@@ -161,17 +174,20 @@ class GamesFragment : Fragment() {
                 else -> requireActivity().onBackPressedDispatcher.onBackPressed()
             }
         }
+        headerContainer = view.findViewById(R.id.headerContainer)
         loadingView1 = view.findViewById(R.id.loadingView1)
         loadingView2 = view.findViewById(R.id.loadingView2)
         loadingView3 = view.findViewById(R.id.loadingView3)
         loadingView4 = view.findViewById(R.id.loadingView4)
         noInternetBox = view.findViewById(R.id.noInternetBox)
         noInternetBox.visibility = View.GONE
+
+        setupHeaderScrollBehavior(headerContainer, recyclerView)
+
         LoadingAnimationUtil.setupLoadingViews(requireContext(), loadingView1, loadingView2)
         LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
         LoadingAnimationUtil.setupLoadingViews(requireContext(), loadingView3, loadingView4)
         LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView3, loadingView4, true)
-
     }
 
     private fun setupFavoriteGames() {
