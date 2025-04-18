@@ -107,7 +107,7 @@ class PostActivity : Activity() {
     }
 
     private suspend fun findPostAcrossGames(postId: String): DocumentSnapshot? {
-        val games = listOf("valorant", "lol", "csgo", "dota2", "marvel-rivals", "overwatch")
+        val games = listOf("valorant", "lol", "csgo", "dota2", "mlbb", "overwatch")
         for (game in games) {
             val postRef = firestore.collection("forums").document(game).collection("posts").document(postId)
             val document = postRef.get().await()
@@ -224,7 +224,7 @@ class PostActivity : Activity() {
     }
 
     private suspend fun getGameName(postId: String): String? {
-        val games = listOf("valorant", "lol", "csgo", "dota2", "marvel-rivals", "overwatch")
+        val games = listOf("valorant", "lol", "csgo", "dota2", "mlbb", "overwatch")
         for (game in games) {
             val postRef = firestore.collection("forums").document(game).collection("posts").document(postId)
             val document = postRef.get().await()

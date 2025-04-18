@@ -223,11 +223,11 @@
                     android:layout_marginTop="30dp">
 
                     <ImageView
-                        android:id="@+id/rivalsIcon"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
+                        android:id="@+id/mlbbIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:padding="6dp"
-                        android:src="@drawable/logo_rivals" />
+                        android:src="@drawable/logo_mlbb" />
 
                     <TextView
                         android:id="@+id/tv5"
@@ -235,9 +235,9 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="25dp"
-                        android:layout_toEndOf="@+id/rivalsIcon"
+                        android:layout_toEndOf="@+id/mlbbIcon"
                         android:fontFamily="@font/poppins"
-                        android:text="Marvel Rivals"
+                        android:text="Mobile Legends"
                         android:textColor="@color/white"
                         android:textSize="17sp"
                         android:textStyle="bold" />
