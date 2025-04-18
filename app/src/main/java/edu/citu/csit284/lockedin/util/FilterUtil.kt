@@ -109,10 +109,10 @@ object FilterUtil {
                 "dire", "radiant", "ancient", "roshan", "ranked mmr", "pubs", "meta heroes"
             )
 
-            "rivals" -> listOf(
-                "marvel rivals", "marvel games",
-                "iron man", "loki", "doctor strange", "black panther", "wolverine",
-                "marvel fps", "marvel pvp", "avengers", "guardians of the galaxy", "comic universe", "team-based shooter"
+            "mlbb" -> listOf(
+                "mlbb", "mobile legends", "moonton", "ml patch", "ml update",
+                "ranked", "mpl", "mythic", "legend",
+                "game meta", "turret", "lord", "laning", "jungle", "moba"
             )
 
             "overwatch" -> listOf(
@@ -131,7 +131,7 @@ object FilterUtil {
             2 -> "league"
             3 -> "csgo"
             4 -> "dota"
-            5 -> "rivals"
+            5 -> "mlbb"
             6 -> "overwatch"
             else -> ""
         }
