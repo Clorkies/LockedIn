@@ -152,6 +152,4 @@
             app:icon="@android:drawable/ic_input_add"
             app:iconGravity="end"
             app:iconTint="@color/white" />
-
-
 </FrameLayout>

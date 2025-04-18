@@ -32,6 +32,7 @@ import edu.citu.csit284.lockedin.activities.ProfileActivity
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.activities.CreatePostActivity
 import com.google.firebase.firestore.ktx.firestore
+import edu.citu.csit284.lockedin.activities.PostActivity
 import edu.citu.csit284.lockedin.data.Post
 import edu.citu.csit284.lockedin.helper.BottomSpace
 import edu.citu.csit284.lockedin.util.setupHeaderScrollBehavior
@@ -156,6 +157,10 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadPostsForCategory(currentCategory)
+    }
     private fun setupFavoriteGamesButtons() {
         if (prefNames.size >= 1) {
             setupGameButton(btnGame1, btnGame1Text, prefNames[0], 1)
@@ -511,6 +516,11 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
             }
     }
     override fun onItemClick(position: Int) {
+        val post = postList[position]
+        val intent = Intent(requireContext(), PostActivity::class.java)
+        intent.putExtra("postId", post.id)
+        startActivity(intent)
+
     }
 }
 
