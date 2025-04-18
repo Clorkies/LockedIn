@@ -122,7 +122,7 @@ class LoginSplashScreen : Activity() {
             Pair(2, findViewById<FrameLayout>(R.id.card_league_frame)),
             Pair(3, findViewById<FrameLayout>(R.id.card_csgo_frame)),
             Pair(4, findViewById<FrameLayout>(R.id.card_dota_frame)),
-            Pair(5, findViewById<FrameLayout>(R.id.card_rivals_frame)),
+            Pair(5, findViewById<FrameLayout>(R.id.card_mlbb_frame)),
             Pair(6, findViewById<FrameLayout>(R.id.card_overwatch_frame))
         )
 

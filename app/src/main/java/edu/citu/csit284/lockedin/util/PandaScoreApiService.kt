@@ -76,9 +76,3 @@ interface PandaScoreApiService {
         @Query("per_page") perPage: Int = 10,
     ): List<Match>
 }
-// Pair(1, "valorant")       // "valorant"
-//Pair(2, "league")         // "lol"
-//Pair(3, "csgo")           // "csgo"
-//Pair(4, "dota")           // "dota2"
-//Pair(5, "rivals")         // "marvel-rivals"
-//Pair(6, "overwatch")      // "overwatch"

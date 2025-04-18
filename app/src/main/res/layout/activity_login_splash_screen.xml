@@ -196,21 +196,21 @@
             </FrameLayout>
 
             <FrameLayout
-                android:id="@+id/card_rivals_frame"
+                android:id="@+id/card_mlbb_frame"
                 android:layout_width="0dp"
                 android:layout_height="185dp"
                 android:layout_columnWeight="1"
                 android:layout_margin="8dp">
 
                 <ImageView
-                    android:id="@+id/card_rivals"
+                    android:id="@+id/card_mlbb"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/card_rivals"
+                    android:src="@drawable/card_mlbb"
                     android:scaleType="centerCrop"/>
 
                 <ImageView
-                    android:id="@+id/check_rivals"
+                    android:id="@+id/check_mlbb"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_gravity="top|end"

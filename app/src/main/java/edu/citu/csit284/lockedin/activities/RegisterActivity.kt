@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.R
+import edu.citu.csit284.lockedin.util.setupClickableTermsAndPrivacy
 import edu.citu.csit284.lockedin.util.toast
 import edu.citu.csit284.lockedin.util.toggle
 
@@ -31,6 +32,8 @@ class RegisterActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+
+        setupClickableTermsAndPrivacy(this)
 
         val btnBack = findViewById<ImageView>(R.id.backBtn)
         val btnRegister = findViewById<Button>(R.id.btnRegister)
@@ -57,7 +60,6 @@ class RegisterActivity : Activity() {
                 .setInterpolator(DecelerateInterpolator())
                 .start()
         }
-
 
         btnRegister.isEnabled = false
         btnRegister.setBackgroundResource(R.drawable.btn_register_disabled)
