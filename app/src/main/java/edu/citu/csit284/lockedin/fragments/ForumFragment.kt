@@ -60,7 +60,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
         2 to "lol",
         3 to "csgo",
         4 to "dota2",
-        5 to "marvel-rivals",
+        5 to "mlbb",
         6 to "overwatch"
     )
     private lateinit var fabCreate: MaterialButton
@@ -208,7 +208,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
             "lol" -> "league"
             "csgo" -> "csgo"
             "dota2" -> "dota"
-            "marvel-rivals" -> "rivals"
+            "mlbb" -> "mlbb"
             "overwatch" -> "overwatch"
             else -> ""
         }

@@ -65,7 +65,7 @@ class GamesFragment : Fragment() {
         2 to "lol",
         3 to "csgo",
         4 to "dota2",
-        5 to "marvel-rivals",
+        5 to "mlbb",
         6 to "overwatch"
     )
     private val gameMap: Map<Int, String> = games.toMap()
@@ -215,7 +215,7 @@ class GamesFragment : Fragment() {
             "lol" -> "league"
             "csgo" -> "csgo"
             "dota2" -> "dota"
-            "marvel-rivals" -> "rivals"
+            "mlbb" -> "mlbb"
             "overwatch" -> "overwatch"
             else -> ""
         }
@@ -340,7 +340,7 @@ class GamesFragment : Fragment() {
                     "lol" -> matchRepository.getUpcomingLoLMatches()
                     "csgo" -> matchRepository.getUpcomingCSGOMatches()
                     "dota2" -> matchRepository.getUpcomingDotaMatches()
-                    "marvel-rivals" -> matchRepository.getUpcomingRivalsMatches()
+                    "mlbb" -> matchRepository.getUpcomingMLBBMatches()
                     "overwatch" -> matchRepository.getUpcomingOverwatchMatches()
                     else -> emptyList()
                 }

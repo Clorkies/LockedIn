@@ -305,7 +305,7 @@ fun getGameNameById(id: Int): String {
         2 -> "league"
         3 -> "csgo"
         4 -> "dota"
-        5 -> "rivals"
+        5 -> "mlbb"
         6 -> "overwatch"
         else -> ""
     }

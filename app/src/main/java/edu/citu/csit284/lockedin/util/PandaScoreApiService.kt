@@ -30,8 +30,8 @@ interface PandaScoreApiService {
         @Query("token") apiToken: String,
         @Query("per_page") perPage: Int = 10,
     ): List<Match>
-    @GET("marvel-rivals/matches/running")
-    suspend fun getMarvelRivalsLiveMatches(
+    @GET("mlbb/matches/running")
+    suspend fun getMLBBLiveMatches(
         @Query("token") apiToken: String,
         @Query("per_page") perPage: Int = 10,
     ): List<Match>
@@ -64,8 +64,8 @@ interface PandaScoreApiService {
         @Query("per_page") perPage: Int = 10,
     ): List<Match>
 
-    @GET("marvel-rivals/matches/upcoming")
-    suspend fun getUpcomingRivalsMatches(
+    @GET("mlbb/matches/upcoming")
+    suspend fun getUpcomingMLBBMatches(
         @Query("token") apiToken: String,
         @Query("per_page") perPage: Int = 10,
     ): List<Match>

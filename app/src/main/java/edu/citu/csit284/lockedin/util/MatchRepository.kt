@@ -53,9 +53,9 @@ class MatchRepository {
             emptyList()
         }
     }
-    suspend fun getUpcomingRivalsMatches(): List<Match> {
+    suspend fun getUpcomingMLBBMatches(): List<Match> {
         return try {
-            apiService.getUpcomingRivalsMatches(apiKey)
+            apiService.getUpcomingMLBBMatches(apiKey)
         } catch (e: Exception) {
             emptyList()
         }
@@ -87,8 +87,8 @@ class MatchRepository {
             if (games.contains("dota2")) {
                 matches.addAll(apiService.getDotaLiveMatches(apiKey))
             }
-            if (games.contains("marvel-rivals")) {
-                matches.addAll(apiService.getMarvelRivalsLiveMatches(apiKey))
+            if (games.contains("mlbb")) {
+                matches.addAll(apiService.getMLBBLiveMatches(apiKey))
             }
             if (games.contains("overwatch")) {
                 matches.addAll(apiService.getOverwatchLiveMatches(apiKey))
