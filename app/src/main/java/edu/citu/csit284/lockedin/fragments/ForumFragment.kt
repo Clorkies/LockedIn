@@ -31,6 +31,7 @@ import edu.citu.csit284.lockedin.activities.ProfileActivity
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.activities.CreatePostActivity
 import com.google.firebase.firestore.ktx.firestore
+import edu.citu.csit284.lockedin.activities.PostActivity
 import edu.citu.csit284.lockedin.data.Post
 
 class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
@@ -495,6 +496,11 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
             }
     }
     override fun onItemClick(position: Int) {
+        val post = postList[position]
+        val intent = Intent(requireContext(), PostActivity::class.java)
+        intent.putExtra("postId", post.id)
+        startActivity(intent)
+
     }
 }
 

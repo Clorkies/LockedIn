@@ -31,7 +31,7 @@ class PostAdapter(private val listOfPosts: MutableList<Post>,
         fun onItemClick(position: Int)
     }
 
-    class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ItemViewHolder(itemView: View, val clickListener: OnItemClickListener) : RecyclerView.ViewHolder(itemView) {
         val tvPostTitle: TextView = itemView.findViewById(R.id.postTitle)
         val tvPostBody: TextView = itemView.findViewById(R.id.postBody)
         val imgPostImage: ImageView = itemView.findViewById(R.id.postImage)
@@ -46,7 +46,7 @@ class PostAdapter(private val listOfPosts: MutableList<Post>,
         init {
             itemView.setOnClickListener {
                 if (adapterPosition != RecyclerView.NO_POSITION) {
-                    (it.context as? OnItemClickListener)?.onItemClick(adapterPosition)
+                    clickListener.onItemClick(adapterPosition)
                 }
             }
         }
@@ -54,7 +54,7 @@ class PostAdapter(private val listOfPosts: MutableList<Post>,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_post, parent, false)
-        return ItemViewHolder(view)
+        return ItemViewHolder(view, itemClickListener)
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {

@@ -43,7 +43,7 @@
 
 
         <TextView
-            android:id="@+id/articleTitleView"
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
@@ -51,6 +51,7 @@
             android:textColor="@color/white"
             android:gravity="start"
             android:textAlignment="viewStart"
+            android:layout_marginLeft="2dp"
             android:text="Title"
             />
 
@@ -59,29 +60,48 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:paddingVertical="15dp"
             android:background="@drawable/rectangle_author_bg"
             android:paddingHorizontal="20dp"
             >
-            <TextView
-                android:id="@+id/articleAuthorView"
+            <ImageView
+                android:id="@+id/btnProfile"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:scaleType="centerCrop"
+                android:clipToOutline="true"
+                android:layout_gravity="center_vertical"
+                android:outlineProvider="background"
+                android:background="@drawable/circle_frame"
+                android:src="@drawable/default_pfp"
+                android:layout_marginEnd="12dp"
+                />
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                android:textColor="@color/white"
-                android:text="Author"
-                />
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:id="@+id/author"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:textColor="@color/white"
+                    android:text="Author"
+                    />
 
-            <TextView
-                android:id="@+id/articleDateView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:textColor="@color/fadedWhite"
-                android:text="Date"
-                />
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="@color/fadedWhite"
+                    android:text="Date"
+                    />
+            </LinearLayout>
+
         </LinearLayout>
 
         <ScrollView
@@ -97,7 +117,7 @@
                 <Space android:layout_width="match_parent" android:layout_height="25dp"/>
 
                 <ImageView
-                    android:id="@+id/articleImageView"
+                    android:id="@+id/image"
                     android:layout_width="match_parent"
                     android:layout_height="230dp"
                     android:background="@drawable/rounded_image"
@@ -105,19 +125,37 @@
                     android:scaleType="centerCrop"
                     />
 
-                <Space android:layout_height="30dp" android:layout_width="wrap_content"/>
+                <Space android:layout_height="15dp" android:layout_width="wrap_content"/>
 
                 <TextView
-                    android:id="@+id/articleTextView"
+                    android:id="@+id/body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="17sp"
                     android:textColor="@color/white"
                     android:text="Content"
+                    android:layout_marginLeft="2dp"
                     />
-
+                <EditText
+                    android:id="@+id/etComment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/rectangle_full"
+                    android:fontFamily="@font/poppins"
+                    android:padding="16dp"
+                    android:hint="Add a comment!"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/fadedWhite"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/comments"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
-
         </ScrollView>
 
     </LinearLayout>
