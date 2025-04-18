@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class CommentAdapter(private val comments: List<Comment>) :
+class CommentAdapter(private val comments: MutableList<Comment>) :
     RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
     private val users = Firebase.firestore.collection("users")
     class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

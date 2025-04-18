@@ -1,19 +1,27 @@
 package edu.citu.csit284.lockedin.activities
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.R
+import edu.citu.csit284.lockedin.data.Comment
+import edu.citu.csit284.lockedin.helper.CommentAdapter
 import edu.citu.csit284.lockedin.util.toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +32,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class PostActivity : AppCompatActivity() {
+class PostActivity : Activity() {
 
     private val firestore = Firebase.firestore
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
@@ -33,6 +41,9 @@ class PostActivity : AppCompatActivity() {
     private lateinit var btnBack: ImageView
     private lateinit var etComment: EditText
     private lateinit var postId: String
+    private lateinit var rvComments: RecyclerView
+    private lateinit var commentAdapter: CommentAdapter
+    private val commentList = mutableListOf<Comment>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +54,10 @@ class PostActivity : AppCompatActivity() {
         btnBack = findViewById(R.id.button_back)
         btnBack.setOnClickListener { finish() }
         etComment = findViewById(R.id.etComment)
+        rvComments = findViewById(R.id.comments)
+        rvComments.layoutManager = LinearLayoutManager(this)
+        commentAdapter = CommentAdapter(commentList)
+        rvComments.adapter = commentAdapter
 
         etComment.setOnEditorActionListener { _, actionId, event ->
             if (event?.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_ENTER) {
@@ -59,6 +74,7 @@ class PostActivity : AppCompatActivity() {
 
         if (postId.isNotEmpty()) {
             getPostData(postId)
+            loadComments()
         } else {
             toast("Post ID is null")
             finish()
@@ -89,6 +105,7 @@ class PostActivity : AppCompatActivity() {
             }
         }
     }
+
     private suspend fun findPostAcrossGames(postId: String): DocumentSnapshot? {
         val games = listOf("valorant", "lol", "csgo", "dota2", "marvel-rivals", "overwatch")
         for (game in games) {
@@ -100,6 +117,7 @@ class PostActivity : AppCompatActivity() {
         }
         return null
     }
+
     private fun displayPostData(
         authorUsername: String?,
         title: String?,
@@ -129,6 +147,7 @@ class PostActivity : AppCompatActivity() {
             imageView.visibility = View.GONE
         }
     }
+
     private fun setupPfp(userInfo: String) {
         var pfp: Int
         users.whereEqualTo("username", userInfo)
@@ -157,6 +176,7 @@ class PostActivity : AppCompatActivity() {
                 }
             }
     }
+
     private fun saveComment(postId: String, commentText: String) {
         coroutineScope.launch {
             try {
@@ -165,30 +185,44 @@ class PostActivity : AppCompatActivity() {
                 if (gameName != null) {
                     val sharedPrefs = getSharedPreferences("User", Context.MODE_PRIVATE)
                     val authorUsername = sharedPrefs.getString("username", "Anonymous") ?: "Anonymous"
-                    val timestamp = FieldValue.serverTimestamp()
 
                     val commentData = hashMapOf(
                         "authorUsername" to authorUsername,
                         "text" to commentText,
-                        "timestamp" to timestamp
+                        "timestamp" to FieldValue.serverTimestamp()
                     )
 
-                    firestore.collection("forums").document(gameName)
+                    val newCommentRef = firestore.collection("forums").document(gameName)
                         .collection("posts").document(postId)
                         .collection("comments")
-                        .add(commentData)
-                        .await()
+                        .document()
+                    newCommentRef.set(commentData).await()
+
+                    val savedCommentSnapshot = newCommentRef.get().await()
+                    val savedTimestamp = savedCommentSnapshot.getTimestamp("timestamp")?.toDate()?.time ?: System.currentTimeMillis()
+
+                    val newComment = Comment(
+                        id = newCommentRef.id,
+                        authorUsername = authorUsername,
+                        description = commentText,
+                        timestamp = savedTimestamp
+                    )
 
                     withContext(Dispatchers.Main) {
                         etComment.text.clear()
+                        commentList.add(0,newComment)
+                        commentAdapter.notifyItemInserted(0)
+                        loadComments()
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
+                    toast("Error saving comment: ${e.message}")
                 }
             }
         }
     }
+
     private suspend fun getGameName(postId: String): String? {
         val games = listOf("valorant", "lol", "csgo", "dota2", "marvel-rivals", "overwatch")
         for (game in games) {
@@ -199,5 +233,38 @@ class PostActivity : AppCompatActivity() {
             }
         }
         return null
+    }
+
+    private fun loadComments() {
+        coroutineScope.launch {
+            try {
+                val gameName = getGameName(postId) ?: ""
+                if (gameName.isNotEmpty()) {
+                    val commentsRef = firestore.collection("forums").document(gameName)
+                        .collection("posts").document(postId)
+                        .collection("comments")
+                    val querySnapshot = commentsRef.orderBy("timestamp", Query.Direction.DESCENDING).get().await()
+
+                    val fetchedComments = querySnapshot.documents.map { document ->
+                        val timestamp = document.getTimestamp("timestamp")?.toDate()?.time ?: 0
+                        Comment(
+                            id = document.id,
+                            authorUsername = document.getString("authorUsername"),
+                            description = document.getString("text"),
+                            timestamp = timestamp
+                        )
+                    }
+                    withContext(Dispatchers.Main) {
+                        commentList.clear()
+                        commentList.addAll(fetchedComments)
+                        commentAdapter.notifyDataSetChanged()
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    toast("Error loading comments: ${e.message}")
+                }
+            }
+        }
     }
 }
