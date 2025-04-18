@@ -1,4 +1,5 @@
 package edu.citu.csit284.lockedin.util
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -17,8 +18,9 @@ import retrofit2.Response
 import java.util.Calendar
 import java.util.Date
 
-private lateinit var bookmarks: List<Map<String, Any>>
+@SuppressLint("StaticFieldLeak")
 private lateinit var con: Context
+@SuppressLint("StaticFieldLeak")
 private lateinit var listV: ListView
 private lateinit var onComp: (hasArticles: Boolean) -> Unit
 
@@ -156,8 +158,8 @@ fun fetchBookmarkedArticles(
 
     val sharedPref = context.getSharedPreferences("User", Context.MODE_PRIVATE)
     val username = sharedPref.getString("username", null)
-    var bookmarks: List<Map<String, Any>> = listOf()
     val users = Firebase.firestore.collection("users")
+    var bookmarks: List<Map<String, Any>>
 
     users.whereEqualTo("username", username)
         .limit(1)
@@ -177,7 +179,7 @@ fun fetchBookmarkedArticles(
                 return@addOnSuccessListener
             }
 
-            var articles = getArticles()
+            val articles = getArticles(bookmarks)
 
             listView.adapter = ArticleAdapter(context, articles)
 
@@ -244,7 +246,7 @@ fun fetchArticlesSearch(
     })
 }
 
-fun getArticles(): List<Article> {
+fun getArticles(bookmarks: List<Map<String, Any>>): List<Article> {
     val articles = bookmarks.map { bookmark ->
         Article(
             title = bookmark["title"] as? String ?: "Untitled",
