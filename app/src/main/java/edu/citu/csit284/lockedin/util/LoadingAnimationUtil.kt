@@ -1,83 +1,76 @@
 package edu.citu.csit284.lockedin.util
 
 import android.animation.ValueAnimator
-import android.app.Activity
 import android.content.Context
-import android.graphics.drawable.GradientDrawable
-import android.util.DisplayMetrics
 import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
-import androidx.core.content.ContextCompat
+import android.view.animation.LinearInterpolator
+import android.widget.ImageView
 import edu.citu.csit284.lockedin.R
 
 object LoadingAnimationUtil {
     private var animator1: ValueAnimator? = null
     private var animator2: ValueAnimator? = null
 
-    fun setupLoadingViews(context: Context, view1: View, view2: View) {
-        val cornerRadius = 30f * context.resources.displayMetrics.density
-
-        val drawable1 = GradientDrawable().apply {
-            this.cornerRadius = cornerRadius
-            setColor(ContextCompat.getColor(context, R.color.loadingstate_dark))
-        }
-
-        val drawable2 = GradientDrawable().apply {
-            this.cornerRadius = cornerRadius
-            setColor(ContextCompat.getColor(context, R.color.loadingstate_bright))
-        }
-
-        view1.background = drawable1
-        view2.background = drawable2
-    }
-
-    fun showLoading(context: Context, activity: Activity, view1: View, view2: View, show: Boolean) {
+    fun showLoading(context: Context, view1: View, view2: View, show: Boolean) {
         if (show) {
+            cancelAnimations()
+
             view1.visibility = View.VISIBLE
             view2.visibility = View.VISIBLE
 
-            view1.layoutParams = view1.layoutParams.apply { width = 0 }
-            view2.layoutParams = view2.layoutParams.apply { width = 0 }
+            val loadingBar1 = view1.findViewById<ImageView>(R.id.loadingBar)
+            val loadingBar2 = view2.findViewById<ImageView>(R.id.loadingBar)
 
-            startGrowAnimation(context, activity, view1, 0)
-            startGrowAnimation(context, activity, view2, 200)
+            loadingBar1.translationX = -600f
+            loadingBar2.translationX = -600f
+
+            view1.post { startTranslationAnimation(loadingBar1, 0) }
+            view2.post { startTranslationAnimation(loadingBar2, 300) }
         } else {
-            animator1?.cancel()
-            animator2?.cancel()
+            cancelAnimations()
 
             view1.visibility = View.GONE
             view2.visibility = View.GONE
         }
     }
 
-    private fun startGrowAnimation(context: Context, activity: Activity, view: View, startDelay: Long) {
-        val displayMetrics = DisplayMetrics()
-        activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
-        val screenWidth = displayMetrics.widthPixels
-        val targetWidth = screenWidth - (40 * context.resources.displayMetrics.density).toInt()
+    private fun startTranslationAnimation(imageView: ImageView, startDelay: Long) {
+        imageView.post {
+            val parentWidth = (imageView.parent as View).width.toFloat()
+            val barWidth = imageView.width.toFloat()
 
-        val animator = ValueAnimator.ofInt(0, targetWidth).apply {
-            duration = 700
-            this.startDelay = startDelay
-            repeatMode = ValueAnimator.RESTART
-            repeatCount = ValueAnimator.INFINITE
-            interpolator = AccelerateDecelerateInterpolator()
+            val startX = -barWidth
+            val endX = parentWidth
 
-            addUpdateListener { animation ->
-                val width = animation.animatedValue as Int
-                view.layoutParams = view.layoutParams.apply { this.width = width }
-                view.requestLayout()
+            val totalDistance = endX - startX
+
+            val animator = ValueAnimator.ofFloat(0f, 1f).apply {
+                duration = 1400
+                this.startDelay = startDelay
+                repeatCount = ValueAnimator.INFINITE
+                interpolator = LinearInterpolator()
+
+                addUpdateListener { animation ->
+                    val progress = animation.animatedValue as Float
+                    imageView.translationX = startX + (progress * totalDistance)
+                }
             }
-        }
 
-        if (view.id == view1Id) animator1 = animator else animator2 = animator
-        animator.start()
+            if ((imageView.parent.parent as? View)?.id == R.id.loadingView1) {
+                animator1 = animator
+            } else {
+                animator2 = animator
+            }
+
+            animator.start()
+        }
     }
+
 
     fun cancelAnimations() {
         animator1?.cancel()
+        animator1 = null
         animator2?.cancel()
+        animator2 = null
     }
-
-    private val view1Id = R.id.loadingView1
 }

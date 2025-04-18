@@ -135,8 +135,7 @@ class ExploreFragment : Fragment() {
         searchView = view.findViewById(R.id.searchView)
         setupSearchView(view)
 
-        LoadingAnimationUtil.setupLoadingViews(requireContext(), loadingView1, loadingView2)
-        LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
+        LoadingAnimationUtil.showLoading(requireContext(), loadingView1, loadingView2, true)
 
         listView = view.findViewById(R.id.articleListView)
 
@@ -291,7 +290,7 @@ class ExploreFragment : Fragment() {
             .setDuration(300)
             .setInterpolator(AccelerateInterpolator())
             .withEndAction {
-                LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
+                LoadingAnimationUtil.showLoading(requireContext(), loadingView1, loadingView2, true)
 
                 currentCategory = newCategory
 
@@ -397,7 +396,7 @@ class ExploreFragment : Fragment() {
                     if (articlesIsEmpty) {
                         noBookmarkBox.visibility = View.VISIBLE
                     }
-                    LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
+                    LoadingAnimationUtil.showLoading(requireContext(), loadingView1, loadingView2, false)
                 }
             }
             "game1", "game2", "game3" -> {
@@ -410,7 +409,7 @@ class ExploreFragment : Fragment() {
                         noArticlesBox.visibility = View.VISIBLE
                         noArticlesBoxText.text = "No articles found for \"${gameName}\"."
                     }
-                    LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
+                    LoadingAnimationUtil.showLoading(requireContext(), loadingView1, loadingView2, false)
                     noInternetBox.visibility = if (!hasInternet) View.VISIBLE else View.GONE
                 }
             }
@@ -448,14 +447,14 @@ class ExploreFragment : Fragment() {
                 if (!query.isNullOrEmpty()) {
                     categoriesContainer.visibility = View.GONE
 
-                    LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
+                    LoadingAnimationUtil.showLoading(requireContext(), loadingView1, loadingView2, true)
 
                     fetchArticlesSearch(requireContext(), listView, query, caller = "explore") { hasInternet ->
                         if (listView.adapter.count == 0) {
                             noArticlesBox.visibility = View.VISIBLE
                             noArticlesBoxText.text = "No articles found for \"${query}\"."
                         }
-                        LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
+                        LoadingAnimationUtil.showLoading(requireContext(), loadingView1, loadingView2, false)
                         noInternetBox.visibility = if (!hasInternet) View.VISIBLE else View.GONE
                     }
 
@@ -477,7 +476,7 @@ class ExploreFragment : Fragment() {
                 categoriesContainer.visibility = View.VISIBLE
                 currentCategory = "game1"
                 updateButtonStyles("game1")
-                LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
+                LoadingAnimationUtil.showLoading(requireContext(), loadingView1, loadingView2, true)
                 loadArticles("game1")
             }
             false

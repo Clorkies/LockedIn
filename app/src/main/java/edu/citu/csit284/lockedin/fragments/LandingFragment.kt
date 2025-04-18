@@ -113,9 +113,7 @@ class LandingFragment : Fragment() {
         startPulsatingAnimation(header)
         startPulsatingAnimation(recyclerView)
 
-        LoadingAnimationUtil.setupLoadingViews(requireContext(), loadingView1, loadingView2)
-        LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
-
+        LoadingAnimationUtil.showLoading(requireContext(), loadingView1, loadingView2, true)
         val btnProfile = view.findViewById<ImageButton>(R.id.button_profile)
         btnProfile.setOnClickListener {
             startActivity(Intent(requireContext(), ProfileActivity::class.java))
@@ -195,7 +193,7 @@ class LandingFragment : Fragment() {
                 adapter.notifyDataSetChanged()
             }
             fetchArticles(requireContext(), listView, caller = "landing") { hasInternet ->
-                LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, false)
+                LoadingAnimationUtil.showLoading(requireContext(), loadingView1, loadingView2, false)
                 noInternetBox.visibility = if (!hasInternet) View.VISIBLE else View.GONE
             }
         }
