@@ -77,4 +77,116 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="form_url">https://forms.gle/U4izhn7kmUC8BZXGA</string>
+
+    <string name="privacy_policy"><![CDATA[
+<h1>Privacy Policy</h1>
+
+<h2>Introduction</h2>
+<p>Welcome to LockedIn! This Privacy Policy explains how we handle information when you use our mobile application. At LockedIn, we prioritize your privacy and aim to be transparent about our practices.</p>
+
+<h2>Information We Collect</h2>
+<p>LockedIn is designed to minimize data collection. We collect only the following information:</p>
+<ul>
+    <li><b>Account Information:</b> When you register, we collect your email address for authentication purposes.</li>
+    <li><b>Usage Data:</b> Basic analytics about how you interact with our app to improve user experience.</li>
+</ul>
+
+<h2>How We Use Information</h2>
+<p>We use the limited information we collect for the following purposes:</p>
+<ul>
+    <li>To provide and maintain the LockedIn service</li>
+    <li>To authenticate your account</li>
+    <li>To improve our application based on usage patterns</li>
+    <li>To communicate important updates about the application</li>
+</ul>
+
+<h2>Data Sharing and Disclosure</h2>
+<p>We do not sell, trade, or otherwise transfer your information to third parties. Your information may only be disclosed under the following circumstances:</p>
+<ul>
+    <li>When required by law</li>
+    <li>To protect our rights, privacy, safety, or property</li>
+    <li>In connection with a merger, acquisition, or sale of assets, with appropriate safeguards for your data</li>
+</ul>
+
+<h2>Data Security</h2>
+<p>We implement appropriate security measures to protect against unauthorized access, alteration, disclosure, or destruction of your information. However, no method of electronic storage or transmission is 100% secure, and we cannot guarantee absolute security.</p>
+
+<h2>User Rights</h2>
+<p>You have the right to:</p>
+<ul>
+    <li>Access the personal information we hold about you</li>
+    <li>Correct inaccurate information</li>
+    <li>Delete your account and associated data</li>
+    <li>Opt-out of non-essential communications</li>
+</ul>
+<p>To exercise these rights, contact us at support@lockedin.app</p>
+
+<h2>Children\'s Privacy</h2>
+<p>LockedIn is not directed to children under 13. We do not knowingly collect information from children under 13. If we discover we have collected information from a child under 13, we will delete that information promptly.</p>
+
+<h2>Changes to This Policy</h2>
+<p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last Updated" date.</p>
+
+<h2>No Advertisements or Payments</h2>
+<p>LockedIn does not include any advertisements and does not process any payments. We do not collect financial information of any kind.</p>
+
+<h2>Contact Us</h2>
+<p>If you have questions about this Privacy Policy, please contact us at:</p>
+<p>Email: privacy@lockedin.app</p>
+]]></string>
+
+    <string name="terms_and_conditions"><![CDATA[
+<h1>Terms and Conditions</h1>
+
+<h2>Introduction</h2>
+<p>Welcome to LockedIn! These Terms and Conditions ("Terms") govern your use of the LockedIn mobile application ("App"), provided by LockedIn Team ("we," "us," or "our"). By accessing or using LockedIn, you agree to be bound by these Terms. If you disagree with any part of these Terms, you do not have permission to access the App.</p>
+
+<h2>Account Registration</h2>
+<p>To use certain features of the App, you must register for an account. When registering, you agree to provide accurate information and keep it updated. You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account.</p>
+<p>We reserve the right to terminate or suspend accounts that violate these Terms or for any other reason at our discretion.</p>
+
+<h2>User Conduct</h2>
+<p>As a user of LockedIn, you agree not to:</p>
+<ul>
+    <li>Use the App for any illegal purpose or in violation of any local, state, national, or international law</li>
+    <li>Harass, abuse, or harm another person</li>
+    <li>Impersonate another user or person</li>
+    <li>Post or share content that is defamatory, obscene, pornographic, or otherwise objectionable</li>
+    <li>Attempt to bypass any security measures of the App</li>
+    <li>Use the App in any manner that could disable, overburden, damage, or impair the App</li>
+    <li>Share viruses or other malicious code through the App</li>
+</ul>
+
+<h2>User-Generated Content</h2>
+<p>Our App may allow you to post, link, store, share and otherwise make available certain information, text, graphics, videos, or other material ("Content") in forums and discussion areas. You retain all rights to your Content and are responsible for it.</p>
+<p>By posting Content, you grant us the right to use, reproduce, modify, and display your Content in connection with the App. You represent and warrant that your Content does not violate copyright, trademark, or other intellectual property laws.</p>
+<p>We reserve the right to remove any Content that violates these Terms or that we find objectionable for any reason.</p>
+
+<h2>Intellectual Property</h2>
+<p>The App and its original content (excluding user-generated Content), features, and functionality are and will remain the exclusive property of LockedIn Team and its licensors. The App is protected by copyright, trademark, and other laws. Our trademarks and trade dress may not be used in connection with any product or service without our prior written consent.</p>
+
+<h2>Third-Party Links</h2>
+<p>The App may contain links to third-party websites or services that are not owned or controlled by us. We have no control over, and assume no responsibility for, the content, privacy policies, or practices of any third-party websites or services.</p>
+
+<h2>Termination</h2>
+<p>We may terminate or suspend your account and access to the App immediately, without prior notice or liability, for any reason, including breach of these Terms. Upon termination, your right to use the App will immediately cease.</p>
+
+<h2>Limitation of Liability</h2>
+<p>In no event shall LockedIn Team be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access to or use of or inability to access or use the App.</p>
+
+<h2>Disclaimer</h2>
+<p>Your use of the App is at your sole risk. The App is provided on an "AS IS" and "AS AVAILABLE" basis. The App is provided without warranties of any kind, whether express or implied, including, but not limited to, implied warranties of merchantability, fitness for a particular purpose, non-infringement or course of performance.</p>
+
+<h2>Changes to Terms</h2>
+<p>We reserve the right to modify or replace these Terms at any time. If a revision is material, we will try to provide at least 30 days\' notice before any new terms take effect. What constitutes a material change will be determined at our sole discretion.</p>
+
+<h2>Governing Law</h2>
+<p>These Terms shall be governed by and defined following the laws of [Your Jurisdiction]. LockedIn Team and yourself irrevocably consent to the exclusive jurisdiction and venue of the courts in [Your Jurisdiction] for all disputes arising out of or relating to these Terms.</p>
+
+<h2>Contact Us</h2>
+<p>If you have any questions about these Terms, please contact us at:</p>
+<p>Email: terms@lockedin.app</p>
+]]></string>
+
 </resources>
