@@ -157,6 +157,10 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadPostsForCategory(currentCategory)
+    }
     private fun setupFavoriteGamesButtons() {
         if (prefNames.size >= 1) {
             setupGameButton(btnGame1, btnGame1Text, prefNames[0], 1)

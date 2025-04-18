@@ -35,7 +35,7 @@ interface PandaScoreApiService {
         @Query("token") apiToken: String,
         @Query("per_page") perPage: Int = 10,
     ): List<Match>
-    @GET("overwatch/matches/running")
+    @GET("ow/matches/running")
     suspend fun getOverwatchLiveMatches(
         @Query("token") apiToken: String,
         @Query("per_page") perPage: Int = 10,
@@ -70,7 +70,7 @@ interface PandaScoreApiService {
         @Query("per_page") perPage: Int = 10,
     ): List<Match>
 
-    @GET("overwatch/matches/upcoming")
+    @GET("ow/matches/upcoming")
     suspend fun getUpcomingOverwatchMatches(
         @Query("token") apiToken: String,
         @Query("per_page") perPage: Int = 10,
