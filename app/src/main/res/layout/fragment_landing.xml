@@ -22,10 +22,36 @@
             android:layout_height="40dp"
             android:background="@drawable/logo"/>
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_weight="1"/>
+        <View android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="160dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/live_circle"
+                android:scaleType="centerInside"
+                android:layout_gravity="center"
+                android:layout_marginRight="8dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LIVE MATCHES "
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_marginTop="-2dp"
+                android:textColor="@color/white"
+                android:gravity="center"
+
+                android:layout_gravity="center_vertical"/>
+        </LinearLayout>
+
+        <View android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
 
         <ImageButton
             android:id="@+id/button_profile"
@@ -37,53 +63,25 @@
             android:src="@drawable/default_pfp"/>
 
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/live_circle"
-            android:scaleType="centerInside"
-            android:layout_gravity="center"
-            android:layout_marginRight="8dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="LIVE MATCHES "
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_marginTop="-2dp"
-            android:textColor="@color/white"
-            android:gravity="center"
 
-            android:layout_gravity="center_vertical"/>
-    </LinearLayout>
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="5dp"/>
     <TextView
+        android:layout_marginTop="20dp"
         android:id="@+id/noLiveMatchesTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:text="No Live Matches Ongoing"
-        android:textStyle="bold"
-        android:textSize="18sp"
+        android:textSize="15sp"
         android:textColor="@color/white"
-        android:layout_gravity="center"
-        android:visibility="gone"
+        android:gravity="center"
+        android:background="@drawable/rectangle_no_article_bg"
+        android:visibility="visible"
          />
+
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginVertical="20dp"
         android:id="@+id/rvView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="20dp"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -91,6 +89,7 @@
         android:layout_weight="1">
 
         <ListView
+            android:layout_marginTop="20dp"
             android:id="@+id/articleListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -126,23 +125,23 @@
                 android:textSize="15dp"/>
 
         </LinearLayout>
-
-        <View
-            android:id="@+id/loadingView1"
-            android:layout_width="match_parent"
-            android:layout_height="360dp"
-            android:layout_gravity="top"
-            android:background="@drawable/loading_background"
-            android:visibility="gone"/>
-
-        <View
-            android:layout_marginTop="385dp"
-            android:id="@+id/loadingView2"
-            android:layout_width="match_parent"
-            android:layout_height="360dp"
-            android:layout_gravity="top"
-            android:background="@drawable/loading_background"
-            android:visibility="gone"/>
     </FrameLayout>
+
+    <View
+        android:id="@+id/loadingView1"
+        android:layout_width="match_parent"
+        android:layout_height="360dp"
+        android:layout_gravity="top"
+        android:background="@drawable/loading_background"
+        android:visibility="gone"/>
+
+    <View
+        android:layout_marginTop="25dp"
+        android:id="@+id/loadingView2"
+        android:layout_width="match_parent"
+        android:layout_height="360dp"
+        android:layout_gravity="top"
+        android:background="@drawable/loading_background"
+        android:visibility="gone"/>
 
 </LinearLayout>

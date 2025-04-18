@@ -6,6 +6,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -32,6 +33,7 @@ import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.activities.CreatePostActivity
 import com.google.firebase.firestore.ktx.firestore
 import edu.citu.csit284.lockedin.data.Post
+import edu.citu.csit284.lockedin.helper.BottomSpace
 
 class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
 
@@ -115,6 +117,15 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
         rvView.layoutManager = LinearLayoutManager(requireContext())
         postAdapter = userInfo?.let { PostAdapter(postList, this, requireContext(), it) }!!
         rvView.adapter = postAdapter
+
+        // Para di matago behind the navbar ang last item sa scroll/listview
+        val bottomSpace = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            90f,
+            resources.displayMetrics
+        ).toInt()
+        rvView.addItemDecoration(BottomSpace(bottomSpace))
+        ////
 
         setupPfp()
         loadFavoriteGames()

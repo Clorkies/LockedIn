@@ -15,7 +15,7 @@ import edu.citu.csit284.lockedin.data.Match
 
 fun setupHeaderScrollBehavior(headerContainer: LinearLayout, listView: ListView) {
     var lastFirstVisibleItem = 0
-    var headerHeight = headerContainer.height + 280
+    var headerHeight = headerContainer.height + 325
     var isAnimating = false
     var isCollapsed = false
 

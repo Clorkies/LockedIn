@@ -137,7 +137,7 @@ class LandingFragment : Fragment() {
                 }
             }
 
-        listView = view.findViewById<ListView>(R.id.articleListView)
+        listView = view.findViewById(R.id.articleListView)
 
         loadMatches()
 

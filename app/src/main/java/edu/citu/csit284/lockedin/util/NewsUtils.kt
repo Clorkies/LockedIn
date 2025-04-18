@@ -3,6 +3,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import android.util.TypedValue
+import android.view.View
 import android.widget.ListView
 import android.widget.Toast
 import com.google.firebase.firestore.ktx.firestore
@@ -17,6 +19,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.Calendar
 import java.util.Date
+import android.widget.AbsListView
 
 @SuppressLint("StaticFieldLeak")
 private lateinit var con: Context
@@ -40,6 +43,18 @@ fun fetchArticles(
 
                 Log.d("NSFW_Filter", "Filtered out ${allArticles.size - displayArticles.size} NSFW articles.")
 
+                val footerView = View(context)
+                val params = AbsListView.LayoutParams(
+                    AbsListView.LayoutParams.MATCH_PARENT,
+                    TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP,
+                        100f,
+                        context.resources.displayMetrics
+                    ).toInt()
+                )
+                footerView.layoutParams = params
+
+                listView.addFooterView(footerView, null, false)
                 listView.adapter = ArticleAdapter(context, displayArticles)
 
                 listView.setOnItemClickListener { _, _, position, _ ->
@@ -117,6 +132,18 @@ fun fetchArticlesSpecific(
                     Toast.makeText(context, "No articles found for $gameName", Toast.LENGTH_SHORT).show()
                 }
 
+                val footerView = View(context)
+                val params = AbsListView.LayoutParams(
+                    AbsListView.LayoutParams.MATCH_PARENT,
+                    TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP,
+                        100f,
+                        context.resources.displayMetrics
+                    ).toInt()
+                )
+                footerView.layoutParams = params
+
+                listView.addFooterView(footerView, null, false)
                 listView.adapter = ArticleAdapter(context, displayArticles)
 
                 listView.setOnItemClickListener { _, _, position, _ ->
@@ -181,6 +208,18 @@ fun fetchBookmarkedArticles(
 
             val articles = getArticles(bookmarks)
 
+            val footerView = View(context)
+            val params = AbsListView.LayoutParams(
+                AbsListView.LayoutParams.MATCH_PARENT,
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    100f,
+                    context.resources.displayMetrics
+                ).toInt()
+            )
+            footerView.layoutParams = params
+
+            listView.addFooterView(footerView, null, false)
             listView.adapter = ArticleAdapter(context, articles)
 
             listView.setOnItemClickListener { _, _, position, _ ->
