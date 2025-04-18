@@ -170,6 +170,9 @@ class GamesFragment : Fragment() {
         loadingView4 = view.findViewById(R.id.loadingView4)
         noInternetBox = view.findViewById(R.id.noInternetBox)
         noInternetBox.visibility = View.GONE
+
+        setupHeaderScrollBehavior(headerContainer, recyclerView)
+
         LoadingAnimationUtil.setupLoadingViews(requireContext(), loadingView1, loadingView2)
         LoadingAnimationUtil.showLoading(requireContext(), requireActivity(), loadingView1, loadingView2, true)
         LoadingAnimationUtil.setupLoadingViews(requireContext(), loadingView3, loadingView4)
