@@ -1,13 +1,16 @@
 package edu.citu.csit284.lockedin.activities
 
+import android.content.Context
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
-import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.R
@@ -27,16 +30,34 @@ class PostActivity : AppCompatActivity() {
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
     private val users = Firebase.firestore.collection("users")
     private lateinit var btnProfile: ImageView
-    private lateinit var btnBack : ImageView
+    private lateinit var btnBack: ImageView
+    private lateinit var etComment: EditText
+    private lateinit var postId: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post)
 
-        val postId = intent.getStringExtra("postId")
+        postId = intent.getStringExtra("postId") ?: ""
         btnProfile = findViewById(R.id.btnProfile)
         btnBack = findViewById(R.id.button_back)
         btnBack.setOnClickListener { finish() }
-        if (postId != null) {
+        etComment = findViewById(R.id.etComment)
+
+        etComment.setOnEditorActionListener { _, actionId, event ->
+            if (event?.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_ENTER) {
+                val commentText = etComment.text.toString().trim()
+                if (commentText.isNotEmpty()) {
+                    saveComment(postId, commentText)
+                } else {
+                    toast("Please enter a comment")
+                }
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }
+
+        if (postId.isNotEmpty()) {
             getPostData(postId)
         } else {
             toast("Post ID is null")
@@ -68,7 +89,6 @@ class PostActivity : AppCompatActivity() {
             }
         }
     }
-
     private suspend fun findPostAcrossGames(postId: String): DocumentSnapshot? {
         val games = listOf("valorant", "lol", "csgo", "dota2", "marvel-rivals", "overwatch")
         for (game in games) {
@@ -80,8 +100,6 @@ class PostActivity : AppCompatActivity() {
         }
         return null
     }
-
-
     private fun displayPostData(
         authorUsername: String?,
         title: String?,
@@ -110,13 +128,10 @@ class PostActivity : AppCompatActivity() {
         } else {
             imageView.visibility = View.GONE
         }
-
-
     }
     private fun setupPfp(userInfo: String) {
         var pfp: Int
-        users
-            .whereEqualTo("username", userInfo)
+        users.whereEqualTo("username", userInfo)
             .get()
             .addOnSuccessListener { documents ->
                 if (!documents.isEmpty) {
@@ -141,5 +156,48 @@ class PostActivity : AppCompatActivity() {
                     }
                 }
             }
+    }
+    private fun saveComment(postId: String, commentText: String) {
+        coroutineScope.launch {
+            try {
+                val gameName = getGameName(postId)
+
+                if (gameName != null) {
+                    val sharedPrefs = getSharedPreferences("User", Context.MODE_PRIVATE)
+                    val authorUsername = sharedPrefs.getString("username", "Anonymous") ?: "Anonymous"
+                    val timestamp = FieldValue.serverTimestamp()
+
+                    val commentData = hashMapOf(
+                        "authorUsername" to authorUsername,
+                        "text" to commentText,
+                        "timestamp" to timestamp
+                    )
+
+                    firestore.collection("forums").document(gameName)
+                        .collection("posts").document(postId)
+                        .collection("comments")
+                        .add(commentData)
+                        .await()
+
+                    withContext(Dispatchers.Main) {
+                        etComment.text.clear()
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                }
+            }
+        }
+    }
+    private suspend fun getGameName(postId: String): String? {
+        val games = listOf("valorant", "lol", "csgo", "dota2", "marvel-rivals", "overwatch")
+        for (game in games) {
+            val postRef = firestore.collection("forums").document(game).collection("posts").document(postId)
+            val document = postRef.get().await()
+            if (document.exists()) {
+                return game
+            }
+        }
+        return null
     }
 }
