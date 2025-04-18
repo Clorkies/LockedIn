@@ -119,10 +119,10 @@
                 <ImageView
                     android:id="@+id/image"
                     android:layout_width="match_parent"
-                    android:layout_height="230dp"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/rounded_image"
                     android:clipToOutline="true"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitCenter"
                     />
 
                 <Space android:layout_height="15dp" android:layout_width="wrap_content"/>
