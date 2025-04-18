@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -30,6 +31,7 @@ import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.activities.ProfileActivity
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.data.Match
+import edu.citu.csit284.lockedin.helper.BottomSpace
 import edu.citu.csit284.lockedin.helper.UpcomingMatchAdapter
 import edu.citu.csit284.lockedin.util.FilterUtil
 import edu.citu.csit284.lockedin.util.LoadingAnimationUtil
@@ -102,6 +104,15 @@ class GamesFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.visibility = View.GONE
+
+        // Para di matago behind the navbar ang last item sa scroll/listview
+        val bottomSpace = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            110f,
+            resources.displayMetrics
+        ).toInt()
+        recyclerView.addItemDecoration(BottomSpace(bottomSpace))
+        ////
 
         val btnProfile = view.findViewById<ImageButton>(R.id.button_profile)
         btnProfile.setOnClickListener {
