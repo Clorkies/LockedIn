@@ -28,9 +28,9 @@ import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.activities.RegisterActivity
 import androidx.core.text.HtmlCompat
 
-fun setupHeaderScrollBehavior(headerContainer: LinearLayout, listView: ListView) {
+fun setupHeaderScrollBehavior(headerContainer: LinearLayout, listView: ListView, overHead: Int) {
     var lastFirstVisibleItem = 0
-    var headerHeight = headerContainer.height + 325
+    var headerHeight = headerContainer.height + 325 + overHead
     var isAnimating = false
     var isCollapsed = false
 

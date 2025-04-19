@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -48,6 +49,15 @@ class MatchDetailsActivity : Activity() {
         team2 = findViewById(R.id.team2)
         team2Score = findViewById(R.id.team2Score)
         watchButton = findViewById(R.id.watchButton)
+        watchButton.translationX = 800f
+
+        watchButton.post {
+            watchButton.animate()
+                .translationX(280f)
+                .setDuration(1850)
+                .setInterpolator(AccelerateDecelerateInterpolator())
+                .start()
+        }
 
         findViewById<ImageButton>(R.id.button_back).setOnClickListener { finish() }
 

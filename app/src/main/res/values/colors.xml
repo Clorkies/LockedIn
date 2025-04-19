@@ -29,6 +29,8 @@
     <color name="disabled_yellow">#CDAC79</color>
     <color name="grey">#454545</color>
     <color name="red">#a53c3c</color>
+    <color name="light_red">#BD8484</color>
+    <color name="faded_red">#783636</color>
     <color name="up">#f84607</color>
     <color name="down">#6c5bfa</color>
     <color name="fadedWhite">#BFBFBF</color>

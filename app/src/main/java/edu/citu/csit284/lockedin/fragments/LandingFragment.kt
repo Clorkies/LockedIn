@@ -7,35 +7,29 @@ import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.Button
-import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import edu.citu.csit284.lockedin.activities.MatchDetailsActivity
 import edu.citu.csit284.lockedin.activities.ProfileActivity
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.data.Match
 import edu.citu.csit284.lockedin.helper.LiveMatchAdapter
-import edu.citu.csit284.lockedin.helper.UpcomingMatchAdapter
 import edu.citu.csit284.lockedin.util.LoadingAnimationUtil
 import edu.citu.csit284.lockedin.util.MatchRepository
 import edu.citu.csit284.lockedin.util.fetchArticles
 import edu.citu.csit284.lockedin.util.setupHeaderScrollBehavior
-import edu.citu.csit284.lockedin.util.toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -54,6 +48,7 @@ class LandingFragment : Fragment() {
     private lateinit var noInternetBox: LinearLayout
     private lateinit var header: LinearLayout
     private lateinit var recyclerView: RecyclerView
+    private lateinit var rvBackground: ImageView
     private lateinit var noMatches : TextView
     private lateinit var adapter: LiveMatchAdapter
     private lateinit var headerContainer: LinearLayout
@@ -104,12 +99,14 @@ class LandingFragment : Fragment() {
         noMatches = view.findViewById(R.id.noLiveMatchesTextView)
         header = view.findViewById(R.id.header)
         recyclerView = view.findViewById(R.id.rvView)
+        rvBackground = view.findViewById(R.id.rvBackground)
         adapter = LiveMatchAdapter(matches)
         listView = view.findViewById(R.id.articleListView)
         headerContainer = view.findViewById(R.id.headerContainer)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL, false)
         recyclerView.visibility = View.GONE
+        rvBackground.visibility = View.GONE
         startPulsatingAnimation(header)
         startPulsatingAnimation(recyclerView)
 
@@ -139,7 +136,7 @@ class LandingFragment : Fragment() {
 
         loadMatches()
 
-        setupHeaderScrollBehavior(headerContainer, listView)
+        setupHeaderScrollBehavior(headerContainer, listView, 500)
     }
     override fun onDestroy() {
         super.onDestroy()
@@ -184,9 +181,11 @@ class LandingFragment : Fragment() {
 
             if(liveMatches.isEmpty()){
                 recyclerView.visibility = View.GONE
+                rvBackground.visibility = View.GONE
                 noMatches.visibility = View.VISIBLE
             }else{
                 recyclerView.visibility = View.VISIBLE
+                rvBackground.visibility = View.VISIBLE
                 recyclerView.scrollToPosition(0)
                 matches.clear()
                 matches.addAll(liveMatches)

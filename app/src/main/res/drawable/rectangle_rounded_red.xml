@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape android:shape="rectangle"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Glow effect layer -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="32dp" />
+            <gradient
+                android:type="radial"
+                android:gradientRadius="35dp"
+                android:startColor="@color/red"
+                android:endColor="#00000000" />
+        </shape>
+    </item>
 
-    <solid
-        android:color="@color/red"/>
-
-    <corners
-        android:radius="30dp"/>
-
-</shape>
+    <!-- Main shape -->
+    <item android:left="2dp" android:top="2dp" android:right="2dp" android:bottom="2dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/red" />
+            <corners android:radius="30dp" />
+        </shape>
+    </item>
+</layer-list>

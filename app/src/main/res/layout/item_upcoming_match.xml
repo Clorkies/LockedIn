@@ -4,111 +4,122 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="6dp"
-    app:cardCornerRadius="12dp"
+    app:cardCornerRadius="30dp"
+    app:cardBackgroundColor="@android:color/transparent"
     app:cardElevation="3dp">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rectangle_full"
-        android:orientation="vertical"
-        android:padding="6dp">
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:background="@drawable/rectangle_rounded_search"
+            android:layout_width="170dp"
+            android:layout_height="110dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center|end"
+            android:paddingEnd="100dp"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_league_name"
+                android:layout_marginRight="15dp"
+                android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="1dp"
                 android:ellipsize="end"
+                android:textAlignment="viewEnd"
                 android:maxLines="1"
-                android:padding="3dp"
-                android:text="VCT"
-                android:textColor="@color/yellow"
-                android:textSize="12sp" />
+                android:text="24/04"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tv_serie_name"
+                android:layout_marginRight="15dp"
+                android:id="@+id/tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="1dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:padding="3dp"
-                android:text="Americas 2025"
-                android:textColor="@color/yellow"
+                android:text="19:00"
+                android:textAlignment="viewEnd"
+                android:textColor="@color/white"
                 android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/tv_tournament_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="2dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:padding="3dp"
-                android:text="Group Stage"
-                android:textColor="@color/yellow"
-                android:textSize="12sp" />
-
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:background="@drawable/rectangle_full"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_marginStart="65dp"
+            android:paddingVertical="8dp"
+            android:paddingHorizontal="20dp">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
+                android:layout_marginHorizontal="20dp"
+                android:background="@drawable/rectangle_rounded"
+                android:layout_width="match_parent"
+                android:layout_height="23dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tv_date"
+                    android:id="@+id/tv_league_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="1dp"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="24/04"
-                    android:textSize="14sp"
-                    android:textColor="@color/white"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="19:00"
-                    android:textColor="@color/white"
+                    android:padding="3dp"
+                    android:text="VCT"
+                    android:textStyle="bold"
+                    android:textColor="@color/bg"
                     android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_serie_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="1dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:padding="3dp"
+                    android:text="Americas 2025"
+                    android:textStyle="bold"
+                    android:textColor="@color/bg"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_tournament_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:padding="3dp"
+                    android:text="Group Stage"
+                    android:textStyle="bold"
+                    android:textColor="@color/devYellow"
+                    android:textSize="12sp" />
+
             </LinearLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="0dp"
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="18dp"
-                android:layout_weight="0.5"
-                >
+                android:layout_marginVertical="8dp"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:id="@+id/team1_container"
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_chainStyle="packed">
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/iv_team1_logo"
@@ -118,7 +129,7 @@
 
                     <TextView
                         android:id="@+id/tv_team1_name"
-                        android:layout_width="80dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
                         android:layout_marginTop="2dp"
@@ -130,18 +141,28 @@
                         android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
+                <View android:layout_weight="1" android:layout_width="0dp" android:layout_height="match_parent"/>
+
 
                 <LinearLayout
                     android:id="@+id/score_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    app:layout_constraintStart_toEndOf="@id/team1_container"
-                    app:layout_constraintEnd_toStartOf="@id/team2_container"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent">
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
 
+                    <TextView
+                        android:id="@+id/tv_match_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="top|center"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:padding="3dp"
+                        android:text="BO3"
+                        android:textStyle="bold"
+                        android:textColor="@color/yellow"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/tv_vs"
@@ -154,17 +175,14 @@
                         android:textSize="18sp" />
                 </LinearLayout>
 
+                <View android:layout_weight="1" android:layout_width="0dp" android:layout_height="match_parent"/>
+
                 <LinearLayout
                     android:id="@+id/team2_container"
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="-8dp">
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/iv_team2_logo"
@@ -174,7 +192,7 @@
 
                     <TextView
                         android:id="@+id/tv_team2_name"
-                        android:layout_width="80dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
                         android:layout_marginTop="2dp"
@@ -187,34 +205,27 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </LinearLayout>
+
             <TextView
-                android:id="@+id/tv_match_type"
+                android:id="@+id/tv_stream_link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="4dp"
+                android:layout_gravity="center_horizontal"
+                android:autoLink="web"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:padding="3dp"
-                android:text="BO3"
+                android:text="https://www.twitch.tv/sample"
                 android:textColor="@color/yellow"
+                android:textColorLink="@color/yellow"
                 android:textSize="12sp" />
+
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_stream_link"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp"
-            android:autoLink="web"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:padding="3dp"
-            android:text="https://www.twitch.tv/sample"
-            android:textColor="#89E6EA"
-            android:textSize="12sp" />
+    </FrameLayout>
 
-    </LinearLayout>
+
 </androidx.cardview.widget.CardView>

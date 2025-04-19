@@ -25,6 +25,7 @@ import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.SearchView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import androidx.navigation.fragment.findNavController
@@ -153,13 +154,12 @@ class ExploreFragment : Fragment() {
 
         setupFavoriteGames()
 
-
         bookmarkedListButton.setOnClickListener { if (currentCategory != "bookmarked") { switchCategory("bookmarked") } }
         game1ListButton.setOnClickListener { if (currentCategory != "game1") { switchCategory("game1") } }
         game2ListButton.setOnClickListener { if (currentCategory != "game2") { switchCategory("game2") } }
         game3ListButton.setOnClickListener { if (currentCategory != "game3") { switchCategory("game3") } }
 
-        setupHeaderScrollBehavior(headerContainer, listView)
+        setupHeaderScrollBehavior(headerContainer, listView, 0)
     }
 
     private fun setupFavoriteGames() {
@@ -450,7 +450,7 @@ class ExploreFragment : Fragment() {
                     LoadingAnimationUtil.showLoading(requireContext(), loadingView1, loadingView2, true)
 
                     fetchArticlesSearch(requireContext(), listView, query, caller = "explore") { hasInternet ->
-                        if (listView.adapter.count == 0) {
+                        if (listView.adapter.count <= 1) {
                             noArticlesBox.visibility = View.VISIBLE
                             noArticlesBoxText.text = "No articles found for \"${query}\"."
                         }
