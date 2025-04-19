@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     android:background="@color/blue"
     android:paddingTop="20dp"
-    android:paddingHorizontal="20dp"
     android:clipToPadding="false"
     >
 
     <LinearLayout
+        android:paddingHorizontal="20dp"
         android:id="@+id/headerContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
         android:layout_marginTop="20dp"
         android:id="@+id/noLiveMatchesTextView"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:text="No Live Matches Ongoing"
         android:textSize="15sp"
         android:textColor="@color/white"
@@ -78,12 +78,15 @@
          />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginVertical="20dp"
+        android:layout_marginBottom="-5dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
         android:id="@+id/rvView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="220dp"/>
 
     <include
+        android:layout_marginHorizontal="20dp"
         android:id="@+id/loadingView1"
         android:layout_marginTop="20dp"
         layout="@layout/view_loading_animation"
@@ -91,6 +94,7 @@
         android:layout_height="360dp" />
 
     <include
+        android:layout_marginHorizontal="20dp"
         android:id="@+id/loadingView2"
         android:layout_marginTop="20dp"
         layout="@layout/view_loading_animation"
@@ -103,6 +107,7 @@
         android:layout_weight="1">
 
         <ListView
+            android:paddingHorizontal="20dp"
             android:layout_marginTop="20dp"
             android:id="@+id/articleListView"
             android:layout_width="match_parent"

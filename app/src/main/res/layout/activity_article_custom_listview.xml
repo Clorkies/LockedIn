@@ -15,7 +15,7 @@
         android:layout_height="170dp"
         android:background="@drawable/rounded_image"
         android:clipToOutline="true"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         android:layout_marginBottom="10dp"
         android:src="@drawable/img_placeholder" />
 

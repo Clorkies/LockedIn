@@ -34,7 +34,7 @@ class LiveMatchAdapter(private val listOfMatches : List<Match>):
         val tvTeam2Name = view.findViewById<TextView>(R.id.tv_team2_name)
         val tvMatchType = view.findViewById<TextView>(R.id.tv_match_type)
         val tvStreamLink = view.findViewById<TextView>(R.id.tv_stream_link)
-        val btnWatch = view.findViewById<Button>(R.id.overlayButton)
+//        val btnWatch = view.findViewById<Button>(R.id.overlayButton)
         val tvGame = view.findViewById<TextView>(R.id.tv_game)
     }
 
@@ -90,14 +90,14 @@ class LiveMatchAdapter(private val listOfMatches : List<Match>):
             holder.tvStreamLink.text = "No stream available"
         }
 
-        holder.btnWatch.setOnClickListener {
-            if(holder.tvStreamLink.text != "No stream available"){
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(holder.tvStreamLink.text.toString()))
-                context.startActivity(intent)
-            }else{
-                Toast.makeText(context,"No stream available", Toast.LENGTH_SHORT).show()
-            }
-        }
+//        holder.btnWatch.setOnClickListener {
+//            if(holder.tvStreamLink.text != "No stream available"){
+//                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(holder.tvStreamLink.text.toString()))
+//                context.startActivity(intent)
+//            }else{
+//                Toast.makeText(context,"No stream available", Toast.LENGTH_SHORT).show()
+//            }
+//        }
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, MatchDetailsActivity::class.java)
