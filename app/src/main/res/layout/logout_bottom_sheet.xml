@@ -22,7 +22,7 @@
         android:textSize="20sp"
         android:textStyle="bold" />
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
@@ -32,7 +32,8 @@
         <Button
             android:id="@+id/logout"
             android:background="@drawable/logout_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:textSize="16sp"
@@ -45,7 +46,8 @@
         <Button
             android:id="@+id/back_btn"
             android:background="@drawable/devbutton"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:textSize="16sp"
