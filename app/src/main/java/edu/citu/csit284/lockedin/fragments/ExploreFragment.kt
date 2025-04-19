@@ -26,13 +26,16 @@ import android.widget.ListView
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.activities.ProfileActivity
 import edu.citu.csit284.lockedin.R
+import edu.citu.csit284.lockedin.activities.MainActivity
 import edu.citu.csit284.lockedin.util.FilterUtil
 import edu.citu.csit284.lockedin.util.LoadingAnimationUtil
 import edu.citu.csit284.lockedin.util.fetchArticlesSpecific
@@ -89,7 +92,7 @@ class ExploreFragment : Fragment() {
 
         val btnProfile = view.findViewById<ImageButton>(R.id.button_profile)
         btnProfile.setOnClickListener {
-            startActivity(Intent(requireContext(), ProfileActivity::class.java))
+            profileActivityLauncher.launch(Intent(requireContext(), ProfileActivity::class.java))
         }
         val sharedPref = requireActivity().getSharedPreferences("User", Activity.MODE_PRIVATE)
         val userInfo = sharedPref.getString("username","")
@@ -160,6 +163,26 @@ class ExploreFragment : Fragment() {
         game3ListButton.setOnClickListener { if (currentCategory != "game3") { switchCategory("game3") } }
 
         setupHeaderScrollBehavior(headerContainer, listView, 0)
+    }
+
+    private val profileActivityLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { _ ->
+        val currentId = (requireActivity() as MainActivity).navController.currentDestination?.id ?: return@registerForActivityResult
+
+        val navOptions = NavOptions.Builder()
+            .setEnterAnim(R.anim.fade_in)
+            .setExitAnim(R.anim.fade_out)
+            .setPopEnterAnim(R.anim.fade_in)
+            .setPopExitAnim(R.anim.fade_out)
+            .build()
+
+        (requireActivity() as MainActivity).apply {
+            isNavigatingFromCode = true
+            try {
+                navController.navigate(currentId, null, navOptions)
+            } catch (_: IllegalArgumentException) {}
+        }
     }
 
     private fun setupFavoriteGames() {
@@ -405,7 +428,7 @@ class ExploreFragment : Fragment() {
                 val gameName = FilterUtil.getGameNameById(gameId)
 
                 fetchArticlesSpecific(requireContext(), listView, caller = "explore", gameName = gameName) { hasInternet ->
-                    if (listView.adapter.count == 0) {
+                    if (listView.adapter?.count == 0) {
                         noArticlesBox.visibility = View.VISIBLE
                         noArticlesBoxText.text = "No articles found for \"${gameName}\"."
                     }

@@ -16,10 +16,10 @@ import edu.citu.csit284.lockedin.R
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var navController: NavController
+    lateinit var navController: NavController
     private lateinit var bottomNav: BottomNavigationView
 
-    private var isNavigatingFromCode = false
+    var isNavigatingFromCode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
