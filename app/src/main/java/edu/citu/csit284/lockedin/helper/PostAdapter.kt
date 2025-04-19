@@ -11,27 +11,45 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import edu.citu.csit284.lockedin.R // Import your R file
+import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.data.Post
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class PostAdapter(private val listOfPosts: MutableList<Post>,
-                  private val itemClickListener: OnItemClickListener,
-                  private val context: Context,
-                  private val currentUser: String) :
+class PostAdapter(
+    private val listOfPosts: MutableList<Post>,
+    private val itemClickListener: OnItemClickListener,
+    private val context: Context,
+    private val currentUser: String
+) :
     RecyclerView.Adapter<PostAdapter.ItemViewHolder>() {
     private val users = Firebase.firestore.collection("users")
     private val sharedPref = context.getSharedPreferences("User", Context.MODE_PRIVATE)
     private val userInfo = sharedPref.getString("username", "")
+
     interface OnItemClickListener {
-        fun onUpvoteClick(position: Int, currentUpvotes: Int, currentDownvotes: Int, alreadyUpvoted: Boolean, alreadyDownvoted: Boolean)
-        fun onDownvoteClick(position: Int, currentUpvotes: Int, currentDownvotes: Int, alreadyUpvoted: Boolean, alreadyDownvoted: Boolean)
+        fun onUpvoteClick(
+            position: Int,
+            currentUpvotes: Int,
+            currentDownvotes: Int,
+            alreadyUpvoted: Boolean,
+            alreadyDownvoted: Boolean
+        )
+
+        fun onDownvoteClick(
+            position: Int,
+            currentUpvotes: Int,
+            currentDownvotes: Int,
+            alreadyUpvoted: Boolean,
+            alreadyDownvoted: Boolean
+        )
+
         fun onItemClick(position: Int)
     }
 
-    class ItemViewHolder(itemView: View, val clickListener: OnItemClickListener) : RecyclerView.ViewHolder(itemView) {
+    class ItemViewHolder(itemView: View, val clickListener: OnItemClickListener) :
+        RecyclerView.ViewHolder(itemView) {
         val tvPostTitle: TextView = itemView.findViewById(R.id.postTitle)
         val tvPostBody: TextView = itemView.findViewById(R.id.postBody)
         val imgPostImage: ImageView = itemView.findViewById(R.id.postImage)
@@ -53,7 +71,8 @@ class PostAdapter(private val listOfPosts: MutableList<Post>,
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_post, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_post, parent, false)
         return ItemViewHolder(view, itemClickListener)
     }
 
@@ -62,10 +81,24 @@ class PostAdapter(private val listOfPosts: MutableList<Post>,
 
         holder.tvPostTitle.text = post.title
         holder.tvPostBody.text = post.description
-        holder.tvUserName.text = post.authorUsername
-        post.authorUsername?.let { setProfilePicture(it, holder.imgProfilePicture) }
-
-        val formattedTimestamp = SimpleDateFormat("MMM dd, hh:mm a", Locale.getDefault()).format(Date(post.timestamp))
+        users.whereEqualTo("uid", post.authorUid)
+            .get()
+            .addOnSuccessListener { userDocuments ->
+                if (!userDocuments.isEmpty) {
+                    val userDocument = userDocuments.documents[0]
+                    val authorUsername = userDocument.getString("username")
+                    holder.tvUserName.text = authorUsername
+                    setProfilePicture(
+                        userDocument.getLong("pfpID")?.toInt() ?: 2,
+                        holder.imgProfilePicture
+                    )
+                } else {
+                    holder.tvUserName.text = "Unknown User"
+                    holder.imgProfilePicture.setImageResource(R.drawable.default_pfp)
+                }
+            }
+        val formattedTimestamp =
+            SimpleDateFormat("MMM dd, hh:mm a", Locale.getDefault()).format(Date(post.timestamp))
         holder.tvTimestamp.text = formattedTimestamp
 
         if (post.imageUrl != null && post.imageUrl.isNotEmpty()) {
@@ -100,63 +133,69 @@ class PostAdapter(private val listOfPosts: MutableList<Post>,
         holder.btnUpvote.setOnClickListener {
             val alreadyUpvoted = post.upvotedBy.contains(currentUser)
             val alreadyDownvoted = post.downvotedBy.contains(currentUser)
-            itemClickListener.onUpvoteClick(position, post.upvotes, post.downvotes, alreadyUpvoted, alreadyDownvoted)
+            itemClickListener.onUpvoteClick(
+                position,
+                post.upvotes,
+                post.downvotes,
+                alreadyUpvoted,
+                alreadyDownvoted
+            )
         }
         holder.btnDownvote.setOnClickListener {
             val alreadyUpvoted = post.upvotedBy.contains(currentUser)
             val alreadyDownvoted = post.downvotedBy.contains(currentUser)
-            itemClickListener.onDownvoteClick(position, post.upvotes, post.downvotes, alreadyUpvoted, alreadyDownvoted)
+            itemClickListener.onDownvoteClick(
+                position,
+                post.upvotes,
+                post.downvotes,
+                alreadyUpvoted,
+                alreadyDownvoted
+            )
         }
     }
-    private fun setProfilePicture(username: String, imgProfilePicture: ImageView) {
-        users.whereEqualTo("username", username)
-            .get()
-            .addOnSuccessListener { documents ->
-                if (!documents.isEmpty) {
-                    val document = documents.documents[0]
-                    val pfpId = document.getLong("pfpID")?.toInt() ?: 2
 
-                    val drawableResId = when (pfpId) {
-                        1 -> R.drawable.red_pfp
-                        2 -> R.drawable.default_pfp
-                        3 -> R.drawable.green_pfp
-                        4 -> R.drawable.blue_pfp
-                        else -> R.drawable.default_pfp
-                    }
-                    imgProfilePicture.setImageResource(drawableResId)
-                } else {
-                    imgProfilePicture.setImageResource(R.drawable.default_pfp)
-                }
-            }
+    private fun setProfilePicture(pfpId: Int, imgProfilePicture: ImageView) {
+        val drawableResId = when (pfpId) {
+            1 -> R.drawable.red_pfp
+            2 -> R.drawable.default_pfp
+            3 -> R.drawable.green_pfp
+            4 -> R.drawable.blue_pfp
+            else -> R.drawable.default_pfp
+        }
+        imgProfilePicture.setImageResource(drawableResId)
+
     }
 
     override fun getItemCount(): Int {
         return listOfPosts.size
     }
+
     fun updateUpvoteCount(position: Int, newCount: Int) {
         if (position < listOfPosts.size) {
             listOfPosts[position].upvotes = newCount
             notifyItemChanged(position)
         }
     }
+
     fun updateDownvoteCount(position: Int, newCount: Int) {
         if (position < listOfPosts.size) {
             listOfPosts[position].downvotes = newCount
             notifyItemChanged(position)
         }
     }
-    fun updateUpvotedBy(position: Int, users: MutableList<String>){
-        if(position < listOfPosts.size){
+
+    fun updateUpvotedBy(position: Int, users: MutableList<String>) {
+        if (position < listOfPosts.size) {
             listOfPosts[position].upvotedBy = users
             notifyItemChanged(position)
         }
     }
-    fun updateDownvotedBy(position: Int, users: MutableList<String>){
-        if(position < listOfPosts.size){
+
+    fun updateDownvotedBy(position: Int, users: MutableList<String>) {
+        if (position < listOfPosts.size) {
             listOfPosts[position].downvotedBy = users
             notifyItemChanged(position)
         }
     }
 
 }
-

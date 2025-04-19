@@ -36,6 +36,7 @@ import edu.citu.csit284.lockedin.activities.PostActivity
 import edu.citu.csit284.lockedin.data.Post
 import edu.citu.csit284.lockedin.helper.BottomSpace
 import edu.citu.csit284.lockedin.util.setupHeaderScrollBehavior
+import com.google.firebase.auth.FirebaseAuth
 
 class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
 
@@ -52,9 +53,10 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
     private var prefNames: List<String> = emptyList()
     private lateinit var sharedPref: SharedPreferences
     private var userInfo: String? = null
+    private var userUid: String? = null
     private var currentCategory = "game1"
     private var previousCategory = "game1"
-    private lateinit var btnProfile : ImageButton
+    private lateinit var btnProfile: ImageButton
     private val gamesMap = mapOf(
         1 to "valorant",
         2 to "lol",
@@ -67,13 +69,14 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
     private lateinit var rvView: RecyclerView
     private lateinit var postAdapter: PostAdapter
     private val postList = mutableListOf<Post>()
-    private var voter : Boolean = false
+    private var voter: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         caller = arguments?.getString("caller")
         sharedPref = requireActivity().getSharedPreferences("User", Activity.MODE_PRIVATE)
         userInfo = sharedPref.getString("username", "")
+        userUid = FirebaseAuth.getInstance().currentUser?.uid
     }
 
     override fun onCreateView(
@@ -139,8 +142,8 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
     }
 
     private fun loadFavoriteGames() {
-        userInfo?.let {
-            users.whereEqualTo("username", it)
+        userUid?.let {
+            users.whereEqualTo("uid", it)
                 .get()
                 .addOnSuccessListener { documents ->
                     if (!documents.isEmpty) {
@@ -161,6 +164,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
         super.onResume()
         loadPostsForCategory(currentCategory)
     }
+
     private fun setupFavoriteGamesButtons() {
         if (prefNames.size >= 1) {
             setupGameButton(btnGame1, btnGame1Text, prefNames[0], 1)
@@ -349,12 +353,12 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
         }
         val upvotedBy = document.get("upvotedBy") as? List<String> ?: emptyList()
         val downvotedBy = document.get("downvotedBy") as? List<String> ?: emptyList()
-        if(upvotedBy.contains(userInfo) || downvotedBy.contains(userInfo)){
+        if (upvotedBy.contains(userInfo) || downvotedBy.contains(userInfo)) {
             voter = true
         }
         return Post(
             id = document.id,
-            authorUsername = document.getString("authorUsername"),
+            authorUid = document.getString("authorUid"),
             title = document.getString("title"),
             description = document.getString("description"),
             imageUrl = document.getString("imageUrl"),
@@ -427,6 +431,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
             }
         }
     }
+
     override fun onDownvoteClick(
         position: Int,
         currentUpvotes: Int,
@@ -488,39 +493,39 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
 
     private fun setupPfp() {
         var pfp: Int
-        users
-            .whereEqualTo("username", userInfo)
-            .get()
-            .addOnSuccessListener { documents ->
-                if (!documents.isEmpty) {
-                    val document = documents.documents[0]
-                    pfp = document.getLong("pfpID")?.toInt() ?: 2
-                    when (pfp) {
-                        1 -> {
-                            btnProfile.setImageResource(R.drawable.red_pfp)
-                        }
+        userUid?.let {
+            users.whereEqualTo("uid", it)
+                .get()
+                .addOnSuccessListener { documents ->
+                    if (!documents.isEmpty) {
+                        val document = documents.documents[0]
+                        pfp = document.getLong("pfpID")?.toInt() ?: 2
+                        when (pfp) {
+                            1 -> {
+                                btnProfile.setImageResource(R.drawable.red_pfp)
+                            }
 
-                        2 -> {
-                            btnProfile.setImageResource(R.drawable.default_pfp)
-                        }
+                            2 -> {
+                                btnProfile.setImageResource(R.drawable.default_pfp)
+                            }
 
-                        3 -> {
-                            btnProfile.setImageResource(R.drawable.green_pfp)
-                        }
+                            3 -> {
+                                btnProfile.setImageResource(R.drawable.green_pfp)
+                            }
 
-                        4 -> {
-                            btnProfile.setImageResource(R.drawable.blue_pfp)
+                            4 -> {
+                                btnProfile.setImageResource(R.drawable.blue_pfp)
+                            }
                         }
                     }
                 }
-            }
+        }
     }
+
     override fun onItemClick(position: Int) {
         val post = postList[position]
         val intent = Intent(requireContext(), PostActivity::class.java)
         intent.putExtra("postId", post.id)
         startActivity(intent)
-
     }
 }
-

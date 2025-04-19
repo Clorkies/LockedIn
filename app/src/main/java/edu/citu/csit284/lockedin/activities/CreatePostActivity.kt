@@ -23,9 +23,9 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import edu.citu.csit284.lockedin.R
-import edu.citu.csit284.lockedin.util.toast
 import java.io.IOException
 import java.util.UUID
+import com.google.firebase.auth.FirebaseAuth
 
 private const val REQUEST_IMAGE_PICK = 100
 class CreatePostActivity : Activity() {
@@ -41,10 +41,12 @@ class CreatePostActivity : Activity() {
     private lateinit var footer : LinearLayout
     private var selectedImageUri: Uri? = null
     private val currentGame: String? by lazy { intent.getStringExtra("currentGame") }
+    private lateinit var userUid: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_post)
+        userUid = FirebaseAuth.getInstance().currentUser?.uid ?: "null"
         findViewById<ImageView>(R.id.buttonBack).setOnClickListener { finish() }
         etTitle = findViewById(R.id.title)
         etBody  = findViewById(R.id.body)
@@ -121,12 +123,10 @@ class CreatePostActivity : Activity() {
     }
 
     private fun savePost() {
-        val sharedPref = getSharedPreferences("User", MODE_PRIVATE)
-        val username = sharedPref.getString("username", "") ?: ""
         val title = etTitle.text.toString().trim()
         val body = etBody.text.toString().trim()
         val currentGameValue = currentGame
-
+        val authorUid = userUid
 
         btnPost.isEnabled = false
 
@@ -134,12 +134,12 @@ class CreatePostActivity : Activity() {
             val filePath = "$currentGameValue/posts/${UUID.randomUUID()}.jpg"
             uploadImageToFirebaseStorage(this, selectedImageUri!!, filePath) { imageUrl ->
                 if (currentGameValue != null) {
-                    savePostData(title, body, imageUrl, username, currentGameValue)
+                    savePostData(title, body, imageUrl, authorUid, currentGameValue)
                 }
             }
         } else {
             if (currentGameValue != null) {
-                savePostData(title, body, null, username, currentGameValue)
+                savePostData(title, body, null, authorUid, currentGameValue)
             }
         }
     }
@@ -156,9 +156,9 @@ class CreatePostActivity : Activity() {
         }
     }
 
-    private fun savePostData(title: String, body: String, imageUrl: String?, username: String, currentGame: String) {
+    private fun savePostData(title: String, body: String, imageUrl: String?, authorUid: String, currentGame: String) {
         val post = hashMapOf(
-            "authorUsername" to username,
+            "authorUid" to authorUid,
             "title" to title,
             "description" to body,
             "imageUrl" to imageUrl,

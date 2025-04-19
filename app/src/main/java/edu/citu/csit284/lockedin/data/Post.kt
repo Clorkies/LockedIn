@@ -2,7 +2,7 @@ package edu.citu.csit284.lockedin.data
 
 data class Post(
     val id: String,
-    val authorUsername: String? = null,
+    val authorUid: String? = null,
     val title: String? = null,
     val description: String? = null,
     val imageUrl: String? = null,
