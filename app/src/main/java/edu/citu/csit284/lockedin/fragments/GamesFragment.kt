@@ -55,6 +55,8 @@ class GamesFragment : Fragment() {
     private lateinit var loadingView2: View
     private lateinit var loadingView3: View
     private lateinit var loadingView4: View
+    private lateinit var tempView : View
+    private lateinit var tempView1 : View
     private lateinit var noInternetBox: LinearLayout
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: UpcomingMatchAdapter
@@ -75,6 +77,7 @@ class GamesFragment : Fragment() {
     private lateinit var btnGame2Text: TextView
     private lateinit var btnGame3: LinearLayout
     private lateinit var btnGame3Text: TextView
+    private lateinit var buttonContainer: LinearLayout
     private var prefNames: List<String> = emptyList()
 
     private lateinit var sharedPref: SharedPreferences
@@ -154,7 +157,9 @@ class GamesFragment : Fragment() {
                     btnGame2Text = view.findViewById(R.id.game2)
                     btnGame3 = view.findViewById(R.id.game3Btn)
                     btnGame3Text = view.findViewById(R.id.game3)
+                    buttonContainer = view.findViewById(R.id.gameButtonsContainer)
 
+                    setupButtonsBasedOnPrefSize()
                     setupFavoriteGames()
 
                     btnGame1.setOnClickListener { if (currentCategory != "game1") { switchCategory("game1", prefNames.getOrNull(0) ?: "valorant") } }
@@ -179,6 +184,8 @@ class GamesFragment : Fragment() {
         loadingView2 = view.findViewById(R.id.loadingView2)
         loadingView3 = view.findViewById(R.id.loadingView3)
         loadingView4 = view.findViewById(R.id.loadingView4)
+        tempView = view.findViewById(R.id.tempView)
+        tempView1 = view.findViewById(R.id.tempView1)
         noInternetBox = view.findViewById(R.id.noInternetBox)
         noInternetBox.visibility = View.GONE
 
@@ -186,6 +193,73 @@ class GamesFragment : Fragment() {
 
         LoadingAnimationUtil.showLoading(requireContext(), loadingView1, loadingView2, true)
         LoadingAnimationUtil.showLoading(requireContext(), loadingView3, loadingView4, true)
+    }
+
+    private fun setupButtonsBasedOnPrefSize() {
+        val displayMetrics = resources.displayMetrics
+        val screenWidth = displayMetrics.widthPixels
+        val horizontalPaddingDp = 20f
+        val horizontalPaddingPx = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            horizontalPaddingDp,
+            displayMetrics
+        ).toInt()
+
+        val availableWidth = screenWidth - (horizontalPaddingPx * 2)
+
+        when (prefNames.size) {
+            1 -> {
+                btnGame1.layoutParams = LinearLayout.LayoutParams(
+                    0,
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    1f
+                ).apply {
+                    marginStart = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8f, displayMetrics).toInt()
+                    marginEnd = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8f, displayMetrics).toInt()
+                }
+                tempView.visibility = View.VISIBLE
+                btnGame2.visibility = View.GONE
+                btnGame3.visibility = View.GONE
+            }
+            2 -> {
+                val spacingDp = 16f
+                val spacingPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, spacingDp, displayMetrics).toInt()
+                val buttonWidth = (availableWidth - spacingPx) / 2
+                val layoutParams1 = btnGame1.layoutParams as LinearLayout.LayoutParams
+                val layoutParams2 = btnGame2.layoutParams as LinearLayout.LayoutParams
+
+                layoutParams1.width = buttonWidth
+                layoutParams2.width = buttonWidth
+                tempView1.visibility = View.VISIBLE
+                btnGame1.layoutParams = layoutParams1
+                btnGame2.layoutParams = layoutParams2
+                btnGame3.visibility = View.GONE
+            }
+            3 -> {
+                val spacingDp = 16f
+                val spacingPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, spacingDp, displayMetrics).toInt()
+                val buttonWidth = (availableWidth - (spacingPx * 2)) / 3
+                val layoutParams1 = btnGame1.layoutParams as LinearLayout.LayoutParams
+                val layoutParams2 = btnGame2.layoutParams as LinearLayout.LayoutParams
+                val layoutParams3 = btnGame3.layoutParams as LinearLayout.LayoutParams
+
+                layoutParams1.width = buttonWidth
+                layoutParams2.width = buttonWidth
+                layoutParams3.width = buttonWidth
+
+                btnGame1.layoutParams = layoutParams1
+                btnGame2.layoutParams = layoutParams2
+                btnGame3.layoutParams = layoutParams3
+            }
+        }
+    }
+
+    private fun dpToPx(dp: Int): Int {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            dp.toFloat(),
+            resources.displayMetrics
+        ).toInt()
     }
 
     private fun setupFavoriteGames() {
@@ -285,14 +359,24 @@ class GamesFragment : Fragment() {
                 btnGame1Text.setTextColor(inactiveTextColor)
                 btnGame1Text.visibility = View.GONE
                 btnGame1.findViewWithTag<ImageView>("gameLogoImage1")?.visibility = View.VISIBLE
-                animateButtonWidth(btnGame1, 250)
+                if (prefNames.size == 1) {
+                    animateButtonWidth(btnGame1, getScreenWidth() - 40)
+                } else if (prefNames.size == 2) {
+                    animateButtonWidth(btnGame1, (getScreenWidth() - 56) / 2)
+                } else {
+                    animateButtonWidth(btnGame1, 250)
+                }
             }
             "game2" -> {
                 btnGame2.background = inactiveBackground
                 btnGame2Text.setTextColor(inactiveTextColor)
                 btnGame2Text.visibility = View.GONE
                 btnGame2.findViewWithTag<ImageView>("gameLogoImage2")?.visibility = View.VISIBLE
-                animateButtonWidth(btnGame2, 250)
+                if (prefNames.size == 2) {
+                    animateButtonWidth(btnGame2, (getScreenWidth() - 56) / 2)
+                } else {
+                    animateButtonWidth(btnGame2, 250)
+                }
             }
             "game3" -> {
                 btnGame3.background = inactiveBackground
@@ -304,11 +388,21 @@ class GamesFragment : Fragment() {
         }
     }
 
+    private fun getScreenWidth(): Int {
+        return resources.displayMetrics.widthPixels
+    }
+
     private fun setButtonActive(button: View, iconView: View?, textView: View, textViewForColor: TextView? = null) {
         val activeBackground = ContextCompat.getDrawable(requireContext(), R.drawable.rectangle_rounded_titles_bg_selected)
         val activeTextColor = ContextCompat.getColor(requireContext(), R.color.bg)
 
-        animateButtonWidth(button, 350)
+        val targetWidth = when (prefNames.size) {
+            1 -> getScreenWidth() - 40
+            2 -> ((getScreenWidth() - 56) / 2) + 50
+            else -> 350
+        }
+
+        animateButtonWidth(button, targetWidth)
 
         button.postDelayed({
             button.background = activeBackground

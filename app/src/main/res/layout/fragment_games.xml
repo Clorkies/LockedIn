@@ -55,16 +55,27 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/gameButtonsContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:orientation="horizontal"
         android:layout_marginTop="20dp"
         >
-
+        <View
+            android:id="@+id/tempView"
+            android:layout_width="30dp"
+            android:layout_height="0dp"
+            android:visibility="gone"/>
+        <View
+            android:id="@+id/tempView1"
+            android:layout_width="12.5dp"
+            android:layout_height="0dp"
+            android:visibility="gone"/>
         <LinearLayout
             android:id="@+id/game1Btn"
             android:layout_height="50dp"
-            android:layout_width="100dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:background="@drawable/rectangle_rounded_bg"
             android:orientation="vertical"
             android:gravity="center"
@@ -75,16 +86,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone"/>
         </LinearLayout>
 
-        <Space android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" />
-
+        <Space android:layout_width="16dp" android:layout_height="wrap_content" />
 
         <LinearLayout
             android:id="@+id/game2Btn"
             android:layout_height="50dp"
-            android:layout_width="100dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:background="@drawable/rectangle_rounded_bg"
             android:orientation="vertical"
             android:gravity="center"
@@ -95,16 +107,16 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textColor="@color/white"
-                />
+                android:visibility="gone"/>
         </LinearLayout>
 
-        <Space android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" />
-
+        <Space android:layout_width="16dp" android:layout_height="wrap_content" />
 
         <LinearLayout
             android:id="@+id/game3Btn"
             android:layout_height="50dp"
-            android:layout_width="100dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:background="@drawable/rectangle_rounded_bg"
             android:orientation="vertical"
             android:gravity="center"
@@ -115,11 +127,9 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textColor="@color/white"
-                />
+                android:visibility="gone"/>
         </LinearLayout>
     </LinearLayout>
-
-
 
     <include
         android:id="@+id/loadingView1"

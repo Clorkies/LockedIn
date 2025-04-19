@@ -49,12 +49,14 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
     private lateinit var btnGame2Text: TextView
     private lateinit var btnGame3: LinearLayout
     private lateinit var btnGame3Text: TextView
+    private lateinit var tempView: View
+    private lateinit var tempView1: View
     private var prefNames: List<String> = emptyList()
     private lateinit var sharedPref: SharedPreferences
     private var userInfo: String? = null
     private var currentCategory = "game1"
     private var previousCategory = "game1"
-    private lateinit var btnProfile : ImageButton
+    private lateinit var btnProfile: ImageButton
     private val gamesMap = mapOf(
         1 to "valorant",
         2 to "lol",
@@ -67,7 +69,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
     private lateinit var rvView: RecyclerView
     private lateinit var postAdapter: PostAdapter
     private val postList = mutableListOf<Post>()
-    private var voter : Boolean = false
+    private var voter: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,6 +111,8 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
         btnGame2Text = view.findViewById(R.id.game2)
         btnGame3 = view.findViewById(R.id.game3Btn)
         btnGame3Text = view.findViewById(R.id.game3)
+        tempView = view.findViewById(R.id.tempView)
+        tempView1 = view.findViewById(R.id.tempView1)
         fabCreate = view.findViewById(R.id.fabCreate)
         fabCreate.setOnClickListener {
             val intent = Intent(requireContext(), CreatePostActivity::class.java)
@@ -161,7 +165,65 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
         super.onResume()
         loadPostsForCategory(currentCategory)
     }
+
     private fun setupFavoriteGamesButtons() {
+        val displayMetrics = resources.displayMetrics
+        val screenWidth = displayMetrics.widthPixels
+        val horizontalPaddingDp = 20f
+        val horizontalPaddingPx = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            horizontalPaddingDp,
+            displayMetrics
+        ).toInt()
+
+        val availableWidth = screenWidth - (horizontalPaddingPx * 2)
+
+        when (prefNames.size) {
+            1 -> {
+                btnGame1.layoutParams = LinearLayout.LayoutParams(
+                    0,
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    1f
+                ).apply {
+                    marginStart = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8f, displayMetrics).toInt()
+                    marginEnd = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8f, displayMetrics).toInt()
+                }
+                tempView.visibility = View.VISIBLE
+                btnGame2.visibility = View.GONE
+                btnGame3.visibility = View.GONE
+            }
+            2 -> {
+                val spacingDp = 16f
+                val spacingPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, spacingDp, displayMetrics).toInt()
+                val buttonWidth = (availableWidth - spacingPx) / 2
+                val layoutParams1 = btnGame1.layoutParams as LinearLayout.LayoutParams
+                val layoutParams2 = btnGame2.layoutParams as LinearLayout.LayoutParams
+
+                layoutParams1.width = buttonWidth
+                layoutParams2.width = buttonWidth
+                tempView1.visibility = View.VISIBLE
+                btnGame1.layoutParams = layoutParams1
+                btnGame2.layoutParams = layoutParams2
+                btnGame3.visibility = View.GONE
+            }
+            3 -> {
+                val spacingDp = 16f
+                val spacingPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, spacingDp, displayMetrics).toInt()
+                val buttonWidth = (availableWidth - (spacingPx * 2)) / 3
+                val layoutParams1 = btnGame1.layoutParams as LinearLayout.LayoutParams
+                val layoutParams2 = btnGame2.layoutParams as LinearLayout.LayoutParams
+                val layoutParams3 = btnGame3.layoutParams as LinearLayout.LayoutParams
+
+                layoutParams1.width = buttonWidth
+                layoutParams2.width = buttonWidth
+                layoutParams3.width = buttonWidth
+
+                btnGame1.layoutParams = layoutParams1
+                btnGame2.layoutParams = layoutParams2
+                btnGame3.layoutParams = layoutParams3
+            }
+        }
+
         if (prefNames.size >= 1) {
             setupGameButton(btnGame1, btnGame1Text, prefNames[0], 1)
             btnGame1.setOnClickListener {
@@ -349,7 +411,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
         }
         val upvotedBy = document.get("upvotedBy") as? List<String> ?: emptyList()
         val downvotedBy = document.get("downvotedBy") as? List<String> ?: emptyList()
-        if(upvotedBy.contains(userInfo) || downvotedBy.contains(userInfo)){
+        if (upvotedBy.contains(userInfo) || downvotedBy.contains(userInfo)) {
             voter = true
         }
         return Post(
@@ -427,6 +489,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
             }
         }
     }
+
     override fun onDownvoteClick(
         position: Int,
         currentUpvotes: Int,
@@ -515,12 +578,11 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
                 }
             }
     }
+
     override fun onItemClick(position: Int) {
         val post = postList[position]
         val intent = Intent(requireContext(), PostActivity::class.java)
         intent.putExtra("postId", post.id)
         startActivity(intent)
-
     }
 }
-
