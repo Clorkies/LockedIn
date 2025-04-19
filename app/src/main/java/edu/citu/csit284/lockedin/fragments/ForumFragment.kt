@@ -18,8 +18,10 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,6 +35,7 @@ import edu.citu.csit284.lockedin.activities.ProfileActivity
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.activities.CreatePostActivity
 import com.google.firebase.firestore.ktx.firestore
+import edu.citu.csit284.lockedin.activities.MainActivity
 import edu.citu.csit284.lockedin.activities.PostActivity
 import edu.citu.csit284.lockedin.data.Post
 import edu.citu.csit284.lockedin.helper.BottomSpace
@@ -97,7 +100,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
 
         btnProfile = view.findViewById(R.id.button_profile)
         btnProfile.setOnClickListener {
-            startActivity(Intent(requireContext(), ProfileActivity::class.java))
+            forumsActivityLauncher.launch(Intent(requireContext(), ProfileActivity::class.java))
         }
 
         val btnBack = view.findViewById<ImageButton>(R.id.button_back)
@@ -141,6 +144,26 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
 
         setupPfp()
         loadFavoriteGames()
+    }
+
+    private val forumsActivityLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { _ ->
+        val currentId = (requireActivity() as MainActivity).navController.currentDestination?.id ?: return@registerForActivityResult
+
+        val navOptions = NavOptions.Builder()
+            .setEnterAnim(R.anim.fade_in)
+            .setExitAnim(R.anim.fade_out)
+            .setPopEnterAnim(R.anim.fade_in)
+            .setPopExitAnim(R.anim.fade_out)
+            .build()
+
+        (requireActivity() as MainActivity).apply {
+            isNavigatingFromCode = true
+            try {
+                navController.navigate(currentId, null, navOptions)
+            } catch (_: IllegalArgumentException) {}
+        }
     }
 
     private fun loadFavoriteGames() {

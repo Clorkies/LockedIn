@@ -21,8 +21,10 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,6 +32,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.activities.ProfileActivity
 import edu.citu.csit284.lockedin.R
+import edu.citu.csit284.lockedin.activities.MainActivity
 import edu.citu.csit284.lockedin.data.Match
 import edu.citu.csit284.lockedin.helper.BottomSpace
 import edu.citu.csit284.lockedin.helper.UpcomingMatchAdapter
@@ -116,7 +119,7 @@ class GamesFragment : Fragment() {
 
         val btnProfile = view.findViewById<ImageButton>(R.id.button_profile)
         btnProfile.setOnClickListener {
-            startActivity(Intent(requireContext(), ProfileActivity::class.java))
+            gamesActivityLauncher.launch(Intent(requireContext(), ProfileActivity::class.java))
         }
         val sharedPref = requireActivity().getSharedPreferences("User", Activity.MODE_PRIVATE)
         val userInfo = sharedPref.getString("username", "")
@@ -186,6 +189,26 @@ class GamesFragment : Fragment() {
 
         LoadingAnimationUtil.showLoading(requireContext(), loadingView1, loadingView2, true)
         LoadingAnimationUtil.showLoading(requireContext(), loadingView3, loadingView4, true)
+    }
+
+    private val gamesActivityLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { _ ->
+        val currentId = (requireActivity() as MainActivity).navController.currentDestination?.id ?: return@registerForActivityResult
+
+        val navOptions = NavOptions.Builder()
+            .setEnterAnim(R.anim.fade_in)
+            .setExitAnim(R.anim.fade_out)
+            .setPopEnterAnim(R.anim.fade_in)
+            .setPopExitAnim(R.anim.fade_out)
+            .build()
+
+        (requireActivity() as MainActivity).apply {
+            isNavigatingFromCode = true
+            try {
+                navController.navigate(currentId, null, navOptions)
+            } catch (_: IllegalArgumentException) {}
+        }
     }
 
     private fun setupFavoriteGames() {
