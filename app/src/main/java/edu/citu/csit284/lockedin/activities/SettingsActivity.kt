@@ -27,6 +27,7 @@ import edu.citu.csit284.lockedin.util.toast
 class SettingsActivity : Activity() {
     private val users = Firebase.firestore.collection("users")
     private lateinit var games: MutableList<Int>
+    private lateinit var originalGames: List<Int>
     private var gamesCount: Int = 0
     private lateinit var tv1: TextView
     private lateinit var tv2: TextView
@@ -42,10 +43,11 @@ class SettingsActivity : Activity() {
     private lateinit var sw6: SwitchCompat
     private var username: String? = null
 
+    private lateinit var btnSavePrefGames: Button
+
     private lateinit var questionContainer: RelativeLayout
     private lateinit var privacyContainer: RelativeLayout
     private lateinit var termsContainer: RelativeLayout
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +64,8 @@ class SettingsActivity : Activity() {
         sw4 = findViewById(R.id.sw4)
         sw5 = findViewById(R.id.sw5)
         sw6 = findViewById(R.id.sw6)
-
+        btnSavePrefGames = findViewById(R.id.btnSavePrefGames)
+        btnSavePrefGames.visibility = View.GONE
 
         privacyContainer = findViewById(R.id.privpolicy)
         privacyContainer.setOnClickListener {
@@ -118,9 +121,11 @@ class SettingsActivity : Activity() {
                     val document = documents.documents[0]
                     val rawFavGames = document.get("favGames") as? List<Long>
                     games = rawFavGames?.map { it.toInt() }?.toMutableList() ?: mutableListOf()
+                    originalGames = games.toList()
                     gamesCount = games.size
                     setup(games)
-                    setupSwitchListeners() // Set up listeners after initial setup
+                    setupSwitchListeners()
+                    setupSaveButton()
                 }
         }
 
@@ -136,6 +141,19 @@ class SettingsActivity : Activity() {
                 finish()
             }
             bottom.show()
+        }
+    }
+
+    private fun setupSaveButton() {
+        btnSavePrefGames.setOnClickListener {
+            if (games.size == 3) {
+                updateFirebaseFavGames()
+                originalGames = games.toList()
+                btnSavePrefGames.visibility = View.GONE
+                toast("Preferred games updated successfully")
+            } else {
+                toast("Please select exactly 3 games")
+            }
         }
     }
 
@@ -168,8 +186,8 @@ class SettingsActivity : Activity() {
             if (games.size < 3) {
                 if (!games.contains(gameId)) {
                     games.add(gameId)
-                    updateFirebaseFavGames()
                     updateGameUI(gameId, true)
+                    checkForChanges()
                 }
             } else {
                 if (!games.contains(gameId)) {
@@ -182,14 +200,28 @@ class SettingsActivity : Activity() {
         } else {
             if (games.size > 1) {
                 games.remove(gameId)
-                updateFirebaseFavGames() // Update Firebase on change
                 updateGameUI(gameId, false)
+                checkForChanges()
             } else {
-                toast("You must select atleast 1 favorite game")
-                getSwitchForGameId(gameId)?.isChecked = true // Revert the switch state
+                toast("You must select at least 1 favorite game")
+                getSwitchForGameId(gameId)?.isChecked = true
             }
         }
-        gamesCount = games.size // Update gamesCount
+        gamesCount = games.size
+        updateSaveButtonState()
+    }
+
+    private fun checkForChanges() {
+        if (!games.containsAll(originalGames) || !originalGames.containsAll(games)) {
+            btnSavePrefGames.visibility = View.VISIBLE
+        } else {
+            btnSavePrefGames.visibility = View.GONE
+        }
+    }
+
+    private fun updateSaveButtonState() {
+        btnSavePrefGames.isEnabled = games.size == 3
+        btnSavePrefGames.alpha = if (games.size == 3) 1.0f else 0.5f
     }
 
     private fun updateGameUI(gameId: Int, isSelected: Boolean) {
