@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.TextView
@@ -47,6 +48,7 @@ class LandingFragment : Fragment() {
     private lateinit var noInternetBox: LinearLayout
     private lateinit var header: LinearLayout
     private lateinit var recyclerView: RecyclerView
+    private lateinit var rvBackground: ImageView
     private lateinit var noMatches : TextView
     private lateinit var adapter: LiveMatchAdapter
     private lateinit var headerContainer: LinearLayout
@@ -97,12 +99,14 @@ class LandingFragment : Fragment() {
         noMatches = view.findViewById(R.id.noLiveMatchesTextView)
         header = view.findViewById(R.id.header)
         recyclerView = view.findViewById(R.id.rvView)
+        rvBackground = view.findViewById(R.id.rvBackground)
         adapter = LiveMatchAdapter(matches)
         listView = view.findViewById(R.id.articleListView)
         headerContainer = view.findViewById(R.id.headerContainer)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL, false)
         recyclerView.visibility = View.GONE
+        rvBackground.visibility = View.GONE
         startPulsatingAnimation(header)
         startPulsatingAnimation(recyclerView)
 
@@ -132,7 +136,7 @@ class LandingFragment : Fragment() {
 
         loadMatches()
 
-        setupHeaderScrollBehavior(headerContainer, listView, 450)
+        setupHeaderScrollBehavior(headerContainer, listView, 500)
     }
     override fun onDestroy() {
         super.onDestroy()
@@ -177,9 +181,11 @@ class LandingFragment : Fragment() {
 
             if(liveMatches.isEmpty()){
                 recyclerView.visibility = View.GONE
+                rvBackground.visibility = View.GONE
                 noMatches.visibility = View.VISIBLE
             }else{
                 recyclerView.visibility = View.VISIBLE
+                rvBackground.visibility = View.VISIBLE
                 recyclerView.scrollToPosition(0)
                 matches.clear()
                 matches.addAll(liveMatches)

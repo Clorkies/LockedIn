@@ -77,13 +77,27 @@
         android:visibility="gone"
          />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginBottom="-5dp"
-        android:layout_marginHorizontal="20dp"
+    <FrameLayout
         android:layout_marginTop="20dp"
-        android:id="@+id/rvView"
         android:layout_width="match_parent"
-        android:layout_height="220dp"/>
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/rvBackground"
+            android:layout_gravity="center"
+            android:layout_width="450dp"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/rectangle_no_article_bg"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvView"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="10dp" />
+
+    </FrameLayout>
 
     <include
         android:layout_marginHorizontal="20dp"
