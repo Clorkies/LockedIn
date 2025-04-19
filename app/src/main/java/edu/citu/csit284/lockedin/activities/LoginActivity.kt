@@ -12,6 +12,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.R
@@ -19,13 +20,14 @@ import edu.citu.csit284.lockedin.splash.LoginSplashScreen
 import edu.citu.csit284.lockedin.util.toast
 import edu.citu.csit284.lockedin.util.toggle
 
-
 class LoginActivity : Activity() {
     private val users = Firebase.firestore.collection("users")
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        auth = FirebaseAuth.getInstance()
         val sharedPref: SharedPreferences = getSharedPreferences("User", MODE_PRIVATE)
         val isRemembered = sharedPref.getBoolean("remember", false)
 
@@ -68,7 +70,7 @@ class LoginActivity : Activity() {
                 .start()
         }
 
-        val username = findViewById<EditText>(R.id.username)
+        val emailEditText = findViewById<EditText>(R.id.email) // Changed to email
         val password = findViewById<EditText>(R.id.password)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
         val imgPriv = findViewById<ImageView>(R.id.imgPriv)
@@ -77,46 +79,61 @@ class LoginActivity : Activity() {
             goNext()
         }
         btnLogin.setOnClickListener {
-            val user = username.text.toString().trim()
+            val email = emailEditText.text.toString().trim() // Use email
             val pass = password.text.toString().trim()
 
-            if(user.isEmpty() || pass.isEmpty()){
+            if (email.isEmpty() || pass.isEmpty()) {
                 toast("Please fill out all fields!")
-            } else{
+            } else {
                 btnLogin.isEnabled = false
                 btnLogin.text = "Logging in..."
 
-                Log.d("LoginActivity", "Attempting to login with username: $user")
+                Log.d("LoginActivity", "Attempting to login with email: $email") // Log email
 
-                users
-                    .whereEqualTo("username", user)
-                    .whereEqualTo("password", pass)
-                    .get()
-                    .addOnSuccessListener { documents ->
-                        Log.d("LoginActivity", "Query successful, documents found: ${!documents.isEmpty}")
-                        if(!documents.isEmpty){
-                            val editor = sharedPref.edit()
-                            if (checkBox.isChecked) {
-                                editor.putString("username", user)
-                                editor.putBoolean("remember", true)
-                                editor.apply()
-                            } else {
-                                editor.putString("username", user)
-                                editor.putBoolean("remember", false)
-                                editor.apply()
+                auth.signInWithEmailAndPassword(email, pass)
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            val firebaseUser = auth.currentUser
+                            if (firebaseUser != null) {
+                                // Get the username from Firestore using the user's UID
+                                users.document(firebaseUser.uid)
+                                    .get()
+                                    .addOnSuccessListener { document ->
+                                        if (document.exists()) {
+                                            val username = document.getString("username")
+                                            val editor = sharedPref.edit()
+                                            if (checkBox.isChecked) {
+                                                editor.putString("username", username) // Store username
+                                                editor.putBoolean("remember", true)
+                                                editor.apply()
+                                            } else {
+                                                editor.putString("username", username)  // Store username
+                                                editor.putBoolean("remember", false)
+                                                editor.apply()
+                                            }
+                                            goNext()
+                                        } else {
+                                            toast("Error: Username not found in Firestore.")
+                                            btnLogin.isEnabled = true
+                                            btnLogin.text = "Login"
+                                            auth.signOut() // Sign out the user
+                                        }
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Log.e("LoginActivity", "Error fetching username from Firestore", e)
+                                        toast("Login failed: ${e.localizedMessage}")
+                                        btnLogin.isEnabled = true
+                                        btnLogin.text = "Login"
+                                        auth.signOut()
+                                    }
                             }
-                            goNext()
+
                         } else {
-                            toast("Invalid username or password")
+                            Log.w("LoginActivity", "signInWithEmail:failure", task.exception)
+                            toast("Invalid email or password")
                             btnLogin.isEnabled = true
                             btnLogin.text = "Login"
                         }
-                    }
-                    .addOnFailureListener { e ->
-                        Log.e("LoginActivity", "Error querying users", e)
-                        toast("Login failed: ${e.localizedMessage}")
-                        btnLogin.isEnabled = true
-                        btnLogin.text = "Login"
                     }
             }
         }
@@ -127,10 +144,11 @@ class LoginActivity : Activity() {
         }
         password.toggle(imgPriv)
     }
-    private fun goNext(){
+
+    private fun goNext() {
         val intent = Intent(this, LoginSplashScreen::class.java)
         startActivity(intent)
         finish()
     }
-
 }
+

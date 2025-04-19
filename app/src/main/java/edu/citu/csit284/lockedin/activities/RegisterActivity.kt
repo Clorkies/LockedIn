@@ -183,6 +183,8 @@ class RegisterActivity : Activity() {
                                             .addOnCompleteListener { deleteTask ->
                                                 if (deleteTask.isSuccessful) {
                                                     toast("Username already exists! Please try another")
+                                                } else {
+                                                    toast("Username exists, but failed to clean up auth account.")
                                                 }
                                             }
                                     } else {
@@ -199,7 +201,17 @@ class RegisterActivity : Activity() {
                                                 startActivity(intent)
                                                 finish()
                                             }
+                                            .addOnFailureListener { e ->
+                                                toast("Failed to save user data.")
+                                                firebaseUser.delete()
+                                                    .addOnCompleteListener {  }
+                                            }
                                     }
+                                }
+                                .addOnFailureListener { e ->
+                                    toast("Error checking username.")
+                                    firebaseUser.delete()
+                                        .addOnCompleteListener {  }
                                 }
                         }
                     } else {
