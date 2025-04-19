@@ -6,6 +6,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -37,6 +38,11 @@ import edu.citu.csit284.lockedin.data.Post
 import edu.citu.csit284.lockedin.helper.BottomSpace
 import edu.citu.csit284.lockedin.util.setupHeaderScrollBehavior
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
 
@@ -69,7 +75,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
     private lateinit var rvView: RecyclerView
     private lateinit var postAdapter: PostAdapter
     private val postList = mutableListOf<Post>()
-    private var voter: Boolean = false
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,20 +131,16 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
         postAdapter = userInfo?.let { PostAdapter(postList, this, requireContext(), it) }!!
         rvView.adapter = postAdapter
 
-        // Para di matago behind the navbar ang last item sa scroll/listview
-        val bottomSpace = TypedValue.applyDimension(
+        rvView.addItemDecoration(BottomSpace(TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
             110f,
             resources.displayMetrics
-        ).toInt()
-        rvView.addItemDecoration(BottomSpace(bottomSpace))
-        ////
+        ).toInt()))
 
         setupHeaderScrollBehavior(headerContainer, rvView)
 
         setupPfp()
         loadFavoriteGames()
-        loadPostsForCategory(currentCategory)
     }
 
     private fun loadFavoriteGames() {
@@ -155,6 +157,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
                             ?: emptyList()
 
                         setupFavoriteGamesButtons()
+                        loadPostsForCategory(currentCategory)
                     }
                 }
         }
@@ -353,9 +356,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
         }
         val upvotedBy = document.get("upvotedBy") as? List<String> ?: emptyList()
         val downvotedBy = document.get("downvotedBy") as? List<String> ?: emptyList()
-        if (upvotedBy.contains(userInfo) || downvotedBy.contains(userInfo)) {
-            voter = true
-        }
+
         return Post(
             id = document.id,
             authorUid = document.getString("authorUid"),
@@ -381,53 +382,80 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
         val gameName = getCurrentGame() ?: "valorant"
         val postRef = forums.firestore.collection("forums/$gameName/posts")
             .document(post.id)
+        val currentUserUid = userUid ?: return
 
-        if (alreadyUpvoted) {
-            postRef.update(
-                "upvotes", currentUpvotes - 1,
-                "upvotedBy", FieldValue.arrayRemove(userInfo)
-            ).addOnSuccessListener {
-                val updatedUpvotedBy = post.upvotedBy.filter { it != userInfo }.toMutableList()
-                postList[position] =
-                    post.copy(upvotes = currentUpvotes - 1, upvotedBy = updatedUpvotedBy)
-                postAdapter.updateUpvoteCount(position, currentUpvotes - 1)
-                postAdapter.updateUpvotedBy(position, updatedUpvotedBy)
-            }
-        } else if (alreadyDownvoted) {
-            postRef.update(
-                "upvotes", currentUpvotes + 1,
-                "downvotes", currentDownvotes - 1,
-                "upvotedBy", FieldValue.arrayUnion(userInfo),
-                "downvotedBy", FieldValue.arrayRemove(userInfo)
-            ).addOnSuccessListener {
-                val updatedUpvotedBy = post.upvotedBy.toMutableList()
-                userInfo?.let { it1 -> updatedUpvotedBy.add(it1) }
+        coroutineScope.launch(Dispatchers.IO) {
+            try {
+                val postSnapshot = postRef.get().await()
+                if (postSnapshot.exists()) {
+                    val serverUpvotedBy =
+                        postSnapshot.get("upvotedBy") as? List<String> ?: emptyList()
+                    val serverDownvotedBy =
+                        postSnapshot.get("downvotedBy") as? List<String> ?: emptyList()
 
-                val updatedDownvotedBy = post.downvotedBy.filter { it != userInfo }.toMutableList()
+                    val isAlreadyUpvoted = serverUpvotedBy.contains(currentUserUid)
+                    val isAlreadyDownvoted = serverDownvotedBy.contains(currentUserUid)
+                    var newUpvotes = postSnapshot.getLong("upvotes")?.toInt() ?: 0
+                    var newDownvotes = postSnapshot.getLong("downvotes")?.toInt() ?: 0
 
-                postList[position] = post.copy(
-                    upvotes = currentUpvotes + 1,
-                    downvotes = currentDownvotes - 1,
-                    upvotedBy = updatedUpvotedBy,
-                    downvotedBy = updatedDownvotedBy
-                )
-                postAdapter.updateUpvoteCount(position, currentUpvotes + 1)
-                postAdapter.updateDownvoteCount(position, currentDownvotes - 1)
-                postAdapter.updateUpvotedBy(position, updatedUpvotedBy)
-                postAdapter.updateDownvotedBy(position, updatedDownvotedBy)
-            }
-        } else {
-            postRef.update(
-                "upvotes", currentUpvotes + 1,
-                "upvotedBy", FieldValue.arrayUnion(userInfo)
-            ).addOnSuccessListener {
-                val updatedUpvotedBy = post.upvotedBy.toMutableList()
-                userInfo?.let { it1 -> updatedUpvotedBy.add(it1) }
+                    if (isAlreadyUpvoted) {
+                        newUpvotes -= 1
+                        postRef.update(
+                            "upvotes", newUpvotes,
+                            "upvotedBy", FieldValue.arrayRemove(currentUserUid)
+                        ).await()
+                        withContext(Dispatchers.Main) {
+                            val updatedUpvotedBy = serverUpvotedBy.filter { it != currentUserUid }.toMutableList()
+                            postList[position] =
+                                post.copy(upvotes = newUpvotes, upvotedBy = updatedUpvotedBy)
+                            postAdapter.updateUpvoteCount(position, newUpvotes)
+                            postAdapter.updateUpvotedBy(position, updatedUpvotedBy)
+                        }
 
-                postList[position] =
-                    post.copy(upvotes = currentUpvotes + 1, upvotedBy = updatedUpvotedBy)
-                postAdapter.updateUpvoteCount(position, currentUpvotes + 1)
-                postAdapter.updateUpvotedBy(position, updatedUpvotedBy)
+                    } else if (isAlreadyDownvoted) {
+                        newUpvotes += 1
+                        newDownvotes -= 1
+                        postRef.update(
+                            "upvotes", newUpvotes,
+                            "downvotes", newDownvotes,
+                            "upvotedBy", FieldValue.arrayUnion(currentUserUid),
+                            "downvotedBy", FieldValue.arrayRemove(currentUserUid)
+                        ).await()
+                        withContext(Dispatchers.Main){
+                            val updatedUpvotedBy = (serverUpvotedBy + currentUserUid).toMutableList()
+                            val updatedDownvotedBy = serverDownvotedBy.filter { it != currentUserUid }.toMutableList()
+                            postList[position] = post.copy(
+                                upvotes = newUpvotes,
+                                downvotes = newDownvotes,
+                                upvotedBy = updatedUpvotedBy,
+                                downvotedBy = updatedDownvotedBy
+                            )
+                            postAdapter.updateUpvoteCount(position, newUpvotes)
+                            postAdapter.updateDownvoteCount(position, newDownvotes)
+                            postAdapter.updateUpvotedBy(position, updatedUpvotedBy)
+                            postAdapter.updateDownvotedBy(position, updatedDownvotedBy)
+                        }
+
+                    } else {
+                        newUpvotes += 1
+                        postRef.update(
+                            "upvotes", newUpvotes,
+                            "upvotedBy", FieldValue.arrayUnion(currentUserUid)
+                        ).await()
+                        withContext(Dispatchers.Main) {
+                            val updatedUpvotedBy = (serverUpvotedBy + currentUserUid).toMutableList()
+                            postList[position] =
+                                post.copy(upvotes = newUpvotes, upvotedBy = updatedUpvotedBy)
+                            postAdapter.updateUpvoteCount(position, newUpvotes)
+                            postAdapter.updateUpvotedBy(position, updatedUpvotedBy)
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main){
+                }
+
             }
         }
     }
@@ -443,50 +471,77 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
         val gameName = getCurrentGame() ?: "valorant"
         val postRef = forums.firestore.collection("forums/$gameName/posts")
             .document(post.id)
+        val currentUserUid = userUid ?: return
 
-        if (alreadyDownvoted) {
-            postRef.update(
-                "downvotes", currentDownvotes - 1,
-                "downvotedBy", FieldValue.arrayRemove(userInfo)
-            ).addOnSuccessListener {
-                val updatedDownvotedBy = post.downvotedBy.filter { it != userInfo }.toMutableList()
-                postList[position] = post.copy(downvotes = currentDownvotes - 1, downvotedBy = updatedDownvotedBy)
-                postAdapter.updateDownvoteCount(position, currentDownvotes - 1)
-                postAdapter.updateDownvotedBy(position, updatedDownvotedBy)
-            }
-        } else if (alreadyUpvoted) {
-            postRef.update(
-                "upvotes", currentUpvotes - 1,
-                "downvotes", currentDownvotes + 1,
-                "upvotedBy", FieldValue.arrayRemove(userInfo),
-                "downvotedBy", FieldValue.arrayUnion(userInfo)
-            ).addOnSuccessListener {
-                val updatedUpvotedBy = post.upvotedBy.filter { it != userInfo }.toMutableList()
-                val updatedDownvotedBy = post.downvotedBy.toMutableList()
-                userInfo?.let { it1 -> updatedDownvotedBy.add(it1) }
+        coroutineScope.launch(Dispatchers.IO) {
+            try {
+                val postSnapshot = postRef.get().await()
+                if (postSnapshot.exists()) {
+                    val serverUpvotedBy =
+                        postSnapshot.get("upvotedBy") as? List<String> ?: emptyList()
+                    val serverDownvotedBy =
+                        postSnapshot.get("downvotedBy") as? List<String> ?: emptyList()
 
-                postList[position] = post.copy(
-                    upvotes = currentUpvotes - 1,
-                    downvotes = currentDownvotes + 1,
-                    upvotedBy = updatedUpvotedBy,
-                    downvotedBy = updatedDownvotedBy
-                )
-                postAdapter.updateUpvoteCount(position, currentUpvotes - 1)
-                postAdapter.updateDownvoteCount(position, currentDownvotes + 1)
-                postAdapter.updateUpvotedBy(position, updatedUpvotedBy)
-                postAdapter.updateDownvotedBy(position, updatedDownvotedBy)
-            }
-        } else {
-            postRef.update(
-                "downvotes", currentDownvotes + 1,
-                "downvotedBy", FieldValue.arrayUnion(userInfo)
-            ).addOnSuccessListener {
-                val updatedDownvotedBy = post.downvotedBy.toMutableList()
-                userInfo?.let { it1 -> updatedDownvotedBy.add(it1) }
+                    val isAlreadyUpvoted = serverUpvotedBy.contains(currentUserUid)
+                    val isAlreadyDownvoted = serverDownvotedBy.contains(currentUserUid)
 
-                postList[position] = post.copy(downvotes = currentDownvotes + 1, downvotedBy = updatedDownvotedBy)
-                postAdapter.updateDownvoteCount(position, currentDownvotes + 1)
-                postAdapter.updateDownvotedBy(position, updatedDownvotedBy)
+                    var newUpvotes = postSnapshot.getLong("upvotes")?.toInt() ?: 0
+                    var newDownvotes = postSnapshot.getLong("downvotes")?.toInt() ?: 0
+
+                    if (isAlreadyDownvoted) {
+                        newDownvotes -= 1
+                        postRef.update(
+                            "downvotes", newDownvotes,
+                            "downvotedBy", FieldValue.arrayRemove(currentUserUid)
+                        ).await()
+                        withContext(Dispatchers.Main){
+                            val updatedDownvotedBy = serverDownvotedBy.filter { it != currentUserUid }.toMutableList()
+                            postList[position] = post.copy(downvotes = newDownvotes, downvotedBy = updatedDownvotedBy)
+                            postAdapter.updateDownvoteCount(position, newDownvotes)
+                            postAdapter.updateDownvotedBy(position, updatedDownvotedBy)
+                        }
+                    } else if (isAlreadyUpvoted) {
+                        newUpvotes -= 1
+                        newDownvotes += 1
+                        postRef.update(
+                            "upvotes", newUpvotes,
+                            "downvotes", newDownvotes,
+                            "upvotedBy", FieldValue.arrayRemove(currentUserUid),
+                            "downvotedBy", FieldValue.arrayUnion(currentUserUid)
+                        ).await()
+                        withContext(Dispatchers.Main){
+                            val updatedUpvotedBy = serverUpvotedBy.filter { it != currentUserUid }.toMutableList()
+                            val updatedDownvotedBy = (serverDownvotedBy + currentUserUid).toMutableList()
+                            postList[position] = post.copy(
+                                upvotes = newUpvotes,
+                                downvotes = newDownvotes,
+                                upvotedBy = updatedUpvotedBy,
+                                downvotedBy = updatedDownvotedBy
+                            )
+                            postAdapter.updateUpvoteCount(position, newUpvotes)
+                            postAdapter.updateDownvoteCount(position, newDownvotes)
+                            postAdapter.updateUpvotedBy(position, updatedUpvotedBy)
+                            postAdapter.updateDownvotedBy(position, updatedDownvotedBy)
+                        }
+                    } else {
+                        newDownvotes += 1
+                        postRef.update(
+                            "downvotes", newDownvotes,
+                            "downvotedBy", FieldValue.arrayUnion(currentUserUid)
+                        ).await()
+                        withContext(Dispatchers.Main){
+                            val updatedDownvotedBy = (serverDownvotedBy + currentUserUid).toMutableList()
+                            postList[position] = post.copy(downvotes = newDownvotes, downvotedBy = updatedDownvotedBy)
+                            postAdapter.updateDownvoteCount(position, newDownvotes)
+                            postAdapter.updateDownvotedBy(position, updatedDownvotedBy)
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main){
+
+                }
             }
         }
     }
@@ -529,3 +584,4 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
         startActivity(intent)
     }
 }
+

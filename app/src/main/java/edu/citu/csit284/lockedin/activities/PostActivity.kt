@@ -31,6 +31,7 @@ import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import com.google.firebase.auth.FirebaseAuth
 
 class PostActivity : Activity() {
 
@@ -44,12 +45,15 @@ class PostActivity : Activity() {
     private lateinit var rvComments: RecyclerView
     private lateinit var commentAdapter: CommentAdapter
     private val commentList = mutableListOf<Comment>()
+    private var userUid: String? = null
+    private var authorUid: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post)
 
         postId = intent.getStringExtra("postId") ?: ""
+        userUid = FirebaseAuth.getInstance().currentUser?.uid
         btnProfile = findViewById(R.id.btnProfile)
         btnBack = findViewById(R.id.button_back)
         btnBack.setOnClickListener { finish() }
@@ -87,14 +91,19 @@ class PostActivity : Activity() {
                 val postDocument = findPostAcrossGames(postId)
 
                 if (postDocument != null) {
-                    val authorUsername = postDocument.getString("authorUsername")
+                    authorUid = postDocument.getString("authorUid")
                     val title = postDocument.getString("title")
                     val description = postDocument.getString("description")
                     val timestamp = postDocument.getTimestamp("timestamp")?.toDate()?.time ?: 0
                     val imageUrl = postDocument.getString("imageUrl")
 
+                    var authorName: String? = null
+                    if (authorUid != null) {
+                        authorName = getUsernameByUid(authorUid!!)
+                    }
+                    val localAuthorName = authorName
                     withContext(Dispatchers.Main) {
-                        displayPostData(authorUsername, title, description, timestamp, imageUrl)
+                        displayPostData(localAuthorName, title, description, timestamp, imageUrl)
                     }
                 }
             } catch (e: Exception) {
@@ -137,7 +146,17 @@ class PostActivity : Activity() {
         tvBody.text = description
         tvDate.text = SimpleDateFormat("MMM dd, hh:mm a", Locale.getDefault()).format(Date(timestamp))
 
-        setupPfp(tvAuthor.text.toString())
+        if (authorUsername != null) {
+            coroutineScope.launch{
+                val pfpId = getPfpIdByUid(authorUid)
+                withContext(Dispatchers.Main){
+                    setupPfp(pfpId)
+                }
+            }
+        } else {
+            btnProfile.setImageResource(R.drawable.default_pfp)
+        }
+
         if (imageUrl != null && imageUrl.isNotEmpty()) {
             Glide.with(this)
                 .load(imageUrl)
@@ -148,33 +167,25 @@ class PostActivity : Activity() {
         }
     }
 
-    private fun setupPfp(userInfo: String) {
-        var pfp: Int
-        users.whereEqualTo("username", userInfo)
-            .get()
-            .addOnSuccessListener { documents ->
-                if (!documents.isEmpty) {
-                    val document = documents.documents[0]
-                    pfp = document.getLong("pfpID")?.toInt() ?: 2
-                    when (pfp) {
-                        1 -> {
-                            btnProfile.setImageResource(R.drawable.red_pfp)
-                        }
-
-                        2 -> {
-                            btnProfile.setImageResource(R.drawable.default_pfp)
-                        }
-
-                        3 -> {
-                            btnProfile.setImageResource(R.drawable.green_pfp)
-                        }
-
-                        4 -> {
-                            btnProfile.setImageResource(R.drawable.blue_pfp)
-                        }
-                    }
-                }
+    private fun setupPfp(pfpId: Int) {
+        var pfp: Int = pfpId
+        when (pfp) {
+            1 -> {
+                btnProfile.setImageResource(R.drawable.red_pfp)
             }
+
+            2 -> {
+                btnProfile.setImageResource(R.drawable.default_pfp)
+            }
+
+            3 -> {
+                btnProfile.setImageResource(R.drawable.green_pfp)
+            }
+
+            4 -> {
+                btnProfile.setImageResource(R.drawable.blue_pfp)
+            }
+        }
     }
 
     private fun saveComment(postId: String, commentText: String) {
@@ -183,11 +194,9 @@ class PostActivity : Activity() {
                 val gameName = getGameName(postId)
 
                 if (gameName != null) {
-                    val sharedPrefs = getSharedPreferences("User", Context.MODE_PRIVATE)
-                    val authorUsername = sharedPrefs.getString("username", "Anonymous") ?: "Anonymous"
-
+                    val authorUid = userUid ?: "Anonymous"
                     val commentData = hashMapOf(
-                        "authorUsername" to authorUsername,
+                        "authorUid" to authorUid,
                         "text" to commentText,
                         "timestamp" to FieldValue.serverTimestamp()
                     )
@@ -203,14 +212,14 @@ class PostActivity : Activity() {
 
                     val newComment = Comment(
                         id = newCommentRef.id,
-                        authorUsername = authorUsername,
+                        authorUid = authorUid,
                         description = commentText,
                         timestamp = savedTimestamp
                     )
 
                     withContext(Dispatchers.Main) {
                         etComment.text.clear()
-                        commentList.add(0,newComment)
+                        commentList.add(0, newComment)
                         commentAdapter.notifyItemInserted(0)
                         loadComments()
                     }
@@ -247,9 +256,11 @@ class PostActivity : Activity() {
 
                     val fetchedComments = querySnapshot.documents.map { document ->
                         val timestamp = document.getTimestamp("timestamp")?.toDate()?.time ?: 0
+                        val authorUid = document.getString("authorUid")
+                        val authorName = if (authorUid != null) getUsernameByUid(authorUid) else "Anonymous"
                         Comment(
                             id = document.id,
-                            authorUsername = document.getString("authorUsername"),
+                            authorUid = authorUid,
                             description = document.getString("text"),
                             timestamp = timestamp
                         )
@@ -267,4 +278,36 @@ class PostActivity : Activity() {
             }
         }
     }
+
+    private suspend fun getUsernameByUid(uid: String): String {
+        return try {
+            val userSnapshot = users.whereEqualTo("uid", uid).get().await()
+            if (!userSnapshot.isEmpty) {
+                userSnapshot.documents[0].getString("username") ?: "Anonymous"
+            } else {
+                "Anonymous"
+            }
+        } catch (e: Exception) {
+            Log.e("PostActivity", "Error fetching username: $e")
+            "Anonymous"
+        }
+    }
+
+    private suspend fun getPfpIdByUid(uid: String?): Int {
+        return try {
+            if(uid == null){
+                return 2
+            }
+            val userSnapshot = users.whereEqualTo("uid", uid).get().await()
+            if (!userSnapshot.isEmpty) {
+                userSnapshot.documents[0].getLong("pfpID")?.toInt() ?: 2
+            } else {
+                2
+            }
+        } catch (e: Exception) {
+            Log.e("PostActivity", "Error fetching pfpID: $e")
+            2
+        }
+    }
 }
+

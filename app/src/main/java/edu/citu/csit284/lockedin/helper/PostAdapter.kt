@@ -1,6 +1,5 @@
-import android.app.Activity
 import android.content.Context
-import android.content.SharedPreferences
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.R
@@ -21,12 +21,39 @@ class PostAdapter(
     private val listOfPosts: MutableList<Post>,
     private val itemClickListener: OnItemClickListener,
     private val context: Context,
-    private val currentUser: String
+    private var currentUserName: String = (FirebaseAuth.getInstance().currentUser?.uid ?: "").trim()
 ) :
     RecyclerView.Adapter<PostAdapter.ItemViewHolder>() {
     private val users = Firebase.firestore.collection("users")
-    private val sharedPref = context.getSharedPreferences("User", Context.MODE_PRIVATE)
-    private val userInfo = sharedPref.getString("username", "")
+    private var currentUserUid: String = ""
+
+    init {
+        if (currentUserName.isNotEmpty()) {
+            users.whereEqualTo("username", currentUserName)
+                .get()
+                .addOnSuccessListener { userDocuments ->
+                    if (!userDocuments.isEmpty) {
+                        val userDocument = userDocuments.documents[0]
+                        currentUserUid = userDocument.getString("uid") ?: ""
+                        Log.d("PostAdapter", "Got UID from Firestore: $currentUserUid")
+                        notifyDataSetChanged()
+                    } else {
+                        Log.e("PostAdapter", "No user found with username: $currentUserName")
+                        currentUserUid = ""
+                        notifyDataSetChanged()
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.e("PostAdapter", "Error getting UID: $exception")
+                    currentUserUid = ""
+                    notifyDataSetChanged()
+                }
+        } else {
+            currentUserUid = ""
+            notifyDataSetChanged()
+        }
+    }
+
 
     interface OnItemClickListener {
         fun onUpvoteClick(
@@ -78,7 +105,6 @@ class PostAdapter(
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val post = listOfPosts[position]
-
         holder.tvPostTitle.text = post.title
         holder.tvPostBody.text = post.description
         users.whereEqualTo("uid", post.authorUid)
@@ -114,7 +140,8 @@ class PostAdapter(
 
         holder.tvUpvoteCount.text = post.upvotes.toString()
         holder.tvDownvoteCount.text = post.downvotes.toString()
-        if (post.upvotedBy.contains(userInfo)) {
+        Log.d("Current User UID", currentUserUid)
+        if (post.upvotedBy.contains(currentUserUid)) {
             holder.tvUpvoteCount.setTextColor(context.getColor(R.color.up))
             holder.btnUpvote.setImageResource(R.drawable.upvote_icon_active)
         } else {
@@ -122,7 +149,7 @@ class PostAdapter(
             holder.btnUpvote.setImageResource(R.drawable.upvote_icon_inactive)
         }
 
-        if (post.downvotedBy.contains(userInfo)) {
+        if (post.downvotedBy.contains(currentUserUid)) {
             holder.tvDownvoteCount.setTextColor(context.getColor(R.color.down))
             holder.btnDownvote.setImageResource(R.drawable.downvote_icon_active)
         } else {
@@ -131,8 +158,8 @@ class PostAdapter(
         }
 
         holder.btnUpvote.setOnClickListener {
-            val alreadyUpvoted = post.upvotedBy.contains(currentUser)
-            val alreadyDownvoted = post.downvotedBy.contains(currentUser)
+            val alreadyUpvoted = post.upvotedBy.contains(currentUserUid)
+            val alreadyDownvoted = post.downvotedBy.contains(currentUserUid)
             itemClickListener.onUpvoteClick(
                 position,
                 post.upvotes,
@@ -142,8 +169,8 @@ class PostAdapter(
             )
         }
         holder.btnDownvote.setOnClickListener {
-            val alreadyUpvoted = post.upvotedBy.contains(currentUser)
-            val alreadyDownvoted = post.downvotedBy.contains(currentUser)
+            val alreadyUpvoted = post.upvotedBy.contains(currentUserUid)
+            val alreadyDownvoted = post.downvotedBy.contains(currentUserUid)
             itemClickListener.onDownvoteClick(
                 position,
                 post.upvotes,

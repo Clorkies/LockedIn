@@ -13,10 +13,17 @@ import edu.citu.csit284.lockedin.data.Comment
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class CommentAdapter(private val comments: MutableList<Comment>) :
     RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
     private val users = Firebase.firestore.collection("users")
+    private val coroutineScope = CoroutineScope(Dispatchers.Main)
+
     class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val profilePictureImageView: ImageView = itemView.findViewById(R.id.profilePicture)
         val userNameTextView: TextView = itemView.findViewById(R.id.userName)
@@ -32,24 +39,31 @@ class CommentAdapter(private val comments: MutableList<Comment>) :
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
         val comment = comments[position]
 
-        holder.userNameTextView.text = comment.authorUsername
         holder.bodyTextView.text = comment.description
 
-        val formattedTimestamp = SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault()).format(
+        val formattedTimestamp = SimpleDateFormat("MMM dd, h:mm a", Locale.getDefault()).format(
             Date(comment.timestamp)
         )
         holder.timestampTextView.text = formattedTimestamp
-
-        setProfilePicture(holder.userNameTextView.text.toString(), holder.profilePictureImageView)
+        setProfilePicture(comment.authorUid, holder.profilePictureImageView, holder.userNameTextView)
     }
-    private fun setProfilePicture(username: String, imgProfilePicture: ImageView) {
-        users.whereEqualTo("username", username)
-            .get()
-            .addOnSuccessListener { documents ->
-                if (!documents.isEmpty) {
-                    val document = documents.documents[0]
-                    val pfpId = document.getLong("pfpID")?.toInt() ?: 2
 
+    private fun setProfilePicture(authorUid: String?, imgProfilePicture: ImageView, userNameTextView: TextView) {
+        if (authorUid == null) {
+            imgProfilePicture.setImageResource(R.drawable.default_pfp)
+            userNameTextView.text = "Unknown User"
+            return
+        }
+
+        coroutineScope.launch {
+            try {
+                val document = withContext(Dispatchers.IO) {
+                    users.whereEqualTo("uid", authorUid).get().await().documents.firstOrNull()
+                }
+
+                if (document != null) {
+                    val pfpId = document.getLong("pfpID")?.toInt() ?: 2
+                    val username = document.getString("username") ?: "Unknown User"
                     val drawableResId = when (pfpId) {
                         1 -> R.drawable.red_pfp
                         2 -> R.drawable.default_pfp
@@ -58,11 +72,19 @@ class CommentAdapter(private val comments: MutableList<Comment>) :
                         else -> R.drawable.default_pfp
                     }
                     imgProfilePicture.setImageResource(drawableResId)
+                    userNameTextView.text = username
                 } else {
                     imgProfilePicture.setImageResource(R.drawable.default_pfp)
+                    userNameTextView.text = "Unknown User"
                 }
+            } catch (e: Exception) {
+                imgProfilePicture.setImageResource(R.drawable.default_pfp)
+                userNameTextView.text = "Unknown User"
+                e.printStackTrace()
             }
+        }
     }
+
     override fun getItemCount(): Int {
         return comments.size
     }
