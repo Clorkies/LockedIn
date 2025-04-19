@@ -70,7 +70,7 @@ class LoginActivity : Activity() {
                 .start()
         }
 
-        val emailEditText = findViewById<EditText>(R.id.email) // Changed to email
+        val emailEditText = findViewById<EditText>(R.id.email)
         val password = findViewById<EditText>(R.id.password)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
         val imgPriv = findViewById<ImageView>(R.id.imgPriv)
@@ -79,7 +79,7 @@ class LoginActivity : Activity() {
             goNext()
         }
         btnLogin.setOnClickListener {
-            val email = emailEditText.text.toString().trim() // Use email
+            val email = emailEditText.text.toString().trim()
             val pass = password.text.toString().trim()
 
             if (email.isEmpty() || pass.isEmpty()) {
@@ -88,14 +88,11 @@ class LoginActivity : Activity() {
                 btnLogin.isEnabled = false
                 btnLogin.text = "Logging in..."
 
-                Log.d("LoginActivity", "Attempting to login with email: $email") // Log email
-
                 auth.signInWithEmailAndPassword(email, pass)
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
                             val firebaseUser = auth.currentUser
                             if (firebaseUser != null) {
-                                // Get the username from Firestore using the user's UID
                                 users.document(firebaseUser.uid)
                                     .get()
                                     .addOnSuccessListener { document ->
@@ -103,11 +100,11 @@ class LoginActivity : Activity() {
                                             val username = document.getString("username")
                                             val editor = sharedPref.edit()
                                             if (checkBox.isChecked) {
-                                                editor.putString("username", username) // Store username
+                                                editor.putString("username", username)
                                                 editor.putBoolean("remember", true)
                                                 editor.apply()
                                             } else {
-                                                editor.putString("username", username)  // Store username
+                                                editor.putString("username", username)
                                                 editor.putBoolean("remember", false)
                                                 editor.apply()
                                             }
@@ -116,12 +113,10 @@ class LoginActivity : Activity() {
                                             toast("Error: Username not found in Firestore.")
                                             btnLogin.isEnabled = true
                                             btnLogin.text = "Login"
-                                            auth.signOut() // Sign out the user
+                                            auth.signOut()
                                         }
                                     }
                                     .addOnFailureListener { e ->
-                                        Log.e("LoginActivity", "Error fetching username from Firestore", e)
-                                        toast("Login failed: ${e.localizedMessage}")
                                         btnLogin.isEnabled = true
                                         btnLogin.text = "Login"
                                         auth.signOut()
@@ -129,7 +124,6 @@ class LoginActivity : Activity() {
                             }
 
                         } else {
-                            Log.w("LoginActivity", "signInWithEmail:failure", task.exception)
                             toast("Invalid email or password")
                             btnLogin.isEnabled = true
                             btnLogin.text = "Login"
