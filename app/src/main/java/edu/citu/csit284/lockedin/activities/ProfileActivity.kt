@@ -53,6 +53,7 @@ class ProfileActivity : Activity() {
     lateinit var emailEditText: EditText
     lateinit var mReauthEmail: String
     lateinit var mReauthPass: String
+    lateinit var sharedPref: SharedPreferences
 
     @RequiresApi(35)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,6 +61,7 @@ class ProfileActivity : Activity() {
         setContentView(R.layout.activity_profile)
 
         auth = FirebaseAuth.getInstance()
+        sharedPref = getSharedPreferences("User", MODE_PRIVATE)
 
         val nameEditText = findViewById<EditText>(R.id.name)
         bio = findViewById(R.id.bio)
@@ -549,6 +551,9 @@ class ProfileActivity : Activity() {
                                         android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE
                                 }
                             }
+                            val editor = sharedPref.edit()
+                            editor.putString("username", newName)
+                            editor.apply()
                         }
                         .addOnFailureListener { e ->
                             toast("Failed to update profile!")
