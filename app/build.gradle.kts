@@ -107,6 +107,7 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.androidx.fragment)
     implementation(libs.firebase.storage)
+    implementation("com.google.firebase:firebase-auth-ktx:21.3.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

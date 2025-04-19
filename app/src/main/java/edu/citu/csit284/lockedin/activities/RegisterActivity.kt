@@ -12,8 +12,8 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-
 import androidx.core.content.ContextCompat
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.R
@@ -23,9 +23,10 @@ import edu.citu.csit284.lockedin.util.toggle
 
 class RegisterActivity : Activity() {
     private val users = Firebase.firestore.collection("users")
+    private lateinit var auth: FirebaseAuth
+
     private fun isValidEmail(email: String): Boolean {
         val regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
-
         return email.matches(Regex(regex))
     }
 
@@ -33,14 +34,15 @@ class RegisterActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
+        auth = FirebaseAuth.getInstance()
         setupClickableTermsAndPrivacy(this)
 
         val btnBack = findViewById<ImageView>(R.id.backBtn)
         val btnRegister = findViewById<Button>(R.id.btnRegister)
-        val email = findViewById<EditText>(R.id.email)
-        val displayName = findViewById<EditText>(R.id.displayName)
-        val password = findViewById<EditText>(R.id.password)
-        val confirmPassword = findViewById<EditText>(R.id.confirmpass)
+        val emailEditText = findViewById<EditText>(R.id.email)
+        val displayNameEditText = findViewById<EditText>(R.id.displayName)
+        val passwordEditText = findViewById<EditText>(R.id.password)
+        val confirmPasswordEditText = findViewById<EditText>(R.id.confirmpass)
         val imgPriv = findViewById<ImageView>(R.id.imgPriv)
         val imgPriv2 = findViewById<ImageView>(R.id.imgPriv2)
 
@@ -63,7 +65,7 @@ class RegisterActivity : Activity() {
 
         btnRegister.isEnabled = false
         btnRegister.setBackgroundResource(R.drawable.btn_register_disabled)
-        password.addTextChangedListener(object : TextWatcher {
+        passwordEditText.addTextChangedListener(object : TextWatcher {
             @SuppressLint("ResourceAsColor", "SetTextI18n")
             override fun afterTextChanged(s: Editable?) {
                 val pass = s.toString()
@@ -83,34 +85,26 @@ class RegisterActivity : Activity() {
                     0, 1 -> {
                         tvPasswordStrength.text = "Weak"
                         btnRegister.isEnabled = false
-                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@RegisterActivity,
-                            R.color.red
-                        ))
+                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@RegisterActivity, R.color.red))
                         btnRegister.setBackgroundResource(R.drawable.btn_register_disabled)
                     }
                     2 -> {
                         tvPasswordStrength.text = "Good"
-                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@RegisterActivity,
-                            R.color.devYellow
-                        ))
-                        btnRegister.isEnabled = isLengthValid
-                        if (isLengthValid) btnRegister.setBackgroundResource(R.drawable.btn_register)
+                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@RegisterActivity, R.color.devYellow))
+                        btnRegister.isEnabled = isLengthValid && emailEditText.text.isNotEmpty() && displayNameEditText.text.isNotEmpty() && confirmPasswordEditText.text.toString() == pass
+                        if (btnRegister.isEnabled) btnRegister.setBackgroundResource(R.drawable.btn_register)
                     }
                     3 -> {
                         tvPasswordStrength.text = "Strong"
-                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@RegisterActivity,
-                            R.color.teal_700
-                        ))
-                        btnRegister.isEnabled = isLengthValid
-                        if (isLengthValid) btnRegister.setBackgroundResource(R.drawable.btn_register)
+                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@RegisterActivity, R.color.teal_700))
+                        btnRegister.isEnabled = isLengthValid && emailEditText.text.isNotEmpty() && displayNameEditText.text.isNotEmpty() && confirmPasswordEditText.text.toString() == pass
+                        if (btnRegister.isEnabled) btnRegister.setBackgroundResource(R.drawable.btn_register)
                     }
                     4 -> {
                         tvPasswordStrength.text = "Very Strong"
-                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@RegisterActivity,
-                            R.color.purple_500
-                        ))
-                        btnRegister.isEnabled = isGreaterThanMin
-                        if (isGreaterThanMin) btnRegister.setBackgroundResource(R.drawable.btn_register)
+                        tvPasswordStrength.setTextColor(ContextCompat.getColor(this@RegisterActivity, R.color.purple_500))
+                        btnRegister.isEnabled = isGreaterThanMin && emailEditText.text.isNotEmpty() && displayNameEditText.text.isNotEmpty() && confirmPasswordEditText.text.toString() == pass
+                        if (btnRegister.isEnabled) btnRegister.setBackgroundResource(R.drawable.btn_register)
                     }
                 }
             }
@@ -125,64 +119,96 @@ class RegisterActivity : Activity() {
             }
         })
 
+        val textWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val pass = passwordEditText.text.toString()
+                val isLengthValid = pass.length >= 8
+                val isGreaterThanMin = pass.length > 8
+                btnRegister.isEnabled = (isLengthValid || isGreaterThanMin) && emailEditText.text.isNotEmpty() && displayNameEditText.text.isNotEmpty() && confirmPasswordEditText.text.toString() == pass
+                if (btnRegister.isEnabled) btnRegister.setBackgroundResource(R.drawable.btn_register)
+                else btnRegister.setBackgroundResource(R.drawable.btn_register_disabled)
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        }
+
+        emailEditText.addTextChangedListener(textWatcher)
+        displayNameEditText.addTextChangedListener(textWatcher)
+        confirmPasswordEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val pass = passwordEditText.text.toString()
+                btnRegister.isEnabled = (pass.length >= 8 || pass.length > 8) && emailEditText.text.isNotEmpty() && displayNameEditText.text.isNotEmpty() && s.toString() == pass
+                if (btnRegister.isEnabled) btnRegister.setBackgroundResource(R.drawable.btn_register)
+                else btnRegister.setBackgroundResource(R.drawable.btn_register_disabled)
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
         btnBack.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
         btnRegister.setOnClickListener {
-            val em = email.text.toString()
-            val pass = password.text.toString()
-            val confpass = confirmPassword.text.toString()
-            val user = displayName.text.toString()
-            if(em == "" || pass == "" || confpass == "" || user == ""){
+            val em = emailEditText.text.toString()
+            val pass = passwordEditText.text.toString()
+            val confpass = confirmPasswordEditText.text.toString()
+            val user = displayNameEditText.text.toString()
+
+            if (em.isEmpty() || pass.isEmpty() || confpass.isEmpty() || user.isEmpty()) {
                 toast("Please fill out all fields!")
-            }else{
-                if(!isValidEmail(em)){
-                    toast("Please enter a valid email!")
-                }else{
+                return@setOnClickListener
+            }
 
-                    if(pass != confpass){
-                        toast("Passwords do not match!")
-                    }else{
-                        users
-                            .whereEqualTo("email",em)
-                            .get()
-                            .addOnSuccessListener { duplicates ->
-                                if(!duplicates.isEmpty){
-                                    toast("Email already exists! Please try another")
-                                }else{
-                                    users
-                                        .whereEqualTo("username",user)
-                                        .get()
-                                        .addOnSuccessListener{ duplis ->
-                                            if(!duplis.isEmpty){
-                                                toast("Username already exists! Please try another")
-                                            }else{
-                                                val user = hashMapOf(
-                                                    "email" to em,
-                                                    "username" to user,
-                                                    "password" to pass
-                                                )
-                                                users
-                                                    .add(user)
-                                                    .addOnSuccessListener {
-                                                        toast("Registered Successfully!")
-                                                        val intent = Intent(this, LoginActivity::class.java)
-                                                        startActivity(intent)
-                                                    }
-                                                    .addOnFailureListener{
-                                                        toast("Failed to register")
-                                                    }
+            if (!isValidEmail(em)) {
+                toast("Please enter a valid email!")
+                return@setOnClickListener
+            }
+
+            if (pass != confpass) {
+                toast("Passwords do not match!")
+                return@setOnClickListener
+            }
+
+            auth.createUserWithEmailAndPassword(em, pass)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        val firebaseUser = auth.currentUser
+                        if (firebaseUser != null) {
+                            users.whereEqualTo("username", user)
+                                .get()
+                                .addOnSuccessListener { duplicates ->
+                                    if (!duplicates.isEmpty) {
+                                        firebaseUser.delete()
+                                            .addOnCompleteListener { deleteTask ->
+                                                if (deleteTask.isSuccessful) {
+                                                    toast("Username already exists! Please try another")
+                                                }
                                             }
-                                        }
-
+                                    } else {
+                                        val userMap = hashMapOf(
+                                            "uid" to firebaseUser.uid,
+                                            "email" to em,
+                                            "username" to user
+                                        )
+                                        users.document(firebaseUser.uid)
+                                            .set(userMap)
+                                            .addOnSuccessListener {
+                                                toast("Registered Successfully!")
+                                                val intent = Intent(this, LoginActivity::class.java)
+                                                startActivity(intent)
+                                                finish()
+                                            }
+                                    }
                                 }
-                            }
+                        }
+                    } else {
+                        toast("Registration failed: ${task.exception?.message}")
                     }
                 }
-            }
         }
-        password.toggle(imgPriv)
-        confirmPassword.toggle(imgPriv2)
+        passwordEditText.toggle(imgPriv)
+        confirmPasswordEditText.toggle(imgPriv2)
     }
 }
+
