@@ -40,9 +40,9 @@ import com.google.firebase.auth.AuthCredential
 class ProfileActivity : Activity() {
     private val users = Firebase.firestore.collection("users")
     lateinit var auth: FirebaseAuth
-    lateinit var origName: String
-    lateinit var origBio: String
-    lateinit var origPass: String
+    var origName: String? = ""
+    var origBio: String? = ""
+    var origPass: String? = ""
     lateinit var userInfo: String
     var editIsClicked: Boolean = false
     lateinit var btn_edit: Button
@@ -105,6 +105,11 @@ class ProfileActivity : Activity() {
                     for (document in documents) {
                         nameEditText.setText(document.getString("username"))
                         pass.setText("Enter new password")
+                        pass.setOnFocusChangeListener { _, hasFocus ->
+                            if (hasFocus && pass.text.toString() == "Enter new password") {
+                                pass.setText("")
+                            }
+                        }
                         emailEditText.setText(document.getString("email"))
                         origName = nameEditText.text.toString()
                         origPass = pass.text.toString()
@@ -311,7 +316,7 @@ class ProfileActivity : Activity() {
                     .get()
                     .addOnSuccessListener { documents ->
                         if (documents.isEmpty || newName == origName) {
-                            if (newPass != "Enter new password") {
+                            if (newPass != "") {
                                 val user = auth.currentUser
                                 if (user != null) {
                                     user.updatePassword(newPass)
@@ -461,7 +466,8 @@ class ProfileActivity : Activity() {
                 btn_edit.setText("Edit Information")
                 btn_logout.setText("Log Out")
                 nameEditText.setText(origName)
-                this.bio.setText(origBio)
+                if (origBio == "") this.bio.setText("Add a bio!")
+                else this.bio.setText(origBio)
                 pass.setText(origPass)
                 imgpfp.clearColorFilter()
                 for (editText in editList) {
