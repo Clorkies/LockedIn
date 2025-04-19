@@ -57,6 +57,7 @@
 
         </LinearLayout>
         <TextView
+            android:layout_marginVertical="10dp"
             android:id="@+id/postTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,23 +73,23 @@
             android:adjustViewBounds="true"
             android:background="@drawable/rounded_transparent"
             android:clipToOutline="true"
-            android:visibility="gone"
-            android:layout_marginTop="8dp" />
+            android:visibility="visible"
+            />
 
         <TextView
+            android:layout_marginVertical="10dp"
             android:id="@+id/postBody"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:text="Sample body"
-            android:textColor="@color/silver"
-            android:layout_marginTop="8dp"/>
+            android:textColor="@color/silver"/>
         <LinearLayout
+            android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginTop="8dp"
             android:background="@drawable/thin_circle_frame"
             android:padding="5dp">
 
