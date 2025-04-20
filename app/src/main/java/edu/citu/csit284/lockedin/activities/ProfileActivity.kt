@@ -311,7 +311,7 @@ class ProfileActivity : Activity() {
                     .get()
                     .addOnSuccessListener { documents ->
                         if (documents.isEmpty || newName == origName) {
-                            if (newPass != "") {
+                            if (newPass != "Enter new password") {
                                 val user = auth.currentUser
                                 if (user != null) {
                                     user.updatePassword(newPass)

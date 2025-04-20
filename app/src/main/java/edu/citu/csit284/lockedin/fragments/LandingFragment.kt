@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -26,10 +27,12 @@ import edu.citu.csit284.lockedin.activities.ProfileActivity
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.data.Match
 import edu.citu.csit284.lockedin.helper.LiveMatchAdapter
-import edu.citu.csit284.lockedin.util.LoadingAnimationUtil
+import edu.citu.csit284.lockedin.util.LoadingAnimationUtils
 import edu.citu.csit284.lockedin.util.MatchRepository
 import edu.citu.csit284.lockedin.util.fetchArticles
 import edu.citu.csit284.lockedin.util.setupHeaderScrollBehavior
+import edu.citu.csit284.lockedin.util.setupLeftRightAnimation
+import edu.citu.csit284.lockedin.util.startPulsatingAnimation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -49,6 +52,10 @@ class LandingFragment : Fragment() {
     private lateinit var header: LinearLayout
     private lateinit var recyclerView: RecyclerView
     private lateinit var rvBackground: ImageView
+
+    private lateinit var pointerSwipeLeft: ImageView
+    private lateinit var liveMatchesContainer: FrameLayout
+
     private lateinit var noMatches : TextView
     private lateinit var adapter: LiveMatchAdapter
     private lateinit var headerContainer: LinearLayout
@@ -100,17 +107,23 @@ class LandingFragment : Fragment() {
         header = view.findViewById(R.id.header)
         recyclerView = view.findViewById(R.id.rvView)
         rvBackground = view.findViewById(R.id.rvBackground)
+
+        liveMatchesContainer = view.findViewById(R.id.liveMatchesContainer)
+        pointerSwipeLeft = view.findViewById(R.id.pointerSwipeLeft)
+        pointerSwipeLeft.visibility = View.GONE
+
         adapter = LiveMatchAdapter(matches)
         listView = view.findViewById(R.id.articleListView)
         headerContainer = view.findViewById(R.id.headerContainer)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL, false)
+        liveMatchesContainer.visibility = View.GONE
         recyclerView.visibility = View.GONE
         rvBackground.visibility = View.GONE
         startPulsatingAnimation(header)
         startPulsatingAnimation(recyclerView)
 
-        LoadingAnimationUtil.showLoading(requireContext(), loadingView1, loadingView2, true)
+        LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, true)
         val btnProfile = view.findViewById<ImageButton>(R.id.button_profile)
         btnProfile.setOnClickListener {
             startActivity(Intent(requireContext(), ProfileActivity::class.java))
@@ -140,39 +153,10 @@ class LandingFragment : Fragment() {
     }
     override fun onDestroy() {
         super.onDestroy()
-        LoadingAnimationUtil.cancelAnimations()
+        LoadingAnimationUtils.cancelAnimations()
         coroutineScope.cancel()
     }
 
-    private fun startPulsatingAnimation(view: View) {
-        val scaleUpX = ObjectAnimator.ofFloat(view, View.SCALE_X, 1f, 1.05f)
-        val scaleUpY = ObjectAnimator.ofFloat(view, View.SCALE_Y, 1f, 1.05f)
-        val scaleDownX = ObjectAnimator.ofFloat(view, View.SCALE_X, 1.05f, 1f)
-        val scaleDownY = ObjectAnimator.ofFloat(view, View.SCALE_Y, 1.05f, 1f)
-
-        val scaleUp = AnimatorSet().apply {
-            playTogether(scaleUpX, scaleUpY)
-            duration = 950
-            interpolator = AccelerateDecelerateInterpolator()
-        }
-
-        val scaleDown = AnimatorSet().apply {
-            playTogether(scaleDownX, scaleDownY)
-            duration = 950
-            interpolator = AccelerateDecelerateInterpolator()
-        }
-
-        val pulseAnimator = AnimatorSet().apply {
-            playSequentially(scaleUp, scaleDown)
-            addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    start()
-                }
-            })
-        }
-
-        pulseAnimator.start()
-    }
     private fun loadMatches(vararg games: String) {
         coroutineScope.launch {
             val liveMatches = withContext(Dispatchers.IO) {
@@ -180,10 +164,19 @@ class LandingFragment : Fragment() {
             }
 
             if(liveMatches.isEmpty()){
+                liveMatchesContainer.visibility = View.GONE
                 recyclerView.visibility = View.GONE
                 rvBackground.visibility = View.GONE
                 noMatches.visibility = View.VISIBLE
-            }else{
+                pointerSwipeLeft.visibility = View.GONE
+            } else {
+                if(liveMatches.count() > 1) {
+                    pointerSwipeLeft.visibility = View.VISIBLE
+                    setupLeftRightAnimation(pointerSwipeLeft, recyclerView)
+                } else {
+                    pointerSwipeLeft.visibility = View.GONE
+                }
+                liveMatchesContainer.visibility = View.VISIBLE
                 recyclerView.visibility = View.VISIBLE
                 rvBackground.visibility = View.VISIBLE
                 recyclerView.scrollToPosition(0)
@@ -192,7 +185,7 @@ class LandingFragment : Fragment() {
                 adapter.notifyDataSetChanged()
             }
             fetchArticles(requireContext(), listView, caller = "landing") { hasInternet ->
-                LoadingAnimationUtil.showLoading(requireContext(), loadingView1, loadingView2, false)
+                LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, false)
                 noInternetBox.visibility = if (!hasInternet) View.VISIBLE else View.GONE
             }
         }

@@ -25,7 +25,6 @@ import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.SearchView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
@@ -37,7 +36,7 @@ import edu.citu.csit284.lockedin.activities.ProfileActivity
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.activities.MainActivity
 import edu.citu.csit284.lockedin.util.FilterUtil
-import edu.citu.csit284.lockedin.util.LoadingAnimationUtil
+import edu.citu.csit284.lockedin.util.LoadingAnimationUtils
 import edu.citu.csit284.lockedin.util.fetchArticlesSpecific
 import edu.citu.csit284.lockedin.util.fetchBookmarkedArticles
 import edu.citu.csit284.lockedin.util.fetchArticlesSearch
@@ -139,7 +138,7 @@ class ExploreFragment : Fragment() {
         searchView = view.findViewById(R.id.searchView)
         setupSearchView(view)
 
-        LoadingAnimationUtil.showLoading(requireContext(), loadingView1, loadingView2, true)
+        LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, true)
 
         listView = view.findViewById(R.id.articleListView)
 
@@ -313,7 +312,7 @@ class ExploreFragment : Fragment() {
             .setDuration(300)
             .setInterpolator(AccelerateInterpolator())
             .withEndAction {
-                LoadingAnimationUtil.showLoading(requireContext(), loadingView1, loadingView2, true)
+                LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, true)
 
                 currentCategory = newCategory
 
@@ -419,7 +418,7 @@ class ExploreFragment : Fragment() {
                     if (articlesIsEmpty) {
                         noBookmarkBox.visibility = View.VISIBLE
                     }
-                    LoadingAnimationUtil.showLoading(requireContext(), loadingView1, loadingView2, false)
+                    LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, false)
                 }
             }
             "game1", "game2", "game3" -> {
@@ -432,7 +431,7 @@ class ExploreFragment : Fragment() {
                         noArticlesBox.visibility = View.VISIBLE
                         noArticlesBoxText.text = "No articles found for \"${gameName}\"."
                     }
-                    LoadingAnimationUtil.showLoading(requireContext(), loadingView1, loadingView2, false)
+                    LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, false)
                     noInternetBox.visibility = if (!hasInternet) View.VISIBLE else View.GONE
                 }
             }
@@ -470,14 +469,14 @@ class ExploreFragment : Fragment() {
                 if (!query.isNullOrEmpty()) {
                     categoriesContainer.visibility = View.GONE
 
-                    LoadingAnimationUtil.showLoading(requireContext(), loadingView1, loadingView2, true)
+                    LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, true)
 
                     fetchArticlesSearch(requireContext(), listView, query, caller = "explore") { hasInternet ->
                         if (listView.adapter.count <= 1) {
                             noArticlesBox.visibility = View.VISIBLE
                             noArticlesBoxText.text = "No articles found for \"${query}\"."
                         }
-                        LoadingAnimationUtil.showLoading(requireContext(), loadingView1, loadingView2, false)
+                        LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, false)
                         noInternetBox.visibility = if (!hasInternet) View.VISIBLE else View.GONE
                     }
 
@@ -499,7 +498,7 @@ class ExploreFragment : Fragment() {
                 categoriesContainer.visibility = View.VISIBLE
                 currentCategory = "game1"
                 updateButtonStyles("game1")
-                LoadingAnimationUtil.showLoading(requireContext(), loadingView1, loadingView2, true)
+                LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, true)
                 loadArticles("game1")
             }
             false
@@ -508,7 +507,7 @@ class ExploreFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        LoadingAnimationUtil.cancelAnimations()
+        LoadingAnimationUtils.cancelAnimations()
     }
 
     override fun onResume() {
