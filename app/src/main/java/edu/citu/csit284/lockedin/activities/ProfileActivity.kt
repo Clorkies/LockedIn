@@ -72,6 +72,7 @@ class ProfileActivity : Activity() {
         val profileBottomSheet = findViewById<LinearLayout>(R.id.profileBottomSheet)
         profileBottomSheet.translationY = 1330f
         val imgPriv = findViewById<ImageView>(R.id.imgPriv)
+        imgPriv.visibility = View.GONE
         pass.toggle(imgPriv)
         val sharedPref = getSharedPreferences("User", MODE_PRIVATE)
         editList = mutableListOf(nameEditText, this.bio)
@@ -262,6 +263,7 @@ class ProfileActivity : Activity() {
                 editIsClicked = true
                 btn_edit.setText("Save Changes")
                 btn_logout.setText("Cancel")
+                imgPriv.visibility = View.VISIBLE
                 imgpfp.setColorFilter(Color.argb(100, 255, 255, 255), PorterDuff.Mode.LIGHTEN)
                 for (editText in editList) {
                     editText.setBackgroundResource(R.drawable.white_underline)
@@ -285,6 +287,7 @@ class ProfileActivity : Activity() {
                 imgpfp.clearColorFilter()
                 btn_edit.setText("Edit Information")
                 btn_logout.setText("Log Out")
+                imgPriv.visibility = View.GONE
                 for (editText in editList) {
                     editText.setBackgroundResource(android.R.color.transparent)
                     editText.isFocusable = false
