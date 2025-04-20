@@ -82,11 +82,11 @@ object LoadingAnimationUtils {
     }
 }
 
-fun startPulsatingAnimation(view: View) {
-    val scaleUpX = ObjectAnimator.ofFloat(view, View.SCALE_X, 1f, 1.05f)
-    val scaleUpY = ObjectAnimator.ofFloat(view, View.SCALE_Y, 1f, 1.05f)
-    val scaleDownX = ObjectAnimator.ofFloat(view, View.SCALE_X, 1.05f, 1f)
-    val scaleDownY = ObjectAnimator.ofFloat(view, View.SCALE_Y, 1.05f, 1f)
+fun startPulsatingAnimation(view: View, offset: Float = 0f) {
+    val scaleUpX = ObjectAnimator.ofFloat(view, View.SCALE_X, 1f, 1.05f + offset)
+    val scaleUpY = ObjectAnimator.ofFloat(view, View.SCALE_Y, 1f, 1.05f + offset)
+    val scaleDownX = ObjectAnimator.ofFloat(view, View.SCALE_X, 1.05f + offset, 1f)
+    val scaleDownY = ObjectAnimator.ofFloat(view, View.SCALE_Y, 1.05f + offset, 1f)
 
     val scaleUp = AnimatorSet().apply {
         playTogether(scaleUpX, scaleUpY)

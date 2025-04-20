@@ -19,13 +19,18 @@
         android:layout_height="match_parent"
         android:background="@drawable/rectangle_rounded_red"
         android:orientation="vertical"
-        android:paddingVertical="20dp">
+        android:paddingVertical="20dp"
+        android:clipToPadding="false"
+        android:clipToOutline="false"
+        android:clipChildren="false">
 
         <LinearLayout
             android:gravity="center"
             android:paddingHorizontal="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:clipToOutline="false"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -80,6 +85,8 @@
                 android:layout_weight="1" />
 
             <LinearLayout
+                android:clipToPadding="false"
+                android:clipToOutline="false"
                 android:id="@+id/overlayButton"
                 android:layout_width="90dp"
                 android:layout_height="30dp"

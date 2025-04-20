@@ -1,9 +1,5 @@
 package edu.citu.csit284.lockedin.fragments
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
@@ -12,7 +8,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -114,6 +109,7 @@ class LandingFragment : Fragment() {
         liveMatchesContainer = view.findViewById(R.id.liveMatchesContainer)
         pointerSwipeLeft = view.findViewById(R.id.pointerSwipeLeft)
         pointerSwipeLeft.visibility = View.GONE
+        setupLeftRightAnimation(pointerSwipeLeft, recyclerView)
 
         adapter = LiveMatchAdapter(matches)
         listView = view.findViewById(R.id.articleListView)
@@ -191,13 +187,9 @@ class LandingFragment : Fragment() {
                 recyclerView.visibility = View.GONE
                 rvBackground.visibility = View.GONE
                 noMatches.visibility = View.VISIBLE
-                pointerSwipeLeft.visibility = View.GONE
             } else {
                 if(liveMatches.count() > 1) {
                     pointerSwipeLeft.visibility = View.VISIBLE
-                    setupLeftRightAnimation(pointerSwipeLeft, recyclerView)
-                } else {
-                    pointerSwipeLeft.visibility = View.GONE
                 }
                 liveMatchesContainer.visibility = View.VISIBLE
                 recyclerView.visibility = View.VISIBLE

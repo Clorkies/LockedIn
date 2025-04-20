@@ -5,7 +5,6 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -50,7 +49,7 @@ class LiveMatchAdapter(private val listOfMatches : List<Match>):
         val match = listOfMatches[position]
         val context = holder.itemView.context
 
-        startPulsatingAnimation(holder.btnWatch)
+        startPulsatingAnimation(holder.btnWatch, 0.05f)
         holder.tvLeagueName.text = match.league.name
         holder.tvSerieName.text = match.serie.full_name
 
