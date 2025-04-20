@@ -36,10 +36,6 @@
             android:exported="false"
             android:theme="@style/Theme.LockedIn" />
         <activity
-            android:name=".activities.TournamentActivity"
-            android:exported="false"
-            android:theme="@style/Theme.LockedIn" />
-        <activity
             android:name=".activities.AboutDevActivity"
             android:exported="false" />
         <activity

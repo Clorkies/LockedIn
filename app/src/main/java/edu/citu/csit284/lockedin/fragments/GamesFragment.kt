@@ -114,7 +114,7 @@ class GamesFragment : Fragment() {
 
         val btnProfile = view.findViewById<ImageButton>(R.id.button_profile)
         btnProfile.setOnClickListener {
-            gamesActivityLauncher.launch(Intent(requireContext(), ProfileActivity::class.java))
+            profileActivityLauncher.launch(Intent(requireContext(), ProfileActivity::class.java))
         }
         val sharedPref = requireActivity().getSharedPreferences("User", Activity.MODE_PRIVATE)
         val userInfo = sharedPref.getString("username", "")
@@ -186,7 +186,7 @@ class GamesFragment : Fragment() {
         LoadingAnimationUtils.showLoading(requireContext(), loadingView3, loadingView4, true)
     }
 
-    private val gamesActivityLauncher = registerForActivityResult(
+    private val profileActivityLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { _ ->
         val currentId = (requireActivity() as MainActivity).navController.currentDestination?.id ?: return@registerForActivityResult

@@ -100,7 +100,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
 
         btnProfile = view.findViewById(R.id.button_profile)
         btnProfile.setOnClickListener {
-            forumsActivityLauncher.launch(Intent(requireContext(), ProfileActivity::class.java))
+            profileActivityLauncher.launch(Intent(requireContext(), ProfileActivity::class.java))
         }
 
         val btnBack = view.findViewById<ImageButton>(R.id.button_back)
@@ -146,7 +146,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
         loadFavoriteGames()
     }
 
-    private val forumsActivityLauncher = registerForActivityResult(
+    private val profileActivityLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { _ ->
         val currentId = (requireActivity() as MainActivity).navController.currentDestination?.id ?: return@registerForActivityResult

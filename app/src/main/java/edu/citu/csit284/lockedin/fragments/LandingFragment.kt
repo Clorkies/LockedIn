@@ -19,12 +19,15 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.navigation.NavOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.activities.ProfileActivity
 import edu.citu.csit284.lockedin.R
+import edu.citu.csit284.lockedin.activities.MainActivity
 import edu.citu.csit284.lockedin.data.Match
 import edu.citu.csit284.lockedin.helper.LiveMatchAdapter
 import edu.citu.csit284.lockedin.util.LoadingAnimationUtils
@@ -126,7 +129,7 @@ class LandingFragment : Fragment() {
         LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, true)
         val btnProfile = view.findViewById<ImageButton>(R.id.button_profile)
         btnProfile.setOnClickListener {
-            startActivity(Intent(requireContext(), ProfileActivity::class.java))
+            profileActivityLauncher.launch(Intent(requireContext(), ProfileActivity::class.java))
         }
         var pfp : Int
         users
@@ -155,6 +158,26 @@ class LandingFragment : Fragment() {
         super.onDestroy()
         LoadingAnimationUtils.cancelAnimations()
         coroutineScope.cancel()
+    }
+
+    private val profileActivityLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { _ ->
+        val currentId = (requireActivity() as MainActivity).navController.currentDestination?.id ?: return@registerForActivityResult
+
+        val navOptions = NavOptions.Builder()
+            .setEnterAnim(R.anim.fade_in)
+            .setExitAnim(R.anim.fade_out)
+            .setPopEnterAnim(R.anim.fade_in)
+            .setPopExitAnim(R.anim.fade_out)
+            .build()
+
+        (requireActivity() as MainActivity).apply {
+            isNavigatingFromCode = true
+            try {
+                navController.navigate(currentId, null, navOptions)
+            } catch (_: IllegalArgumentException) {}
+        }
     }
 
     private fun loadMatches(vararg games: String) {
