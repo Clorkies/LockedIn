@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.Button
 import android.widget.EditText
@@ -24,6 +25,8 @@ import edu.citu.csit284.lockedin.util.toggle
 class RegisterActivity : Activity() {
     private val users = Firebase.firestore.collection("users")
     private lateinit var auth: FirebaseAuth
+    private lateinit var loadingAnimationContainer: LinearLayout
+    private lateinit var loadingCircle: LinearLayout
 
     private fun isValidEmail(email: String): Boolean {
         val regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
@@ -45,6 +48,10 @@ class RegisterActivity : Activity() {
         val confirmPasswordEditText = findViewById<EditText>(R.id.confirmpass)
         val imgPriv = findViewById<ImageView>(R.id.imgPriv)
         val imgPriv2 = findViewById<ImageView>(R.id.imgPriv2)
+
+        loadingAnimationContainer = findViewById(R.id.loadingAnimationContainer)
+        loadingAnimationContainer.visibility = View.GONE
+        loadingCircle = findViewById(R.id.loadingCircle)
 
         val tvPasswordStrength = findViewById<TextView>(R.id.tvPasswordStrength)
         val tvRuleLength = findViewById<TextView>(R.id.tvRuleLength)
@@ -150,6 +157,8 @@ class RegisterActivity : Activity() {
             startActivity(intent)
         }
         btnRegister.setOnClickListener {
+            loadingAnimationContainer.visibility = View.VISIBLE
+
             val em = emailEditText.text.toString()
             val pass = passwordEditText.text.toString()
             val confpass = confirmPasswordEditText.text.toString()
@@ -196,12 +205,14 @@ class RegisterActivity : Activity() {
                                         users.document(firebaseUser.uid)
                                             .set(userMap)
                                             .addOnSuccessListener {
+                                                loadingAnimationContainer.visibility = View.GONE
                                                 toast("Registered Successfully!")
                                                 val intent = Intent(this, LoginActivity::class.java)
                                                 startActivity(intent)
                                                 finish()
                                             }
                                             .addOnFailureListener { e ->
+                                                loadingAnimationContainer.visibility = View.GONE
                                                 toast("Failed to save user data.")
                                                 firebaseUser.delete()
                                                     .addOnCompleteListener {  }

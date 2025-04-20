@@ -336,4 +336,27 @@
         </LinearLayout>
 
     </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/loadingAnimationContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/bg"
+        android:alpha="0.7"
+        android:gravity="center"
+        android:paddingHorizontal="40dp"
+        android:visibility="gone"
+        >
+
+        <include
+            android:id="@+id/loadingCircle"
+            android:layout_marginTop="20dp"
+            layout="@layout/view_register_loading_animation"
+            android:layout_width="match_parent"
+            android:layout_height="360dp" />
+
+    </LinearLayout>
+
 </FrameLayout>

@@ -37,7 +37,7 @@
         android:orientation="vertical"
         android:paddingTop="20dp"
         android:paddingHorizontal="20dp"
-        android:background="@drawable/background_article"
+        android:background="@drawable/wumpusbg"
         android:clipToPadding="false"
         >
 
@@ -106,15 +106,16 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
-                <Space android:layout_width="match_parent" android:layout_height="25dp"/>
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp" />
 
                 <ImageView
                     android:id="@+id/image"
@@ -122,20 +123,21 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/rounded_image"
                     android:clipToOutline="true"
-                    android:scaleType="fitCenter"
-                    />
+                    android:scaleType="fitCenter" />
 
-                <Space android:layout_height="15dp" android:layout_width="wrap_content"/>
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="15dp" />
 
                 <TextView
                     android:id="@+id/body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="17sp"
-                    android:textColor="@color/white"
-                    android:text="Content"
                     android:layout_marginLeft="2dp"
-                    />
+                    android:text="Content"
+                    android:textColor="@color/white"
+                    android:textSize="17sp" />
+
                 <EditText
                     android:id="@+id/etComment"
                     android:layout_width="match_parent"
@@ -143,18 +145,28 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/rectangle_full"
                     android:fontFamily="@font/poppins"
-                    android:padding="16dp"
                     android:hint="Add a comment!"
+                    android:padding="16dp"
                     android:textColor="@color/white"
-                    android:textColorHint="@color/fadedWhite"
-                    />
+                    android:textColorHint="@color/fadedWhite" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/comments"
-                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp" />
+
+                <ImageView
+                    android:layout_marginTop="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:src="@drawable/wumpus"/>
+
             </LinearLayout>
+
+
         </ScrollView>
+
 
     </LinearLayout>
 
