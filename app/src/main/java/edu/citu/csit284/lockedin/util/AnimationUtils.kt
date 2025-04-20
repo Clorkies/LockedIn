@@ -1,13 +1,20 @@
 package edu.citu.csit284.lockedin.util
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
+import androidx.recyclerview.widget.RecyclerView
 import edu.citu.csit284.lockedin.R
 
-object LoadingAnimationUtil {
+object LoadingAnimationUtils {
     private var animator1: ValueAnimator? = null
     private var animator2: ValueAnimator? = null
 
@@ -73,4 +80,56 @@ object LoadingAnimationUtil {
         animator2?.cancel()
         animator2 = null
     }
+}
+
+fun startPulsatingAnimation(view: View) {
+    val scaleUpX = ObjectAnimator.ofFloat(view, View.SCALE_X, 1f, 1.05f)
+    val scaleUpY = ObjectAnimator.ofFloat(view, View.SCALE_Y, 1f, 1.05f)
+    val scaleDownX = ObjectAnimator.ofFloat(view, View.SCALE_X, 1.05f, 1f)
+    val scaleDownY = ObjectAnimator.ofFloat(view, View.SCALE_Y, 1.05f, 1f)
+
+    val scaleUp = AnimatorSet().apply {
+        playTogether(scaleUpX, scaleUpY)
+        duration = 950
+        interpolator = AccelerateDecelerateInterpolator()
+    }
+
+    val scaleDown = AnimatorSet().apply {
+        playTogether(scaleDownX, scaleDownY)
+        duration = 950
+        interpolator = AccelerateDecelerateInterpolator()
+    }
+
+    val pulseAnimator = AnimatorSet().apply {
+        playSequentially(scaleUp, scaleDown)
+        addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                start()
+            }
+        })
+    }
+
+    pulseAnimator.start()
+}
+
+fun setupLeftRightAnimation(view: View, recyclerView: RecyclerView) {
+    view.visibility = View.GONE
+
+    val translateAnimation = ObjectAnimator.ofFloat(view, "translationX", 5f, -55f)
+    translateAnimation.duration = 1000
+    translateAnimation.repeatCount = ValueAnimator.INFINITE
+    translateAnimation.repeatMode = ValueAnimator.REVERSE
+    translateAnimation.interpolator = AccelerateDecelerateInterpolator()
+    translateAnimation.start()
+
+    recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if (newState == RecyclerView.SCROLL_STATE_DRAGGING ||
+                newState == RecyclerView.SCROLL_STATE_SETTLING) {
+                view.visibility = View.GONE
+                translateAnimation.cancel()
+            }
+        }
+    })
 }

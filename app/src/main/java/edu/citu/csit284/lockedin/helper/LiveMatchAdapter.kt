@@ -16,6 +16,7 @@ import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.data.Match
 import edu.citu.csit284.lockedin.activities.MatchDetailsActivity
 import com.google.gson.Gson
+import edu.citu.csit284.lockedin.util.startPulsatingAnimation
 
 class LiveMatchAdapter(private val listOfMatches : List<Match>):
     RecyclerView.Adapter<LiveMatchAdapter.ItemViewHolder>(){
@@ -49,6 +50,7 @@ class LiveMatchAdapter(private val listOfMatches : List<Match>):
         val match = listOfMatches[position]
         val context = holder.itemView.context
 
+        startPulsatingAnimation(holder.btnWatch)
         holder.tvLeagueName.text = match.league.name
         holder.tvSerieName.text = match.serie.full_name
 
@@ -99,6 +101,7 @@ class LiveMatchAdapter(private val listOfMatches : List<Match>):
                 Toast.makeText(context,"No stream available", Toast.LENGTH_SHORT).show()
             }
         }
+
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, MatchDetailsActivity::class.java)

@@ -105,17 +105,15 @@
         </LinearLayout>
 
         <ScrollView
+            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp" />
 
                 <ImageView
                     android:id="@+id/image"
@@ -134,7 +132,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
-                    android:text="Content"
+                    android:text="Body content"
                     android:textColor="@color/white"
                     android:textSize="17sp" />
 
@@ -142,7 +140,7 @@
                     android:id="@+id/etComment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginVertical="20dp"
                     android:background="@drawable/rectangle_full"
                     android:fontFamily="@font/poppins"
                     android:hint="Add a comment!"
@@ -153,11 +151,12 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/comments"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp" />
+                    android:layout_height="400dp"
+                    android:layout_marginTop="10dp"
+                    />
 
                 <ImageView
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="180dp"
                     android:src="@drawable/wumpus"/>
