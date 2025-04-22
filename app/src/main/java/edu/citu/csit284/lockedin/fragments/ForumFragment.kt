@@ -140,8 +140,6 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
             resources.displayMetrics
         ).toInt()))
 
-        setupHeaderScrollBehavior(headerContainer, rvView)
-
         setupPfp()
         loadFavoriteGames()
     }

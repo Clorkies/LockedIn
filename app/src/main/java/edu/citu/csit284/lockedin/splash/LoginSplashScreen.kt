@@ -24,6 +24,7 @@ import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.activities.MainActivity
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.util.getGameNameById
+import edu.citu.csit284.lockedin.util.toast
 
 class LoginSplashScreen : Activity() {
     private val users = Firebase.firestore.collection("users")
@@ -31,6 +32,7 @@ class LoginSplashScreen : Activity() {
     private lateinit var imgAndProfile: LinearLayout
     private val selectedGames = mutableSetOf<Int>()
     private val MAX_SELECTIONS = 3
+    private var isSaving = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,10 +112,40 @@ class LoginSplashScreen : Activity() {
             }
 
         btnProceed.setOnClickListener {
+            // Prevent multiple clicks or race conditions
+            if (isSaving) return@setOnClickListener
+
+            // Set the flag immediately
+            isSaving = true
+
             if (selectedGames.size == MAX_SELECTIONS) {
+                disableAllInteractions()
                 saveUserGameSelection()
+            } else {
+                updateProceedButtonState(btnProceed)
+                Toast.makeText(this, "Please select exactly $MAX_SELECTIONS games", Toast.LENGTH_SHORT).show()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    isSaving = false
+                }, 200)
             }
         }
+    }
+
+    private fun disableAllInteractions() {
+        val gameCards = listOf(
+            findViewById<FrameLayout>(R.id.card_valorant_frame),
+            findViewById<FrameLayout>(R.id.card_league_frame),
+            findViewById<FrameLayout>(R.id.card_csgo_frame),
+            findViewById<FrameLayout>(R.id.card_dota_frame),
+            findViewById<FrameLayout>(R.id.card_mlbb_frame),
+            findViewById<FrameLayout>(R.id.card_overwatch_frame)
+        )
+
+        // Disable all game cards
+        gameCards.forEach { it.isEnabled = false }
+
+        // Disable proceed button
+        findViewById<Button>(R.id.btn_proceed).isEnabled = false
     }
 
     private fun setupGameCardSelection(selectionCountText: TextView, btnProceed: Button) {
@@ -162,12 +194,18 @@ class LoginSplashScreen : Activity() {
     }
 
     private fun updateProceedButtonState(button: Button) {
-        button.isEnabled = selectedGames.size == MAX_SELECTIONS
-        if (button.isEnabled) {
-            button.background = ContextCompat.getDrawable(this, R.drawable.btn_register)
-        } else {
-            button.background = ContextCompat.getDrawable(this, R.drawable.btn_register_disabled)
-        }
+        button.isEnabled = false
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            val isSelectionComplete = selectedGames.size == MAX_SELECTIONS
+            button.isEnabled = isSelectionComplete
+
+            if (isSelectionComplete) {
+                button.background = ContextCompat.getDrawable(this, R.drawable.btn_register)
+            } else {
+                button.background = ContextCompat.getDrawable(this, R.drawable.btn_register_disabled)
+            }
+        }, 100)
     }
 
     private fun showCustomizationSheet() {
@@ -176,13 +214,21 @@ class LoginSplashScreen : Activity() {
         customizeSheet.visibility = View.VISIBLE
         customizeSheet.translationY = 2000f
 
-        val slideUpAnimation = ObjectAnimator.ofFloat(customizeSheet, "translationY", 2000f, 650f)
+        val slideUpAnimation = ObjectAnimator.ofFloat(customizeSheet, "translationY", 2000f, 550f)
         slideUpAnimation.duration = 800
         slideUpAnimation.interpolator = DecelerateInterpolator()
         slideUpAnimation.start()
     }
 
     private fun saveUserGameSelection() {
+        if (selectedGames.size != MAX_SELECTIONS) {
+            Toast.makeText(this, "Please select exactly $MAX_SELECTIONS games", Toast.LENGTH_SHORT).show()
+            updateProceedButtonState(findViewById(R.id.btn_proceed))
+
+            isSaving = false
+            return
+        }
+
         val sharedPref = getSharedPreferences("User", MODE_PRIVATE)
         val userInfo = sharedPref.getString("username", "")
 
@@ -197,7 +243,7 @@ class LoginSplashScreen : Activity() {
 
                     docRef.update("favGames", favGames)
                         .addOnSuccessListener {
-                            val slideDownAnimation = ObjectAnimator.ofFloat(customizeSheet, "translationY", 650f, 2000f)
+                            val slideDownAnimation = ObjectAnimator.ofFloat(customizeSheet, "translationY", 550f, 2000f)
                             slideDownAnimation.duration = 500
                             slideDownAnimation.interpolator = AccelerateInterpolator()
                             slideDownAnimation.start()
