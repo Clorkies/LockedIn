@@ -144,6 +144,7 @@
                     android:background="@drawable/rectangle_full"
                     android:fontFamily="@font/poppins"
                     android:hint="Add a comment!"
+                    android:maxLength="255"
                     android:padding="16dp"
                     android:textColor="@color/white"
                     android:textColorHint="@color/fadedWhite" />

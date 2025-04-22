@@ -63,6 +63,7 @@
             android:layout_height="wrap_content"
             android:text="Title"
             android:textSize="18sp"
+            android:maxLength="180"
             android:textStyle="bold"
             android:textColor="@color/white" />
         <ImageView
@@ -83,6 +84,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:text="Sample body"
+            android:maxLength="255"
             android:textColor="@color/silver"/>
         <LinearLayout
             android:layout_marginTop="10dp"
