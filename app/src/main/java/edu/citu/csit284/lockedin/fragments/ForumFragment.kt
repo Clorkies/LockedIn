@@ -39,7 +39,6 @@ import edu.citu.csit284.lockedin.activities.MainActivity
 import edu.citu.csit284.lockedin.activities.PostActivity
 import edu.citu.csit284.lockedin.data.Post
 import edu.citu.csit284.lockedin.helper.BottomSpace
-import edu.citu.csit284.lockedin.util.setupHeaderScrollBehavior
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
