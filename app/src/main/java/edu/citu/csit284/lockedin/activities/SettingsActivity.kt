@@ -146,6 +146,9 @@ class SettingsActivity : Activity() {
 
     private fun setupSaveButton() {
         btnSavePrefGames.setOnClickListener {
+            setAllSwitchesEnabled(false)
+            btnSavePrefGames.isEnabled = false
+
             if (games.size == 3) {
                 updateFirebaseFavGames()
                 originalGames = games.toList()
@@ -153,8 +156,19 @@ class SettingsActivity : Activity() {
                 toast("Preferred games updated successfully")
             } else {
                 toast("Please select exactly 3 games")
+                updateSaveButtonState()
             }
+            setAllSwitchesEnabled(true)
         }
+    }
+
+    private fun setAllSwitchesEnabled(enabled: Boolean) {
+        sw1.isEnabled = enabled
+        sw2.isEnabled = enabled
+        sw3.isEnabled = enabled
+        sw4.isEnabled = enabled
+        sw5.isEnabled = enabled
+        sw6.isEnabled = enabled
     }
 
     private fun setup(games: List<Int>) {
