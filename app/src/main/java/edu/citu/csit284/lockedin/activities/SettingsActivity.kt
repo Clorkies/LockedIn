@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -44,6 +45,7 @@ class SettingsActivity : Activity() {
     private var username: String? = null
     private lateinit var imgPfp : ImageView
     private lateinit var tvName : TextView
+    private lateinit var btnProfile : LinearLayout
 
     private lateinit var btnSavePrefGames: Button
 
@@ -68,6 +70,7 @@ class SettingsActivity : Activity() {
         sw6 = findViewById(R.id.sw6)
         imgPfp = findViewById(R.id.pfp)
         tvName = findViewById(R.id.name)
+        btnProfile = findViewById(R.id.profileBtn)
         btnSavePrefGames = findViewById(R.id.btnSavePrefGames)
         btnSavePrefGames.visibility = View.GONE
 
@@ -84,6 +87,7 @@ class SettingsActivity : Activity() {
             sheet.findViewById<ImageButton>(R.id.button_back)?.setOnClickListener { bottom.dismiss() }
             bottom.show()
         }
+        btnProfile.setOnClickListener { startActivity(Intent(this,ProfileActivity::class.java)) }
 
         termsContainer = findViewById(R.id.terms)
         termsContainer.setOnClickListener {
