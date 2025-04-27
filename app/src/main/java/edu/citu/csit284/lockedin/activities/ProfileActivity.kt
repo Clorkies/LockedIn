@@ -26,6 +26,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.view.setPadding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.SetOptions
@@ -266,7 +267,7 @@ class ProfileActivity : Activity() {
                 imgPriv.visibility = View.VISIBLE
                 imgpfp.setColorFilter(Color.argb(100, 255, 255, 255), PorterDuff.Mode.LIGHTEN)
                 for (editText in editList) {
-                    editText.setBackgroundResource(R.drawable.white_underline)
+                    editText.setBackgroundResource(R.drawable.settings_background)
                     editText.isFocusable = true
                     editText.isFocusableInTouchMode = true
                     editText.isCursorVisible = true
