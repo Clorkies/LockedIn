@@ -21,9 +21,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import edu.citu.csit284.lockedin.activities.ProfileActivity
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.activities.MainActivity
+import edu.citu.csit284.lockedin.activities.SettingsActivity
 import edu.citu.csit284.lockedin.data.Match
 import edu.citu.csit284.lockedin.helper.LiveMatchAdapter
 import edu.citu.csit284.lockedin.util.LoadingAnimationUtils
@@ -124,26 +124,10 @@ class LandingFragment : Fragment() {
         startPulsatingAnimation(recyclerView)
 
         LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, true)
-        val btnProfile = view.findViewById<ImageButton>(R.id.button_profile)
-        btnProfile.setOnClickListener {
-            profileActivityLauncher.launch(Intent(requireContext(), ProfileActivity::class.java))
+        val btnSettings = view.findViewById<ImageButton>(R.id.button_settings)
+        btnSettings.setOnClickListener {
+            settingsActivityLauncher.launch(Intent(requireContext(), SettingsActivity::class.java))
         }
-        var pfp : Int
-        users
-            .whereEqualTo("username",userInfo)
-            .get()
-            .addOnSuccessListener {documents ->
-                if(!documents.isEmpty){
-                    val document = documents.documents[0]
-                    pfp = document.getLong("pfpID")?.toInt() ?: 2
-                    when (pfp) {
-                        1 -> { btnProfile.setImageResource(R.drawable.red_pfp) }
-                        2 -> { btnProfile.setImageResource(R.drawable.default_pfp) }
-                        3 -> { btnProfile.setImageResource(R.drawable.green_pfp) }
-                        4 -> { btnProfile.setImageResource(R.drawable.blue_pfp) }
-                    }
-                }
-            }
 
         listView = view.findViewById(R.id.articleListView)
 
@@ -157,7 +141,7 @@ class LandingFragment : Fragment() {
         coroutineScope.cancel()
     }
 
-    private val profileActivityLauncher = registerForActivityResult(
+    private val settingsActivityLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { _ ->
         val currentId = (requireActivity() as MainActivity).navController.currentDestination?.id ?: return@registerForActivityResult
