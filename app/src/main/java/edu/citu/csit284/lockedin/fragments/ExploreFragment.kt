@@ -161,7 +161,7 @@ class ExploreFragment : Fragment() {
         game2ListButton.setOnClickListener { if (currentCategory != "game2") { switchCategory("game2") } }
         game3ListButton.setOnClickListener { if (currentCategory != "game3") { switchCategory("game3") } }
 
-        setupHeaderScrollBehavior(headerContainer, listView, 0)
+//        setupHeaderScrollBehavior(headerContainer, listView, 0)
     }
 
     private val profileActivityLauncher = registerForActivityResult(

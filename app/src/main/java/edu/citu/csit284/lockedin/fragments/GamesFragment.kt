@@ -180,7 +180,7 @@ class GamesFragment : Fragment() {
         noInternetBox = view.findViewById(R.id.noInternetBox)
         noInternetBox.visibility = View.GONE
 
-        setupHeaderScrollBehavior(headerContainer, recyclerView)
+//        setupHeaderScrollBehavior(headerContainer, recyclerView)
 
         LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, true)
         LoadingAnimationUtils.showLoading(requireContext(), loadingView3, loadingView4, true)

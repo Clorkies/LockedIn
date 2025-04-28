@@ -149,7 +149,7 @@ class LandingFragment : Fragment() {
 
         loadMatches()
 
-        setupHeaderScrollBehavior(headerContainer, listView, 500)
+//        setupHeaderScrollBehavior(headerContainer, listView, 500)
     }
     override fun onDestroy() {
         super.onDestroy()
