@@ -75,6 +75,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Placeholder Name"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="20dp"
             android:textColor="@color/yellow"
             android:textStyle="bold"
             android:textSize="28sp"
@@ -93,6 +95,8 @@
             android:gravity="center"
             android:layout_width="wrap_content"
             android:maxWidth="300dp"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="20dp"
             android:layout_height="wrap_content"
             android:text="Add a bio!"
             android:textColor="@color/white"
@@ -116,7 +120,7 @@
         android:background="@drawable/rectangle_rounded_bg_dark"
         android:orientation="vertical"
         android:paddingHorizontal="25dp"
-        android:translationY="530dp">
+        android:translationY="500dp">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -125,6 +129,7 @@
             android:layout_marginTop="35dp">
 
             <TextView
+                android:layout_marginLeft="15dp"
                 android:layout_marginBottom="-5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -136,6 +141,7 @@
                 />
 
             <EditText
+                android:layout_marginLeft="15dp"
                 android:id="@+id/email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -161,6 +167,7 @@
             android:layout_marginTop="25dp">
 
             <TextView
+                android:layout_marginLeft="15dp"
                 android:layout_marginBottom="-5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -176,9 +183,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <EditText
+
                     android:id="@+id/password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingVertical="10dp"
+                    android:paddingHorizontal="20dp"
                     android:gravity="center"
                     android:text="samplepassword"
                     android:textColor="@color/white"
@@ -198,6 +208,7 @@
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:src="@drawable/priv_icon"
+                    android:layout_gravity="center_vertical"
                     android:alpha="0.5"
                     />
             </LinearLayout>
@@ -218,6 +229,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:layout_marginLeft="15dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_medium"
@@ -227,6 +239,7 @@
                     android:textSize="16dp"
                     android:layout_marginBottom="5dp"/>
                 <TextView
+                    android:layout_marginLeft="15dp"
                     android:id="@+id/tvPasswordStrength"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -238,6 +251,7 @@
             </LinearLayout>
 
             <TextView
+                android:layout_marginLeft="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
@@ -246,6 +260,7 @@
                 android:textSize="13dp"/>
 
             <TextView
+                android:layout_marginLeft="15dp"
                 android:id="@+id/tvRuleLength"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -255,6 +270,7 @@
                 android:textSize="13dp"/>
 
             <TextView
+                android:layout_marginLeft="15dp"
                 android:id="@+id/tvRuleUppercase"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -264,6 +280,7 @@
                 android:textSize="13dp"/>
 
             <TextView
+                android:layout_marginLeft="15dp"
                 android:id="@+id/tvRuleNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -283,11 +300,13 @@
         android:translationY="-30dp"
         android:layout_gravity="bottom">
         <Button
+            android:layout_marginHorizontal="15dp"
             android:id="@+id/btn_edit"
-            android:layout_width="250dp"
-            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
+            android:padding="12dp"
             android:background="@drawable/devbutton"
             android:scaleType="centerCrop"
             android:text="Edit Information"
@@ -296,14 +315,16 @@
             android:textAllCaps="false"
             android:textStyle="bold" />
         <Button
+            android:layout_marginHorizontal="15dp"
             android:id="@+id/button_logout"
-            android:layout_width="250dp"
-            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="15dp"
+            android:padding="12dp"
             android:background="@drawable/rectangle_rounded_red"
             android:scaleType="centerCrop"
-            android:text="Log out"
+            android:text="Log Out"
             android:textSize="18sp"
             android:textAllCaps="false"
             android:textColor="@color/white"

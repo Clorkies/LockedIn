@@ -31,7 +31,6 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
 import com.google.firebase.ktx.Firebase
-import edu.citu.csit284.lockedin.activities.ProfileActivity
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.activities.CreatePostActivity
 import com.google.firebase.firestore.ktx.firestore
@@ -40,6 +39,7 @@ import edu.citu.csit284.lockedin.activities.PostActivity
 import edu.citu.csit284.lockedin.data.Post
 import edu.citu.csit284.lockedin.helper.BottomSpace
 import com.google.firebase.auth.FirebaseAuth
+import edu.citu.csit284.lockedin.activities.SettingsActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -64,7 +64,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
     private var userUid: String? = null
     private var currentCategory = "game1"
     private var previousCategory = "game1"
-    private lateinit var btnProfile: ImageButton
+    private lateinit var btnSettings: ImageButton
     private val gamesMap = mapOf(
         1 to "valorant",
         2 to "lol",
@@ -97,9 +97,9 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btnProfile = view.findViewById(R.id.button_profile)
-        btnProfile.setOnClickListener {
-            profileActivityLauncher.launch(Intent(requireContext(), ProfileActivity::class.java))
+        btnSettings = view.findViewById(R.id.button_settings)
+        btnSettings.setOnClickListener {
+            settingsActivityLauncher.launch(Intent(requireContext(), SettingsActivity::class.java))
         }
 
         val btnBack = view.findViewById<ImageButton>(R.id.button_back)
@@ -139,11 +139,10 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
             resources.displayMetrics
         ).toInt()))
 
-        setupPfp()
         loadFavoriteGames()
     }
 
-    private val profileActivityLauncher = registerForActivityResult(
+    private val settingsActivityLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { _ ->
         val currentId = (requireActivity() as MainActivity).navController.currentDestination?.id ?: return@registerForActivityResult
@@ -566,36 +565,6 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
         }
     }
 
-    private fun setupPfp() {
-        var pfp: Int
-        userUid?.let {
-            users.whereEqualTo("uid", it)
-                .get()
-                .addOnSuccessListener { documents ->
-                    if (!documents.isEmpty) {
-                        val document = documents.documents[0]
-                        pfp = document.getLong("pfpID")?.toInt() ?: 2
-                        when (pfp) {
-                            1 -> {
-                                btnProfile.setImageResource(R.drawable.red_pfp)
-                            }
-
-                            2 -> {
-                                btnProfile.setImageResource(R.drawable.default_pfp)
-                            }
-
-                            3 -> {
-                                btnProfile.setImageResource(R.drawable.green_pfp)
-                            }
-
-                            4 -> {
-                                btnProfile.setImageResource(R.drawable.blue_pfp)
-                            }
-                        }
-                    }
-                }
-        }
-    }
 
     override fun onItemClick(position: Int) {
         val post = postList[position]

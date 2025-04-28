@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -42,6 +43,9 @@ class SettingsActivity : Activity() {
     private lateinit var sw5: SwitchCompat
     private lateinit var sw6: SwitchCompat
     private var username: String? = null
+    private lateinit var imgPfp : ImageView
+    private lateinit var tvName : TextView
+    private lateinit var btnProfile : LinearLayout
 
     private lateinit var btnSavePrefGames: Button
 
@@ -64,6 +68,9 @@ class SettingsActivity : Activity() {
         sw4 = findViewById(R.id.sw4)
         sw5 = findViewById(R.id.sw5)
         sw6 = findViewById(R.id.sw6)
+        imgPfp = findViewById(R.id.pfp)
+        tvName = findViewById(R.id.name)
+        btnProfile = findViewById(R.id.profileBtn)
         btnSavePrefGames = findViewById(R.id.btnSavePrefGames)
         btnSavePrefGames.visibility = View.GONE
 
@@ -80,6 +87,7 @@ class SettingsActivity : Activity() {
             sheet.findViewById<ImageButton>(R.id.button_back)?.setOnClickListener { bottom.dismiss() }
             bottom.show()
         }
+        btnProfile.setOnClickListener { startActivity(Intent(this,ProfileActivity::class.java)) }
 
         termsContainer = findViewById(R.id.terms)
         termsContainer.setOnClickListener {
@@ -112,6 +120,7 @@ class SettingsActivity : Activity() {
         findViewById<Button>(R.id.btnDeveloper).setOnClickListener { startActivity(Intent(this, AboutDevActivity::class.java)) }
         val sharedPref = getSharedPreferences("User", MODE_PRIVATE)
         username = sharedPref.getString("username", "")
+        var pfp : Int
         username?.let {
             users.whereEqualTo("username", it)
                 .limit(1)
@@ -119,6 +128,14 @@ class SettingsActivity : Activity() {
                 .addOnSuccessListener { documents ->
                     if (documents.isEmpty) return@addOnSuccessListener
                     val document = documents.documents[0]
+                    pfp = document.getLong("pfpID")?.toInt() ?: 2
+                    when (pfp) {
+                        1 -> { imgPfp.setImageResource(R.drawable.red_pfp) }
+                        2 -> { imgPfp.setImageResource(R.drawable.default_pfp) }
+                        3 -> { imgPfp.setImageResource(R.drawable.green_pfp) }
+                        4 -> { imgPfp.setImageResource(R.drawable.blue_pfp) }
+                    }
+                    tvName.text = document.get("username").toString()
                     val rawFavGames = document.get("favGames") as? List<Long>
                     games = rawFavGames?.map { it.toInt() }?.toMutableList() ?: mutableListOf()
                     originalGames = games.toList()

@@ -35,6 +35,7 @@ import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.activities.ProfileActivity
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.activities.MainActivity
+import edu.citu.csit284.lockedin.activities.SettingsActivity
 import edu.citu.csit284.lockedin.util.FilterUtil
 import edu.citu.csit284.lockedin.util.LoadingAnimationUtils
 import edu.citu.csit284.lockedin.util.fetchArticlesSpecific
@@ -89,28 +90,10 @@ class ExploreFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val btnProfile = view.findViewById<ImageButton>(R.id.button_profile)
-        btnProfile.setOnClickListener {
-            profileActivityLauncher.launch(Intent(requireContext(), ProfileActivity::class.java))
+        val btnSettings = view.findViewById<ImageButton>(R.id.button_settings)
+        btnSettings.setOnClickListener {
+            settingsActivityLauncher.launch(Intent(requireContext(), SettingsActivity::class.java))
         }
-        val sharedPref = requireActivity().getSharedPreferences("User", Activity.MODE_PRIVATE)
-        val userInfo = sharedPref.getString("username","")
-        var pfp : Int
-        users
-            .whereEqualTo("username",userInfo)
-            .get()
-            .addOnSuccessListener {documents ->
-                if(!documents.isEmpty){
-                    val document = documents.documents[0]
-                    pfp = document.getLong("pfpID")?.toInt() ?: 2
-                    when (pfp) {
-                        1 -> { btnProfile.setImageResource(R.drawable.red_pfp) }
-                        2 -> { btnProfile.setImageResource(R.drawable.default_pfp) }
-                        3 -> { btnProfile.setImageResource(R.drawable.green_pfp) }
-                        4 -> { btnProfile.setImageResource(R.drawable.blue_pfp) }
-                    }
-                }
-            }
 
         view.findViewById<ImageButton>(R.id.button_back).setOnClickListener {
             when (caller) {
@@ -164,7 +147,7 @@ class ExploreFragment : Fragment() {
 //        setupHeaderScrollBehavior(headerContainer, listView, 0)
     }
 
-    private val profileActivityLauncher = registerForActivityResult(
+    private val settingsActivityLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { _ ->
         val currentId = (requireActivity() as MainActivity).navController.currentDestination?.id ?: return@registerForActivityResult
