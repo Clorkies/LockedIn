@@ -439,9 +439,6 @@ class ProfileActivity : Activity() {
         val btn_back = findViewById<ImageButton>(R.id.button_back)
         btn_back.setOnClickListener { finish() }
 
-        val btn_settings = findViewById<ImageButton>(R.id.button_settings)
-        btn_settings.setOnClickListener { startActivity(Intent(this, SettingsActivity::class.java)) }
-
         editList.forEach { editText ->
             editText.setOnEditorActionListener { v, actionId, event ->
                 if (actionId == EditorInfo.IME_ACTION_DONE ||

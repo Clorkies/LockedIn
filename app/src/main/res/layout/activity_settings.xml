@@ -76,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:orientation="horizontal"
-                android:background="@drawable/rectangle_author_bg"
+                android:background="@drawable/settings_background"
                 android:layout_marginHorizontal="20dp"
                 android:paddingHorizontal="15dp"
                 >

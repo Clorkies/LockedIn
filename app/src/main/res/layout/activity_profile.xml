@@ -46,11 +46,9 @@
                 android:textSize="15sp"
                 android:gravity="center"/>
 
-            <ImageButton
-                android:id="@+id/button_settings"
+            <View
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:background="@drawable/btn_settings"
                 android:scaleType="centerCrop"
                 android:layout_marginStart="10dp" />
 
@@ -185,11 +183,10 @@
                 <EditText
 
                     android:id="@+id/password"
-                    android:layout_width="wrap_content"
+                    android:layout_width="220dp"
                     android:layout_height="wrap_content"
                     android:paddingVertical="10dp"
                     android:paddingHorizontal="20dp"
-                    android:gravity="center"
                     android:text="samplepassword"
                     android:textColor="@color/white"
                     android:textSize="18sp"
