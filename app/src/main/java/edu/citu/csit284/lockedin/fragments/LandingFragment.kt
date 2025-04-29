@@ -24,6 +24,7 @@ import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.activities.MainActivity
 import edu.citu.csit284.lockedin.activities.SettingsActivity
+import edu.citu.csit284.lockedin.caches.LiveMatchesCache
 import edu.citu.csit284.lockedin.data.Match
 import edu.citu.csit284.lockedin.helper.LiveMatchAdapter
 import edu.citu.csit284.lockedin.util.LoadingAnimationUtils
@@ -163,27 +164,42 @@ class LandingFragment : Fragment() {
 
     private fun loadMatches(vararg games: String) {
         coroutineScope.launch {
-            val liveMatches = withContext(Dispatchers.IO) {
-                matchRepository.getLiveMatches(*games)
+            val allLiveMatches = mutableListOf<Match>()
+
+            val fetchedLiveMatches = withContext(Dispatchers.IO) {
+                val fetchedResults = mutableMapOf<String, List<Match>>()
+                for (game in games) {
+                    val cachedMatches = LiveMatchesCache.getMatchesFor(game.lowercase())
+                    if (cachedMatches != null) {
+                        fetchedResults[game.lowercase()] = cachedMatches
+                    } else {
+                        val freshMatches = matchRepository.getLiveMatches(game)
+                        LiveMatchesCache.storeMatchesFor(game.lowercase(), freshMatches)
+                        fetchedResults[game.lowercase()] = freshMatches
+                    }
+                    allLiveMatches.addAll(fetchedResults[game.lowercase()] ?: emptyList())
+                }
+                allLiveMatches.toList()
             }
 
-            if(liveMatches.isEmpty()){
+            if (fetchedLiveMatches.isEmpty()) {
                 liveMatchesContainer.visibility = View.GONE
                 recyclerView.visibility = View.GONE
                 rvBackground.visibility = View.GONE
                 noMatches.visibility = View.VISIBLE
             } else {
-                if(liveMatches.size> 1) {
+                if (fetchedLiveMatches.size > 1) {
                     pointerSwipeLeft.visibility = View.VISIBLE
-                }else{
+                } else {
                     pointerSwipeLeft.visibility = View.GONE
                 }
+                noMatches.visibility = View.GONE
                 liveMatchesContainer.visibility = View.VISIBLE
                 recyclerView.visibility = View.VISIBLE
                 rvBackground.visibility = View.VISIBLE
                 recyclerView.scrollToPosition(0)
                 matches.clear()
-                matches.addAll(liveMatches)
+                matches.addAll(fetchedLiveMatches)
                 adapter.notifyDataSetChanged()
             }
             fetchArticles(requireContext(), listView, caller = "landing") { hasInternet ->
