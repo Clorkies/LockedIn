@@ -57,6 +57,7 @@ class GamesFragment : Fragment() {
     private lateinit var noInternetBox: LinearLayout
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: UpcomingMatchAdapter
+    private lateinit var noGames : TextView
     private val matches = mutableListOf<Match>()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
     private val games = listOf(
@@ -98,6 +99,7 @@ class GamesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        noGames = view.findViewById(R.id.noGames)
         recyclerView = view.findViewById(R.id.rvView)
         adapter = UpcomingMatchAdapter(matches)
         recyclerView.adapter = adapter
@@ -351,16 +353,23 @@ class GamesFragment : Fragment() {
                         else -> emptyList()
                     }
                 }
-                    UpcomingMatchesCache.storeMatchesFor(game.lowercase(), fetchedMatches)
-                    fetchedMatches
+                UpcomingMatchesCache.storeMatchesFor(game.lowercase(), fetchedMatches)
+                fetchedMatches
             }
+            recyclerView.visibility = View.GONE
+            noGames.visibility = View.GONE
             LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, false)
             LoadingAnimationUtils.showLoading(requireContext(), loadingView3, loadingView4, false)
-            recyclerView.visibility = View.VISIBLE
-            recyclerView.scrollToPosition(0)
-            matches.clear()
-            matches.addAll(upcomingMatches)
-            adapter.notifyDataSetChanged()
+
+            if (upcomingMatches.isNotEmpty()) {
+                matches.clear()
+                matches.addAll(upcomingMatches)
+                adapter.notifyDataSetChanged()
+                recyclerView.visibility = View.VISIBLE
+                recyclerView.scrollToPosition(0)
+            } else {
+                noGames.visibility = View.VISIBLE
+            }
         }
     }
 

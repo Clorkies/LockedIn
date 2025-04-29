@@ -119,6 +119,18 @@
         </LinearLayout>
     </LinearLayout>
 
+    <TextView
+        android:layout_marginTop="25dp"
+        android:id="@+id/noGames"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No Matches Scheduled!"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:textSize="24dp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:visibility="gone"/>
 
 
     <include
