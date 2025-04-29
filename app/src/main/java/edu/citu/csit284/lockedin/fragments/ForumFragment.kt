@@ -25,6 +25,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
@@ -40,6 +41,9 @@ import edu.citu.csit284.lockedin.data.Post
 import edu.citu.csit284.lockedin.helper.BottomSpace
 import com.google.firebase.auth.FirebaseAuth
 import edu.citu.csit284.lockedin.activities.SettingsActivity
+import edu.citu.csit284.lockedin.caches.PostsCache
+import edu.citu.csit284.lockedin.caches.UpcomingMatchesCache
+import edu.citu.csit284.lockedin.util.LoadingAnimationUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -78,6 +82,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
     private lateinit var postAdapter: PostAdapter
     private val postList = mutableListOf<Post>()
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
+    private lateinit var refresh : SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,7 +117,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
                 else -> requireActivity().onBackPressedDispatcher.onBackPressed()
             }
         }
-
+        refresh = view.findViewById(R.id.refresh)
         headerContainer = view.findViewById(R.id.headerContainer)
         btnGame1 = view.findViewById(R.id.game1Btn)
         btnGame1Text = view.findViewById(R.id.game1)
@@ -140,6 +145,15 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
         ).toInt()))
 
         loadFavoriteGames()
+        refresh.setOnRefreshListener {
+            val currentGame = getCurrentGame()
+            if (currentGame != null) {
+                UpcomingMatchesCache.clearGameCache(currentGame.lowercase())
+            }
+            loadPostsForCategory(currentCategory)
+
+            refresh.isRefreshing = false
+        }
     }
 
     private val settingsActivityLauncher = registerForActivityResult(
@@ -192,7 +206,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
             setupGameButton(btnGame1, btnGame1Text, prefNames[0], 1)
             btnGame1.setOnClickListener {
                 if (currentCategory != "game1") {
-                    switchCategory("game1", prefNames[0])
+                    switchCategory("game1")
                 }
             }
         } else {
@@ -203,7 +217,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
             setupGameButton(btnGame2, btnGame2Text, prefNames[1], 2)
             btnGame2.setOnClickListener {
                 if (currentCategory != "game2") {
-                    switchCategory("game2", prefNames[1])
+                    switchCategory("game2")
                 }
             }
         } else {
@@ -214,7 +228,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
             setupGameButton(btnGame3, btnGame3Text, prefNames[2], 3)
             btnGame3.setOnClickListener {
                 if (currentCategory != "game3") {
-                    switchCategory("game3", prefNames[2])
+                    switchCategory("game3")
                 }
             }
         } else {
@@ -264,7 +278,7 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
         button.tag = "game$buttonIndex"
     }
 
-    private fun switchCategory(newCategory: String, newGame: String) {
+    private fun switchCategory(newCategory: String) {
         resetButtonToInactive(previousCategory)
         currentCategory = newCategory
         updateButtonStyles(newCategory)
@@ -352,18 +366,25 @@ class ForumFragment : Fragment(), PostAdapter.OnItemClickListener {
             "game3" -> prefNames.getOrNull(2) ?: "csgo"
             else -> "valorant"
         }
-        forums.firestore.collection("forums/$gameName/posts")
-            .orderBy("timestamp", Query.Direction.DESCENDING)
-            .limit(20)
-            .get()
-            .addOnSuccessListener { querySnapshot ->
-                val newPosts = querySnapshot.documents.map { document ->
-                    mapDocumentToPost(document)
+        val cachedPosts = PostsCache.getPostsFor(gameName.lowercase())
+        if(cachedPosts != null){
+            postList.clear()
+            postList.addAll(cachedPosts)
+            postAdapter.notifyDataSetChanged()
+        }else{
+            forums.firestore.collection("forums/$gameName/posts")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .limit(20)
+                .get()
+                .addOnSuccessListener { querySnapshot ->
+                    val newPosts = querySnapshot.documents.map { document ->
+                        mapDocumentToPost(document)
+                    }
+                    postList.clear()
+                    postList.addAll(newPosts)
+                    postAdapter.notifyDataSetChanged()
                 }
-                postList.clear()
-                postList.addAll(newPosts)
-                postAdapter.notifyDataSetChanged()
-            }
+        }
     }
 
     private fun mapDocumentToPost(document: DocumentSnapshot): Post {
