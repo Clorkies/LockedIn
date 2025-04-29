@@ -89,7 +89,7 @@ dependencies {
     // Article Web View
     implementation("androidx.browser:browser:1.5.0")
 
-
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

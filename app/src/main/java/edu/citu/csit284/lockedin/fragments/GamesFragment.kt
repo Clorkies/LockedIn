@@ -25,6 +25,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.R
@@ -81,6 +82,7 @@ class GamesFragment : Fragment() {
     private var userInfo: String? = null
     private var currentCategory = "game1"
     private var previousCategory = "game1"
+    private lateinit var refresh : SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,6 +107,8 @@ class GamesFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.visibility = View.GONE
+
+        refresh = view.findViewById(R.id.refresh)
 
         // Para di matago behind the navbar ang last item sa scroll/listview
         val bottomSpace = TypedValue.applyDimension(
@@ -171,6 +175,25 @@ class GamesFragment : Fragment() {
 
         LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, true)
         LoadingAnimationUtils.showLoading(requireContext(), loadingView3, loadingView4, true)
+
+        refresh.setOnRefreshListener {
+            val currentGame: String = when (currentCategory) {
+                "game1" -> prefNames[0]
+                "game2" -> prefNames[1]
+                "game3" -> prefNames[2]
+                else -> prefNames[0]
+            }
+            UpcomingMatchesCache.clearGameCache(currentGame.lowercase())
+
+            LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, true)
+            LoadingAnimationUtils.showLoading(requireContext(), loadingView3, loadingView4, true)
+            recyclerView.visibility = View.GONE
+            noGames.visibility = View.GONE
+
+            loadMatches(currentGame)
+
+            refresh.isRefreshing = false
+        }
     }
 
     private val settingsActivityLauncher = registerForActivityResult(
