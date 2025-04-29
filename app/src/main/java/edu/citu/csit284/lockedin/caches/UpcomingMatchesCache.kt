@@ -2,7 +2,7 @@ package edu.citu.csit284.lockedin.caches
 
 import edu.citu.csit284.lockedin.data.Match
 
-class UpcomingMatchesCache {
+object UpcomingMatchesCache {
     private val cache = mutableMapOf<String, List<Match>>()
     fun getMatchesFor(game: String): List<Match>? {
         return cache[game]

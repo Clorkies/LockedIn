@@ -30,6 +30,7 @@ import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.activities.MainActivity
 import edu.citu.csit284.lockedin.activities.SettingsActivity
+import edu.citu.csit284.lockedin.caches.UpcomingMatchesCache
 import edu.citu.csit284.lockedin.data.Match
 import edu.citu.csit284.lockedin.helper.BottomSpace
 import edu.citu.csit284.lockedin.helper.UpcomingMatchAdapter
@@ -334,16 +335,24 @@ class GamesFragment : Fragment() {
 
     private fun loadMatches(game: String) {
         coroutineScope.launch {
-            val upcomingMatches = withContext(Dispatchers.IO) {
-                when (game.lowercase()) {
-                    "valorant" -> matchRepository.getUpcomingValorantMatches()
-                    "lol" -> matchRepository.getUpcomingLoLMatches()
-                    "csgo" -> matchRepository.getUpcomingCSGOMatches()
-                    "dota2" -> matchRepository.getUpcomingDotaMatches()
-                    "mlbb" -> matchRepository.getUpcomingMLBBMatches()
-                    "overwatch" -> matchRepository.getUpcomingOverwatchMatches()
-                    else -> emptyList()
+            val cachedMatches = UpcomingMatchesCache.getMatchesFor(game.lowercase())
+
+            val upcomingMatches = if (cachedMatches != null){
+                cachedMatches
+            }else{
+                val fetchedMatches = withContext(Dispatchers.IO) {
+                    when (game.lowercase()) {
+                        "valorant" -> matchRepository.getUpcomingValorantMatches()
+                        "lol" -> matchRepository.getUpcomingLoLMatches()
+                        "csgo" -> matchRepository.getUpcomingCSGOMatches()
+                        "dota2" -> matchRepository.getUpcomingDotaMatches()
+                        "mlbb" -> matchRepository.getUpcomingMLBBMatches()
+                        "overwatch" -> matchRepository.getUpcomingOverwatchMatches()
+                        else -> emptyList()
+                    }
                 }
+                    UpcomingMatchesCache.storeMatchesFor(game.lowercase(), fetchedMatches)
+                    fetchedMatches
             }
             LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, false)
             LoadingAnimationUtils.showLoading(requireContext(), loadingView3, loadingView4, false)
