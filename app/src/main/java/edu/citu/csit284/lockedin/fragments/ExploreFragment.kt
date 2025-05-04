@@ -19,6 +19,7 @@ import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.HeaderViewListAdapter
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -30,19 +31,29 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.activities.ProfileActivity
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.activities.MainActivity
 import edu.citu.csit284.lockedin.activities.SettingsActivity
+import edu.citu.csit284.lockedin.caches.ArticlesCache
+import edu.citu.csit284.lockedin.data.Article
+import edu.citu.csit284.lockedin.helper.ArticleAdapter
 import edu.citu.csit284.lockedin.util.FilterUtil
 import edu.citu.csit284.lockedin.util.LoadingAnimationUtils
+import edu.citu.csit284.lockedin.util.fetchArticles
 import edu.citu.csit284.lockedin.util.fetchArticlesSpecific
 import edu.citu.csit284.lockedin.util.fetchBookmarkedArticles
 import edu.citu.csit284.lockedin.util.fetchArticlesSearch
 import edu.citu.csit284.lockedin.util.getGameNameById
 import edu.citu.csit284.lockedin.util.setupHeaderScrollBehavior
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ExploreFragment : Fragment() {
 
@@ -69,11 +80,14 @@ class ExploreFragment : Fragment() {
     private lateinit var game2ListButtonText: TextView
     private lateinit var game3ListButton: LinearLayout
     private lateinit var game3ListButtonText: TextView
+    private lateinit var refresh : SwipeRefreshLayout
 
     private lateinit var listView: ListView
 
     private var currentCategory = "game1"
     private var previousCategory = "game1"
+    private val loadedCategories = mutableSetOf<String>()
+    private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -137,6 +151,14 @@ class ExploreFragment : Fragment() {
         game3ListButton = view.findViewById(R.id.game3List)
         game3ListButtonText = view.findViewById(R.id.game3ListText)
 
+        refresh = view.findViewById(R.id.refresh)
+        refresh.setOnRefreshListener {
+            ArticlesCache.clearCategoryCache(currentCategory)
+
+            loadArticles(currentCategory)
+
+            refresh.isRefreshing = false
+        }
         setupFavoriteGames()
 
         bookmarkedListButton.setOnClickListener { if (currentCategory != "bookmarked") { switchCategory("bookmarked") } }
@@ -290,6 +312,7 @@ class ExploreFragment : Fragment() {
     }
 
     private fun switchCategory(newCategory: String) {
+
         articlesContainer.animate()
             .translationY(1770f)
             .setDuration(300)
@@ -392,34 +415,101 @@ class ExploreFragment : Fragment() {
     }
 
     private fun loadArticles(category: String) {
+        val key = category.lowercase()
+
         noInternetBox.visibility = View.GONE
         noArticlesBox.visibility = View.GONE
         noBookmarkBox.visibility = View.GONE
-        when (category) {
-            "bookmarked" -> {
-                fetchBookmarkedArticles(requireContext(), listView, caller = "explore") { articlesIsEmpty ->
-                    if (articlesIsEmpty) {
-                        noBookmarkBox.visibility = View.VISIBLE
-                    }
-                    LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, false)
+        listView.visibility = View.GONE
+
+        LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, true)
+
+        ArticlesCache.getArticlesFor(key)?.let { cached ->
+            LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, false)
+            listView.adapter = ArticleAdapter(requireContext(), cached)
+            listView.visibility = View.VISIBLE
+            return
+        }
+
+        val onFetchComplete = onFetchComplete@ { hasInternet: Boolean ->
+            LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, false)
+
+            if (!hasInternet) {
+                noInternetBox.visibility = View.VISIBLE
+                return@onFetchComplete
+            }
+
+            val raw = listView.adapter
+            val articleAdapter: ArticleAdapter? = when (raw) {
+                is HeaderViewListAdapter -> (raw.wrappedAdapter as? ArticleAdapter)
+                is ArticleAdapter         -> raw
+                else                      -> null
+            }
+
+            val newlyLoadedArticles: List<Article> = articleAdapter
+                ?.let { a -> (0 until a.count).mapNotNull { i -> a.getItem(i) } }
+                ?: emptyList()
+
+            ArticlesCache.storeArticlesFor(key, newlyLoadedArticles)
+
+            if (category == "bookmarked") {
+                if (newlyLoadedArticles.isEmpty()) {
+                    noBookmarkBox.visibility = View.VISIBLE
+                } else {
+                    listView.visibility = View.VISIBLE
+                }
+                return@onFetchComplete
+            }
+
+            if (newlyLoadedArticles.isNotEmpty()) {
+                listView.visibility = View.VISIBLE
+            } else {
+                noArticlesBox.visibility = View.VISIBLE
+                if (category.startsWith("game")) {
+                    val gameName = FilterUtil.getGameNameById(
+                        getGameIdForButton(category.removePrefix("game").toInt())
+                    )
+                    noArticlesBoxText.text = "No articles found for \"$gameName.\""
                 }
             }
-            "game1", "game2", "game3" -> {
-                val gameIndex = category.substring(4).toInt()
-                val gameId = getGameIdForButton(gameIndex)
+        }
+
+        when (category) {
+            "bookmarked" -> {
+                fetchBookmarkedArticles(
+                    requireContext(),
+                    listView,
+                    caller = "explore"
+                ) { articlesIsEmpty ->
+                    onFetchComplete(true)
+                }
+            }
+
+            else -> if (category.startsWith("game")) {
+                val idx = category.removePrefix("game").toInt()
+                val gameId = getGameIdForButton(idx)
                 val gameName = FilterUtil.getGameNameById(gameId)
 
-                fetchArticlesSpecific(requireContext(), listView, caller = "explore", gameName = gameName) { hasInternet ->
-                    if (listView.adapter?.count == 0) {
-                        noArticlesBox.visibility = View.VISIBLE
-                        noArticlesBoxText.text = "No articles found for \"${gameName}\"."
-                    }
-                    LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, false)
-                    noInternetBox.visibility = if (!hasInternet) View.VISIBLE else View.GONE
+                fetchArticlesSpecific(
+                    requireContext(),
+                    listView,
+                    caller = "explore",
+                    gameName = gameName
+                ) { hasInternet ->
+                    onFetchComplete(hasInternet)
+                }
+            } else {
+                fetchArticles(
+                    requireContext(),
+                    listView,
+                    caller = "explore"
+                ) { hasInternet ->
+                    onFetchComplete(hasInternet)
                 }
             }
         }
     }
+
 
     private fun setupSearchView(view: View) {
         val searchHints = listOf(
@@ -496,6 +586,7 @@ class ExploreFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         if (currentCategory == "bookmarked") {
+            loadedCategories.remove("bookmarked")
             loadArticles("bookmarked")
         }
     }

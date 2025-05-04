@@ -24,7 +24,6 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
 
-
 class ExploreArticleActivity : Activity() {
     private val users = Firebase.firestore.collection("users")
     override fun onCreate(savedInstanceState: Bundle?) {

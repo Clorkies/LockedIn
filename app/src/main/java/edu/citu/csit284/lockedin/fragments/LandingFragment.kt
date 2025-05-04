@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.HeaderViewListAdapter
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -19,13 +20,16 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.NavOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.R
 import edu.citu.csit284.lockedin.activities.MainActivity
 import edu.citu.csit284.lockedin.activities.SettingsActivity
+import edu.citu.csit284.lockedin.caches.ArticlesCache
 import edu.citu.csit284.lockedin.caches.LiveMatchesCache
 import edu.citu.csit284.lockedin.data.Match
+import edu.citu.csit284.lockedin.helper.ArticleAdapter
 import edu.citu.csit284.lockedin.helper.LiveMatchAdapter
 import edu.citu.csit284.lockedin.util.LoadingAnimationUtils
 import edu.citu.csit284.lockedin.util.MatchRepository
@@ -59,6 +63,8 @@ class LandingFragment : Fragment() {
     private lateinit var noMatches : TextView
     private lateinit var adapter: LiveMatchAdapter
     private lateinit var headerContainer: LinearLayout
+
+    private lateinit var refresh: SwipeRefreshLayout
     private val matches = mutableListOf<Match>()
     private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
 
@@ -132,6 +138,13 @@ class LandingFragment : Fragment() {
 
         listView = view.findViewById(R.id.articleListView)
 
+        refresh = view.findViewById(R.id.refresh)
+        refresh.setOnRefreshListener {
+            ArticlesCache.clearCategoryCache("general")
+            loadArticles()
+            refresh.isRefreshing = false
+        }
+
         loadMatches()
 
 //        setupHeaderScrollBehavior(headerContainer, listView, 500)
@@ -202,11 +215,45 @@ class LandingFragment : Fragment() {
                 matches.addAll(fetchedLiveMatches)
                 adapter.notifyDataSetChanged()
             }
-            fetchArticles(requireContext(), listView, caller = "landing") { hasInternet ->
-                LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, false)
-                noInternetBox.visibility = if (!hasInternet) View.VISIBLE else View.GONE
-            }
+            loadArticles()
         }
     }
 
+    private fun loadArticles() {
+        val key = "general"
+
+        noInternetBox.visibility = View.GONE
+        listView.visibility = View.GONE
+
+        LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, true)
+
+        ArticlesCache.getArticlesFor(key)?.let { cached ->
+            LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, false)
+            listView.adapter = ArticleAdapter(requireContext(), cached)
+            listView.visibility = View.VISIBLE
+            return
+        }
+
+        fetchArticles(requireContext(), listView, caller = "landing") { hasInternet ->
+            LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, false)
+            noInternetBox.visibility = if (!hasInternet) View.VISIBLE else View.GONE
+
+            val raw = listView.adapter
+            val articleAdapter: ArticleAdapter? = when (raw) {
+                is HeaderViewListAdapter -> raw.wrappedAdapter as? ArticleAdapter
+                is ArticleAdapter -> raw
+                else                      -> null
+            }
+
+            val loaded = articleAdapter
+                ?.let { a -> (0 until a.count).mapNotNull { i -> a.getItem(i) } }
+                ?: emptyList()
+
+            ArticlesCache.storeArticlesFor(key, loaded)
+
+            if (loaded.isNotEmpty()) {
+                listView.visibility = View.VISIBLE
+            }
+        }
+    }
 }
