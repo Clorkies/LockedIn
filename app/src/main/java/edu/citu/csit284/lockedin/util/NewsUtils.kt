@@ -110,7 +110,7 @@ fun fetchArticlesSpecific(
 
     queryBuilder.append(" AND (esports OR tournament OR championship OR competitive OR \"pro player\" OR \"professional gaming\" OR match OR gameplay)")
 
-    queryBuilder.append(" -football -soccer -basketball -baseball -cricket -tennis -NFL -NBA -MLB")
+    queryBuilder.append(" -football -soccer -basketball -baseball -cricket -tennis -NFL -NBA -MLB -UFC -county")
 
     val finalQuery = queryBuilder.toString()
     Log.d("ArticleFetcher", "Game query for $gameName: $finalQuery")
