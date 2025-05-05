@@ -24,6 +24,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.R
+import edu.citu.csit284.lockedin.activities.ExploreArticleActivity
 import edu.citu.csit284.lockedin.activities.MainActivity
 import edu.citu.csit284.lockedin.activities.SettingsActivity
 import edu.citu.csit284.lockedin.caches.ArticlesCache
@@ -230,6 +231,19 @@ class LandingFragment : Fragment() {
         ArticlesCache.getArticlesFor(key)?.let { cached ->
             LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, false)
             listView.adapter = ArticleAdapter(requireContext(), cached)
+            listView.setOnItemClickListener { _, _, position, _ ->
+                val article = cached[position]
+                val intent = Intent(requireContext(), ExploreArticleActivity::class.java).apply {
+                    putExtra("imageUrl", article.urlToImage)
+                    putExtra("title", article.title)
+                    putExtra("articleText", article.description)
+                    putExtra("date", article.publishedAt)
+                    putExtra("articleUrl", article.url)
+                    putExtra("articleAuthor", article.author)
+                    putExtra("caller", "landing")
+                }
+                startActivity(intent)
+            }
             listView.visibility = View.VISIBLE
             return
         }

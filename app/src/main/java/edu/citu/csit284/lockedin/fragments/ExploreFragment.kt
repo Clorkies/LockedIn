@@ -36,6 +36,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.citu.csit284.lockedin.activities.ProfileActivity
 import edu.citu.csit284.lockedin.R
+import edu.citu.csit284.lockedin.activities.ExploreArticleActivity
 import edu.citu.csit284.lockedin.activities.MainActivity
 import edu.citu.csit284.lockedin.activities.SettingsActivity
 import edu.citu.csit284.lockedin.caches.ArticlesCache
@@ -87,7 +88,6 @@ class ExploreFragment : Fragment() {
     private var currentCategory = "game1"
     private var previousCategory = "game1"
     private val loadedCategories = mutableSetOf<String>()
-    private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -427,6 +427,20 @@ class ExploreFragment : Fragment() {
         ArticlesCache.getArticlesFor(key)?.let { cached ->
             LoadingAnimationUtils.showLoading(requireContext(), loadingView1, loadingView2, false)
             listView.adapter = ArticleAdapter(requireContext(), cached)
+            listView.setOnItemClickListener { _, _, position, _ ->
+                val article = cached[position]
+                val intent = Intent(requireContext(), ExploreArticleActivity::class.java).apply {
+                    putExtra("imageUrl", article.urlToImage)
+                    putExtra("title", article.title)
+                    putExtra("articleText", article.description)
+                    putExtra("date", article.publishedAt)
+                    putExtra("articleUrl", article.url)
+                    putExtra("articleAuthor", article.author)
+                    putExtra("caller", "explore")
+                }
+                startActivity(intent)
+            }
+
             listView.visibility = View.VISIBLE
             return
         }
